@@ -1,0 +1,76 @@
+version: '3.4'
+
+services:
+ db_seq:
+    image: datalust/seq:latest
+    environment:
+    - ACCEPT_EULA=Y 
+    ports:
+        - 5342:80
+        - 5341:5341
+ 
+ db_postgres:
+    image: postgres
+    environment:
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=warehouse
+    ports:
+        - "5432:5432"
+
+ #fwidentity:
+ #   image: ${DOCKER_REGISTRY-}fwidentity
+ #   environment:
+ #   - ASPNETCORE_URLS=http://+:10000;https://+:10001;
+ #   ports:
+ #       - "10000:10000"
+ #       - "10001:10001"
+ #   build:
+ #     context: .
+ #     dockerfile: FW.Identity/Dockerfile
+
+ #consoleclient:
+ #   image: ${DOCKER_REGISTRY-}consoleclient
+ #   build:
+ #     context: .
+ #     dockerfile: ConsoleClient/Dockerfile
+ #   depends_on:
+ #      - fwidentity
+ #   ports:
+ #       - "5227:80"
+
+ #fw.management:
+ #   image: ${DOCKER_REGISTRY-}fwmanagement
+ #   build:
+ #     context: .
+ #     dockerfile: FW.Management/Dockerfile
+ #   environment:
+ #   - UrlSeq=http://db_seq:5341
+ #   - SleepStart=4    
+
+ #fw.web:
+ #   image: ${DOCKER_REGISTRY-}fwweb
+ #   build:
+ #     context: .
+ #     dockerfile: FW.Web/Dockerfile
+ #   environment:
+ #   - SleepStart=4
+ #   - UrlSeq=http://db_seq:5341
+ #   ports:      
+ #       - "2001:80"
+
+ pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+     - PGADMIN_DEFAULT_EMAIL=betty73@mail.ru
+     - PGADMIN_DEFAULT_PASSWORD=btv
+    ports:
+        - "5050:80"
+
+ db_rabbitmq:
+    image: rabbitmq:3.9-management
+    ports:
+        - 15672:15672
+        - 5672:5672
+  
+

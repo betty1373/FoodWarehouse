@@ -1,0 +1,8 @@
+PS:
+dotnet ef migrations add InitialSeedData -o Data/Migrations
+dotnet ef database update
+
+Для миграции необходимо последовательно выполнить команды, используя "Консоль диспетчера пакетов".
+PM:
+Add-Migration InitialSeedData -o Data/Migrations -verbose
+Update-Database

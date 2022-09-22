@@ -1,0 +1,107 @@
+-- public."warehouse" definition
+
+-- Drop table
+DROP TABLE IF  exists public."ChangesProducts";
+DROP TABLE IF  exists public."Products";
+DROP TABLE IF  exists public."Recipes";
+DROP TABLE IF  exists public."Warehouses";
+DROP TABLE IF  exists public."Ingredients";
+DROP TABLE IF  exists public."Categories";
+DROP TABLE IF  exists public."Dishes";
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+--склад
+CREATE TABLE IF NOT EXISTS public."Warehouses" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"UserId" uuid NOT null,
+"Name" varchar(250) NOT null,
+"Address" varchar(250) NULL,
+
+UNIQUE ("Name", "UserId"),
+PRIMARY KEY ("Id")
+);
+
+
+-- категории
+CREATE TABLE IF NOT exists  public."Categories" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"Name" varchar(250) NOT null,
+"UserId" uuid NOT null,
+
+UNIQUE ("Name", "UserId"),
+PRIMARY KEY ("Id")
+);
+
+
+-- ингредиенты
+CREATE TABLE IF NOT exists  public."Ingredients" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"UserId" uuid NOT null,
+"Name" varchar(250) NOT null,
+
+UNIQUE ("Name", "UserId"),
+PRIMARY KEY ("Id")
+);
+
+
+-- продукы
+CREATE TABLE IF NOT EXISTS public."Products" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"UserId" uuid NOT null,
+"WarehouseId" uuid NOT null,
+"CategoryId" uuid NOT null,
+"IngredientId" uuid NOT null,
+"Name" varchar(250) NOT null,
+"ExpirationDate" timestamp null,  -- срок годности
+"Quantity" integer NOT NULL DEFAULT 0, -- количество
+
+UNIQUE ("Name", "UserId"),
+FOREIGN KEY ("WarehouseId") REFERENCES public."Warehouses"("Id"),
+FOREIGN KEY ("CategoryId") REFERENCES public."Categories"("Id"),
+FOREIGN KEY ("IngredientId") REFERENCES public."Ingredients"("Id"),
+PRIMARY KEY ("Id")
+);
+
+-- изменения продуктов
+CREATE TABLE IF NOT EXISTS public."ChangesProducts" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"ProductId" uuid NOT null,
+"Quantity" integer NOT NULL DEFAULT 0, -- количество
+"UserId" uuid NOT null,
+
+FOREIGN KEY ("ProductId") REFERENCES public."Products"("Id"),
+PRIMARY KEY ("Id")
+);
+
+
+-- Блюда
+CREATE TABLE IF NOT EXISTS public."Dishes" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"UserId" uuid NOT null,
+"Name" varchar(250) NOT null,
+"Description" varchar null,
+
+UNIQUE ("Name", "UserId"),
+PRIMARY KEY ("Id")
+);
+
+--Рецепты
+CREATE TABLE IF NOT EXISTS public."Recipes" (
+"Id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+"ModifiedOn" timestamp NULL DEFAULT timezone('utc'::text, CURRENT_TIMESTAMP),
+"UserId" uuid NOT null,
+"DishesId" uuid NOT null,
+"IngredientId" uuid NOT null,
+"Quantity" integer NOT NULL DEFAULT 0, -- количество
+
+FOREIGN KEY ("IngredientId") REFERENCES public."Ingredients"("Id"),
+FOREIGN KEY ("DishesId") REFERENCES public."Dishes"("Id"),
+PRIMARY KEY ("Id")
+);
