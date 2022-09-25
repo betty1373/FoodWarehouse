@@ -5,7 +5,8 @@ using System;
 using FW.Domain;
 namespace FW.WPF.WebAPI.Interfaces;
 
-public interface IClientBase<T> where T : class,IEntity
+public interface IClientBase<T,K> where T : class, IEntity
+                                  where K: class
 {
   
     Task<IEnumerable<T>> GetAllAsync(string? token, CancellationToken Cancel = default);
@@ -14,9 +15,9 @@ public interface IClientBase<T> where T : class,IEntity
 
     Task<T?> GetByIdAsync(Guid Id, string? token, CancellationToken Cancel = default);
 
-    Task<Guid> AddAsync(T Item, string? token, CancellationToken Cancel = default);
+    Task<Guid> AddAsync(K Item, string? token, CancellationToken Cancel = default);
 
-    Task<bool> UpdateAsync(T Item, string? token, CancellationToken Cancel = default);
+    Task<bool> UpdateAsync(K Item, string? token, CancellationToken Cancel = default);
 
-    Task<T?> RemoveAsync(Guid Id, string? token, CancellationToken Cancel = default);
+    Task<Guid?> RemoveAsync(Guid Id, string? token, CancellationToken Cancel = default);
 }

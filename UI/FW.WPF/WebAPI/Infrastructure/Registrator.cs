@@ -25,7 +25,7 @@ public static class Registrator
            //.AddTypedClient<IRepository<Product>, ProductsClient>()
            //.AddTypedClient<IRepository<Order>, OrdersClient>()
            //.AddTypedClient<IRepository<Customer>, CustomersClient>()
-           .AddTypedClient<IClientBase<DishResponseVM>, DishesClient>()
+           .AddTypedClient<IClientBase<DishResponseVM, DishVM>, DishesClient>()
            .AddTypedClient<IRecipesClient, RecipesClient>()
         //    .AddTypedClient<IClientIdentity, ClientIdentity>()
            //   .AddTypedClient<ImagesClient>()

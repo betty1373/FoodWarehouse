@@ -13,7 +13,7 @@ using IdentityModel.Client;
 
 namespace FW.WPF.WebAPI.Clients;
 
-public class RecipesClient : ClientBase<RecipeResponseVM> , IRecipesClient
+public class RecipesClient : ClientBase<RecipeResponseVM, RecipeVM> , IRecipesClient
 {
     public RecipesClient(HttpClient Client) : base(Client, WebAPIAddress.Recipes) { }
     public async Task<IEnumerable<RecipeResponseVM>> GetByParentIdAsync(Guid ParentId, string token, CancellationToken Cancel = default)

@@ -76,8 +76,8 @@ public abstract class EntityApiController<T, K> : ControllerBase
     {
         var response = await Client.Count();
 
-        if (response == null)
-            return NotFound();
+       // if (response == null)
+          //  return NotFound();
 
         return Ok(response);
     }

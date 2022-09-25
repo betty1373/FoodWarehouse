@@ -12,7 +12,10 @@ using FW.Domain;
 
 namespace FW.WPF.WebAPI.Clients.Base;
 
-public abstract class ClientBase<T> : IClientBase<T> where T : class,IEntity
+public abstract class ClientBase<T,K> : IClientBase<T,K>
+    where T : class, IEntity
+    where K : class
+
 { 
     protected HttpClient Http { get; }
 
@@ -71,7 +74,7 @@ public abstract class ClientBase<T> : IClientBase<T> where T : class,IEntity
         return item;
     }
 
-    public async Task<Guid> AddAsync(T Item, string? token, CancellationToken Cancel = default)
+    public async Task<Guid> AddAsync(K Item, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
         var response = await Http.PostAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
@@ -79,14 +82,11 @@ public abstract class ClientBase<T> : IClientBase<T> where T : class,IEntity
         var created_item = await response
            .EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<T>(cancellationToken: Cancel);
+           .ReadFromJsonAsync<Guid>(cancellationToken: Cancel);
 
-        Item.Id = created_item!.Id;
-
-        return Item.Id;
+        return created_item;
     }
-
-    public async Task<bool> UpdateAsync(T Item, string? token, CancellationToken Cancel = default)
+    public async Task<bool> UpdateAsync(K Item, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
         var response = await Http.PutAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
@@ -97,7 +97,7 @@ public abstract class ClientBase<T> : IClientBase<T> where T : class,IEntity
         return response.EnsureSuccessStatusCode().StatusCode == HttpStatusCode.OK;
     }
 
-    public async Task<T?> RemoveAsync(Guid Id, string? token, CancellationToken Cancel = default)
+    public async Task<Guid?> RemoveAsync(Guid Id, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
         var response = await Http.DeleteAsync($"{Address}/{Id}", Cancel).ConfigureAwait(false);
@@ -108,7 +108,7 @@ public abstract class ClientBase<T> : IClientBase<T> where T : class,IEntity
         var result = await response
            .EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<T>(cancellationToken: Cancel);
+           .ReadFromJsonAsync<Guid>(cancellationToken: Cancel);
 
         return result;
     }
