@@ -18,6 +18,7 @@ namespace FW.Web.RequestClients
         private readonly IRequestClient<ProductDeleteDto> _deleteClient;
         private readonly IRequestClient<ProductsGetPageDto> _getPageClient;
         private readonly IRequestClient<ProductsGetAllDto> _getAllClient;
+        private readonly IRequestClient<ProductsGetByParentIdDto> _getByParentIdClient;
         private readonly IRequestClient<ProductsGetCountDto> _getCountClient;
 
         public ProductsRequestClient(
@@ -29,7 +30,8 @@ namespace FW.Web.RequestClients
             IRequestClient<ProductDeleteDto> deleteClient,
             IRequestClient<ProductsGetPageDto> getPageClient,
             IRequestClient<ProductsGetAllDto> getAllClient,
-            IRequestClient<ProductsGetCountDto> getCountClient)
+            IRequestClient<ProductsGetCountDto> getCountClient,
+            IRequestClient<ProductsGetByParentIdDto> getByParentIdClient)
         {
             _mapper = mapper;
             _logger = logger;
@@ -40,6 +42,7 @@ namespace FW.Web.RequestClients
             _deleteClient = deleteClient;
             _getAllClient = getAllClient;
             _getCountClient = getCountClient;
+            _getByParentIdClient = getByParentIdClient;
         }
 
         public async Task<ProductResponseVM> Get(Guid id)
@@ -51,6 +54,14 @@ namespace FW.Web.RequestClients
             return result;
         }
 
+        public async Task<IEnumerable<ProductResponseVM>> GetByParentId(Guid parentId)
+        {
+            var queryDto = new ProductsGetByParentIdDto { WarehauseId = parentId };
+            var responseDto = await _getByParentIdClient.GetResponse<ProductsResponseDto>(queryDto);
+
+            var result = _mapper.Map<List<ProductResponseVM>>(responseDto.Message.Products);
+            return result;
+        }
         public async Task<IEnumerable<ProductResponseVM>> GetPage(int Skip, int Take)
         {
             var queryDto = new ProductsGetPageDto { Skip = Skip, Take = Take };

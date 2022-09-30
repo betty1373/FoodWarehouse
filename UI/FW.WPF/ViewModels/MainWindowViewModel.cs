@@ -19,7 +19,8 @@ public class MainWindowViewModel : ViewModel
 {
     private readonly IClientBase<DishResponseVM, DishVM> _DishesClient;
     private readonly IRecipesClient _RecipesClient;
-  //  private readonly IClientIdentity<LoginModel> _ClientIdentity;
+    private readonly IProductsClient _ProductsClient;
+    //  private readonly IClientIdentity<LoginModel> _ClientIdentity;
     //  private readonly ImagesClient _ImagesClient;
 
     //    public IOrdersRepository OrdersRepository { get; }
@@ -30,6 +31,7 @@ public class MainWindowViewModel : ViewModel
         //   IOrdersRepository OrdersRepository,
         //    ICustomersRepository CustomersRepository,
         IRecipesClient RecipesClient,
+        IProductsClient ProductsClient,
         IClientBase<DishResponseVM, DishVM> DishesClient
 //,
   //      IClientIdentity<LoginModel> clientIdentity
@@ -42,7 +44,8 @@ public class MainWindowViewModel : ViewModel
         //this.CustomersRepository = CustomersRepository;
         _DishesClient = DishesClient;
         _RecipesClient = RecipesClient;
-      //  _ClientIdentity = clientIdentity;
+        _ProductsClient = ProductsClient;
+        //  _ClientIdentity = clientIdentity;
         // _ClientIdentity = clientIdentity;
         //   _ImagesClient = ImagesClient;
 

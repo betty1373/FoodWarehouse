@@ -28,7 +28,7 @@ public class RecipesClient : ClientBase<RecipeResponseVM, RecipeVM> , IRecipesCl
                .EnsureSuccessStatusCode()
                .Content
                .ReadFromJsonAsync<IEnumerable<RecipeResponseVM>>(cancellationToken: Cancel)
-            ?? throw new InvalidOperationException("Не удалось загрузить список товаров");
+            ?? throw new InvalidOperationException("Не удалось загрузить список рецептов");
 
         return items!;
     }

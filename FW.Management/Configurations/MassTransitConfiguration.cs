@@ -30,6 +30,7 @@ namespace FW.Management.Configurations
 
                 x.AddConsumer<ProductCreateConsumer>();
                 x.AddConsumer<ProductGetByIdConsumer>();
+                x.AddConsumer<ProductsGetByParentIdConsumer>();
                 x.AddConsumer<ProductUpdateConsumer>();
                 x.AddConsumer<ProductDeleteConsumer>();
                 x.AddConsumer<ProductsGetPageConsumer>();
@@ -41,7 +42,7 @@ namespace FW.Management.Configurations
                 x.AddConsumer<CategoryUpdateConsumer>();
                 x.AddConsumer<CategoryDeleteConsumer>();
                 x.AddConsumer<CategoriesGetPageConsumer>();
-                x.AddConsumer<CategoriesGetAllConsumer, CategoriesGetAllConsumerDefenition>();
+                x.AddConsumer<CategoriesGetAllConsumer>();
                 x.AddConsumer<CategoriesGetCountConsumer>();
             });
 

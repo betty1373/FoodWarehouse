@@ -19,7 +19,7 @@ public static class Registrator
     public static IServiceCollection AddWebAPI(this IServiceCollection services, string Address)
     {
         services.AddHttpClient("FW.WebApi", client => client.BaseAddress = new(Address))
-           //.AddTypedClient<IProductsRepository, ProductsClient>()
+           .AddTypedClient<IProductsClient, ProductsClient>()
            //.AddTypedClient<ICustomersRepository, CustomersClient>()
            //.AddTypedClient<IOrdersRepository, OrdersClient>()
            //.AddTypedClient<IRepository<Product>, ProductsClient>()

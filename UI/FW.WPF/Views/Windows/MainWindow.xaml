@@ -90,12 +90,11 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <DockPanel DockPanel.Dock="Top" >
-                                <TextBox Text ="{Binding DataContext.SelectedDish.Description, 
-                                    RelativeSource={RelativeSource AncestorType=Window},Mode=OneWay,FallbackValue=d}"
+                                <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=d}"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" FontWeight="Bold"/>
                             </DockPanel>
                             <ListBox ItemsSource="{Binding Recipes}" Grid.Row="1" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
-                                VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                                VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="recipes">
                                 <ListBox.InputBindings>
                                     <MouseBinding MouseAction="LeftDoubleClick" 
                                         Command="{Binding AddToCartCommand}"

@@ -12,7 +12,6 @@ namespace FW.Web.Controllers
     {
        
         public WarehousesController(IWarehousesRpcClient client) : base(client) { }
-
    
         [HttpGet("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]

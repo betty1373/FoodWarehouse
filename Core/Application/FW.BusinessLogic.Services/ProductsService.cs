@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.Category;
 using FW.BusinessLogic.Contracts.Products;
+using FW.BusinessLogic.Contracts.Recipes;
 using FW.BusinessLogic.Services.Abstractions;
 using FW.Domain;
 using FW.EntityFramework;
@@ -34,6 +35,12 @@ namespace FW.BusinessLogic.Services
             return _mapper.Map<List<ProductResponseDto>>(items);
         }
 
+        public async Task<IEnumerable<ProductResponseDto>> GetByParentId(Guid ParentId)
+        {
+            var items = await _dbContext.Products.Include(x => x.Ingredients).Include(x => x.Categories).Where(p => p.WarehouseId == ParentId).ToListAsync();
+
+            return _mapper.Map<List<ProductResponseDto>>(items);
+        }
         public async Task<ProductResponseDto> GetById(Guid id)
         {
             var item = await _dbContext.Products.FindAsync(id);

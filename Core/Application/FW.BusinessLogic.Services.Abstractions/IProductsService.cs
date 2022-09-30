@@ -23,6 +23,14 @@ namespace FW.BusinessLogic.Services.Abstractions
         /// <returns> список продуктов </returns>
         public Task<IEnumerable<ProductResponseDto>> GetPaged(int Skip, int Take);
 
+
+        /// <summary>
+        /// Получить продукты по складу 
+        /// </summary>
+        /// <param name="id"> идентификатор </param>
+        /// <returns> Id рецепта </returns>
+        public Task<IEnumerable<ProductResponseDto>> GetByParentId(Guid ParentId);
+
         /// <summary>
         /// Получить продукт по Id
         /// </summary>

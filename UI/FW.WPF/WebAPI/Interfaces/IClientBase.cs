@@ -6,8 +6,7 @@ using FW.Domain;
 namespace FW.WPF.WebAPI.Interfaces;
 
 public interface IClientBase<T,K> where T : class, IEntity
-                                  where K: class
-{
+                                  where K: class{
   
     Task<IEnumerable<T>> GetAllAsync(string? token, CancellationToken Cancel = default);
 

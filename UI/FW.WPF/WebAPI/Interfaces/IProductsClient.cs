@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System;
 namespace FW.WPF.WebAPI.Interfaces;
 
-public interface IRecipesClient : IClientBase< RecipeResponseVM, RecipeVM>
+public interface IProductsClient : IClientBase<ProductResponseVM, ProductVM>
 {
-    Task<IEnumerable<RecipeResponseVM>> GetByParentIdAsync(Guid ParentId, string token, CancellationToken Cancel = default);
+    Task<IEnumerable<ProductResponseVM>> GetByParentIdAsync(Guid ParentId, string token, CancellationToken Cancel = default);
 
     //Task<Product> CreateProductAsync(
     //    string Name,

@@ -5,5 +5,6 @@ namespace FW.Web.RequestClients.Interfaces
 {
     public interface IProductsRequestClient: IBaseClient<ProductVM,ProductResponseVM>
     {
+        public Task<IEnumerable<ProductResponseVM>> GetByParentId(Guid prentId);
     }
 }

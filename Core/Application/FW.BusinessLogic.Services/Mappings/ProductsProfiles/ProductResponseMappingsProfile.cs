@@ -8,7 +8,9 @@ namespace FW.BusinessLogic.Services.Mappings.ProductsProfiles
     {
         public ProductResponseMappingsProfile()
         {
-            CreateMap<Products, ProductResponseDto>();
+            CreateMap<Products, ProductResponseDto>()
+                .ForMember(d => d.CategoryName, o => o.MapFrom(s => s.Categories.Name))
+                .ForMember(d => d.IngredientName, o => o.MapFrom(s => s.Ingredients.Name));
             CreateMap<ProductResponseDto, Products>()
                 .ForMember(p => p.Warehouses, map => map.Ignore())
                 .ForMember(p => p.Categories, map => map.Ignore())
