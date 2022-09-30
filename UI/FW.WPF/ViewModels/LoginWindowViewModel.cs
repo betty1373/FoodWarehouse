@@ -9,17 +9,20 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using FW.WPF.Identity.Clients;
 using FW.WPF.Domain.Exceptions;
+using FW.WPF.WebAPI.Interfaces;
 
 namespace FW.WPF.ViewModels;
 
 public class LoginWindowViewModel : ViewModel
 {
+    private readonly IWarehauseClient _WarehauseClient;
     private readonly IClientIdentity<LoginModel> _ClientIdentity;
     public event EventHandler<EventArgs<ViewModel>>? Login;
     protected virtual void OnLoging(ViewModel model) => Login?.Invoke(this, model);
     public LoginWindowViewModel()//IClientIdentity<LoginModel> clientIdentity)
     {
         _ClientIdentity = App.Services.GetRequiredService<IClientIdentity<LoginModel>>();
+        _WarehauseClient = App.Services.GetRequiredService<IWarehauseClient>();
         ErrorMessageViewModel = new MessageViewModel();
     }
     #region Title : string - Заголовок главного окна
@@ -33,7 +36,7 @@ public class LoginWindowViewModel : ViewModel
     #endregion
     private LoginModel? _LoginModel = new();
 
-    /// <summary>Выбранное блюдо</summary>
+    /// <summary>Данные пользователя</summary>
     public LoginModel? LoginModel
     {
         get => _LoginModel;
@@ -73,6 +76,13 @@ public class LoginWindowViewModel : ViewModel
             //if (token is not string { Length: > 0 }) return;
             login.AccessToken = token;
             if (login?.AccessToken is not string { Length: > 0 } accesstoken) return;
+
+            var warehause = await _WarehauseClient.GetByParentIdAsync(login?.AccessToken ?? "");
+            if (warehause?.Id is not Guid id) return; 
+            login.WarehauseId = warehause.Id;
+            login.WarehauseName = warehause.Name;
+            login.WarehauseAddress = warehause.Address;
+            
         }
         catch (IdentityServerNotFoundException ex)
         {

@@ -17,7 +17,7 @@
     <DockPanel Margin="10">
         <StatusBar>
             <StatusBarItem>
-                <TextBlock Text="{Binding LoginModel.UserName, StringFormat=Пользователь {0}}"/>
+                <TextBlock Text="{Binding LoginModel}"/>
             </StatusBarItem>
         </StatusBar>
         <ToolBarTray>
@@ -61,8 +61,15 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <TabControl >
-            <TabItem Header="Рецепты">
+       
+        <TabControl SelectedIndex="{Binding TabItem, Mode=TwoWay}" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding DataContext.TabItemCommand,RelativeSource={RelativeSource AncestorType=Window}}"
+                                           CommandParameter="{Binding TabItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TabItem Header="Блюда" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>

@@ -20,6 +20,7 @@ public class MainWindowViewModel : ViewModel
     private readonly IClientBase<DishResponseVM, DishVM> _DishesClient;
     private readonly IRecipesClient _RecipesClient;
     private readonly IProductsClient _ProductsClient;
+  
     //  private readonly IClientIdentity<LoginModel> _ClientIdentity;
     //  private readonly ImagesClient _ImagesClient;
 
@@ -32,7 +33,8 @@ public class MainWindowViewModel : ViewModel
         //    ICustomersRepository CustomersRepository,
         IRecipesClient RecipesClient,
         IProductsClient ProductsClient,
-        IClientBase<DishResponseVM, DishVM> DishesClient
+      //  IWarehauseClient WarehauseClient,
+    IClientBase<DishResponseVM, DishVM> DishesClient
 //,
   //      IClientIdentity<LoginModel> clientIdentity
              //   IClientIdentity clientIdentity
@@ -45,6 +47,7 @@ public class MainWindowViewModel : ViewModel
         _DishesClient = DishesClient;
         _RecipesClient = RecipesClient;
         _ProductsClient = ProductsClient;
+      //  _WarehauseClient = WarehauseClient;
         //  _ClientIdentity = clientIdentity;
         // _ClientIdentity = clientIdentity;
         //   _ImagesClient = ImagesClient;
@@ -52,6 +55,80 @@ public class MainWindowViewModel : ViewModel
         //   Cart = new(this);
     }
 
+    int _tabItem = 0;
+    public int TabItem
+    {
+        get => _tabItem;
+        set => Set(ref _tabItem, value); 
+    }
+    #region Command TabItemCommand - Выбор данных
+    /// <summary>Выбор данных</summary>
+    private LambdaCommand? _TabItemCommand;
+    /// <summary>Выбор данных</summary>
+    public ICommand TabItemCommand => _TabItemCommand ??= new(OnTabItemCommandExecuted);
+    /// <summary>Логика выполнения - Выбор данных</summary>
+    private async void OnTabItemCommandExecuted(object p)
+    {
+        var selectedTab = p as int?;
+        switch (selectedTab)
+        {
+            case 0:
+                if (Dishes is null)
+                {
+                    OnUpdateDataCommandExecuted();
+                }
+                SelectedDish = Dishes?.FirstOrDefault();
+                OnPropertyChanged(nameof(SelectedDish));
+                LoadDishRecipes(SelectedDish); 
+                break;
+            case 1: 
+                 if (SelectedWarehause is null)
+                {
+
+                    //try
+                    //{
+                    //    var warehause = await _WarehauseClient.GetByParentIdAsync(LoginModel?.AccessToken ?? "");
+
+                    //   var recipe_model = new RecipeViewModel
+                    //        {
+                    //            Id = recipe.Id,
+                    //            Quantity = recipe.Quantity,
+                    //            DishesId = recipe.DishesId,
+                    //            IngredientId = recipe.IngredientId,
+                    //            IngredientName = recipe.IngredientName,
+                    //        };
+                    //        recipe_view_models.Add(recipe_model);
+                        
+
+                    //    Recipes = recipe_view_models;
+                    //}
+                    //catch (OperationCanceledException) { }
+                    //catch (Exception e)
+                    //{
+                    //    MessageBox.Show(
+                    //        $"Ошибка при получении рецептов блюда:\r\n{e.Message}", "Error",
+                    //        MessageBoxButton.OK, MessageBoxImage.Error);
+                    //}
+                }
+                 break;
+            default: break;
+        }
+      
+        
+        OnPropertyChanged(nameof(SelectedDish));
+        
+    }
+    #endregion
+    #region SelectedWarehause : WarehauseViewModel? - Выбранный склад
+    /// <summary>Выбранный склад</summary>
+    private WarehauseViewModel? _SelectedWarehause;
+    /// <summary>Выбранный склад</summary>
+    public WarehauseViewModel? SelectedWarehause
+    {
+        get => _SelectedWarehause;
+        set => Set(ref _SelectedWarehause, value);
+    }
+    #endregion
     //  public CartOrderViewModel Cart { get; }
 
     #region Title : string - Заголовок главного окна
@@ -391,7 +468,7 @@ public class MainWindowViewModel : ViewModel
         }
         catch (Exception e)
         {
-            MessageBox.Show($"Ошибка в процессе удаления категории {e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Ошибка в процессе удаления блюда {e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
