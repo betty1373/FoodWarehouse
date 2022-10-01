@@ -12,12 +12,12 @@ namespace FW.Web.Controllers
     public class ProductsController : EntityApiController<ProductVM, ProductResponseVM>
     {
         public ProductsController(IProductsRequestClient client) : base(client) { }
-      //  [HttpGet("[action]")]
+        [HttpGet("[action]/{WarehauseId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("warehause/{WarehauseId}")]
+    //    [HttpGet("warehause/{WarehauseId}")]
         public async Task<IActionResult> GetByParentId(Guid WarehauseId)
         {
             var client = (IProductsRequestClient)Client;

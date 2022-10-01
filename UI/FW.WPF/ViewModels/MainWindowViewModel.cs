@@ -21,36 +21,15 @@ public class MainWindowViewModel : ViewModel
     private readonly IRecipesClient _RecipesClient;
     private readonly IProductsClient _ProductsClient;
   
-    //  private readonly IClientIdentity<LoginModel> _ClientIdentity;
-    //  private readonly ImagesClient _ImagesClient;
-
-    //    public IOrdersRepository OrdersRepository { get; }
-    //  public ICustomersRepository CustomersRepository { get; }
-
     public MainWindowViewModel(
-        //  IProductsRepository ProductsRepository,
-        //   IOrdersRepository OrdersRepository,
-        //    ICustomersRepository CustomersRepository,
         IRecipesClient RecipesClient,
         IProductsClient ProductsClient,
-      //  IWarehauseClient WarehauseClient,
-    IClientBase<DishResponseVM, DishVM> DishesClient
-//,
-  //      IClientIdentity<LoginModel> clientIdentity
-             //   IClientIdentity clientIdentity
-        //   ImagesClient ImagesClient
+        IClientBase<DishResponseVM, DishVM> DishesClient
         )
     {
-        //_ProductsRepository = ProductsRepository;
-        //this.OrdersRepository = OrdersRepository;
-        //this.CustomersRepository = CustomersRepository;
         _DishesClient = DishesClient;
         _RecipesClient = RecipesClient;
         _ProductsClient = ProductsClient;
-      //  _WarehauseClient = WarehauseClient;
-        //  _ClientIdentity = clientIdentity;
-        // _ClientIdentity = clientIdentity;
-        //   _ImagesClient = ImagesClient;
 
         //   Cart = new(this);
     }
@@ -69,7 +48,7 @@ public class MainWindowViewModel : ViewModel
     /// <summary>Логика выполнения - Выбор данных</summary>
     private async void OnTabItemCommandExecuted(object p)
     {
-        var selectedTab = p as int?;
+        var selectedTab = (int)p;
         switch (selectedTab)
         {
             case 0:
@@ -82,12 +61,12 @@ public class MainWindowViewModel : ViewModel
                 LoadDishRecipes(SelectedDish); 
                 break;
             case 1: 
-                 if (SelectedWarehause is null)
+              //   if (SelectedWarehouse is null)
                 {
 
                     //try
                     //{
-                    //    var warehause = await _WarehauseClient.GetByParentIdAsync(LoginModel?.AccessToken ?? "");
+                    //    var warehouse = await _WarehouseClient.GetByParentIdAsync(LoginModel?.AccessToken ?? "");
 
                     //   var recipe_model = new RecipeViewModel
                     //        {
@@ -119,16 +98,16 @@ public class MainWindowViewModel : ViewModel
         
     }
     #endregion
-    #region SelectedWarehause : WarehauseViewModel? - Выбранный склад
-    /// <summary>Выбранный склад</summary>
-    private WarehauseViewModel? _SelectedWarehause;
-    /// <summary>Выбранный склад</summary>
-    public WarehauseViewModel? SelectedWarehause
-    {
-        get => _SelectedWarehause;
-        set => Set(ref _SelectedWarehause, value);
-    }
-    #endregion
+    //#region SelectedWarehouse : WarehouseViewModel? - Выбранный склад
+    ///// <summary>Выбранный склад</summary>
+    //private WarehouseViewModel? _SelectedWarehouse;
+    ///// <summary>Выбранный склад</summary>
+    //public WarehouseViewModel? SelectedWarehouse
+    //{
+    //    get => _SelectedWarehouse;
+    //    set => Set(ref _SelectedWarehouse, value);
+    //}
+    //#endregion
     //  public CartOrderViewModel Cart { get; }
 
     #region Title : string - Заголовок главного окна
@@ -262,13 +241,7 @@ public class MainWindowViewModel : ViewModel
 
         if (login_window.ShowDialog() != true) return;
         LoginModel = login_view_model.LoginModel;
-        if (Dishes is null) 
-        {
-            OnUpdateDataCommandExecuted();          
-        }
-        SelectedDish = Dishes?.FirstOrDefault();
-        OnPropertyChanged(nameof(SelectedDish));
-        LoadDishRecipes(SelectedDish);
+        OnTabItemCommandExecuted(0);
     }
     #endregion
 

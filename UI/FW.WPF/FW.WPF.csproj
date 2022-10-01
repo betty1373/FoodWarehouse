@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\WarehauseViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\login-background.jpg" />
   </ItemGroup>
 

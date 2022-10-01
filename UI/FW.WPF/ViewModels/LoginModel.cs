@@ -18,15 +18,15 @@ public class LoginModel:ViewModel,IUserIdentity
     public string? Password { get => _Password; set => Set(ref _Password, value); }
     private string? _AccessToken;
     public string? AccessToken{ get => _AccessToken; set => Set(ref _AccessToken, value); }
-    private Guid? _WarehauseId;
-    public Guid? WarehauseId { get => _WarehauseId; set => Set(ref _WarehauseId, value); }
-    private string? _WarehauseName;
-    public string? WarehauseName { get => _WarehauseName; set => Set(ref _WarehauseName, value); }
-    private string? _WarehauseAddress;
-    public string? WarehauseAddress { get => _WarehauseAddress; set => Set(ref _WarehauseAddress, value); }
+    private Guid? _WarehouseId;
+    public Guid? WarehouseId { get => _WarehouseId; set => Set(ref _WarehouseId, value); }
+    private string? _WarehouseName;
+    public string? WarehouseName { get => _WarehouseName; set => Set(ref _WarehouseName, value); }
+    private string? _WarehouseAddress;
+    public string? WarehouseAddress { get => _WarehouseAddress; set => Set(ref _WarehouseAddress, value); }
     public override string ToString()
     {
-        return $"User: {UserName} Склад: {WarehauseName},{WarehauseAddress}";
+        return $"User: {UserName} Склад: {WarehouseName},{WarehouseAddress}";
     }
 
     #endregion

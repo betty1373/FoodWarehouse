@@ -7,5 +7,5 @@ public static class WebAPIAddress
     public const string Products = "api/products";
     public const string Dishes = "api/Dishes";
     public const string Warehause = "api/Warehauses";
-    public const string Images = "api/images";
+  
 }

@@ -8,7 +8,7 @@
         public string CategoryName { get; set; }
         public Guid IngredientId { get; set; }
         public string IngredientName { get; set; }
-        public string Name { get; set; }
+      //  public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }
         public double Quantity { get; set; }
     }
