@@ -128,9 +128,9 @@ namespace FW.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    //b.Property<string>("Name")
+                    //    .IsRequired()
+                    //    .HasColumnType("text");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("double precision");

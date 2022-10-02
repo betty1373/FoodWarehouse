@@ -61,7 +61,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-       
+
         <TabControl SelectedIndex="{Binding TabItem, Mode=TwoWay}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
@@ -141,7 +141,7 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <Grid Grid.Column="1" DataContext="{Binding SelectedProduct}" Margin="10">
+                            <!--<Grid Grid.Column="1" DataContext="{Binding SelectedProduct}" Margin="10">
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Style.Triggers>
@@ -173,72 +173,73 @@
                                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Описание:"/>
                                 <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Description}" Margin="5,0,0,0"/>
                             </Grid>
-                            <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>
+                            <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>-->
                         </Grid>
                     </GroupBox>
                     <GridSplitter Grid.Column="1" HorizontalAlignment="Left"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Продукты">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Header="Категории" Grid.Column="0">
+            <TabItem Header="Продукты"/>
+            <Grid Width="1474">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22"/>
+                    <ColumnDefinition Width="278"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <!--<GroupBox Header="Категории" Grid.Column="0">
                         <ListBox ItemsSource="{Binding Categories}"
                          DisplayMemberPath="Name"
                          SelectedItem="{Binding SelectedCategory}"/>
-                    </GroupBox>
-                    <GroupBox Header="Товары" Grid.Column="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="31"/>
-                                <ColumnDefinition Width="799"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <ListBox ItemsSource="{Binding Products}" 
+                    </GroupBox>-->
+                <GroupBox Header="Товары" Grid.Column="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="31"/>
+                            <ColumnDefinition Width="799"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox ItemsSource="{Binding Products}" 
                          SelectedItem="{Binding SelectedProduct}"
                          VerticalContentAlignment="Stretch" 
-                         HorizontalContentAlignment="Stretch" Grid.ColumnSpan="2">
-                                <ListBox.InputBindings>
-                                    <MouseBinding MouseAction="LeftDoubleClick" 
+                         HorizontalContentAlignment="Stretch" Grid.ColumnSpan="3">
+                            <ListBox.InputBindings>
+                                <MouseBinding MouseAction="LeftDoubleClick" 
                                       Command="{Binding AddToCartCommand}"
                                       CommandParameter="{Binding SelectedProduct}"/>
-                                </ListBox.InputBindings>
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="vm:ProductViewModel">
-                                        <Border Margin="3"
+                            </ListBox.InputBindings>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="vm:ProductViewModel">
+                                    <Border Margin="3"
                                     BorderThickness="1" BorderBrush="Gray"
                                     CornerRadius="5">
-                                            <DockPanel Margin="5">
-                                                <DockPanel DockPanel.Dock="Top">
-                                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}"
+                                        <DockPanel Margin="5">
+                                            <DockPanel DockPanel.Dock="Top">
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Price, ConverterCulture=ru-RU, StringFormat=c2}"
                                                    VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                                                    FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding Name}"/>
-                                                </DockPanel>
-                                                <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
-                                                <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
-                                                    <Grid>
-                                                        <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DockPanel>
+                                            <TextBlock DockPanel.Dock="Bottom" Text="{Binding Description}"/>
+                                            <Border BorderThickness="0,1" BorderBrush="Gray" Margin="3">
+                                                <Grid>
+                                                    <TextBlock Text="No image" Foreground="Gray" FontWeight="Bold"
                                                        HorizontalAlignment="Center" 
                                                        VerticalAlignment="Center"/>
-                                                        <Image Source="{Binding Image}" Margin="3"
+                                                    <Image Source="{Binding Image}" Margin="3"
                                                    MaxHeight="140"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DockPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <Grid Grid.Column="2" DataContext="{Binding SelectedProduct}" Margin="10,10,10,10">
+                                                </Grid>
+                                            </Border>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <!--<Grid Grid.Column="2" DataContext="{Binding SelectedProduct}" Margin="10,10,10,10">
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Style.Triggers>
@@ -273,12 +274,11 @@
                                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Описание:"/>
                                 <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Description}" Margin="5,0,0,0"/>
                             </Grid>
-                            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="796,0,0,0"/>
-                        </Grid>
-                    </GroupBox>
-                    <GridSplitter Grid.Column="1" HorizontalAlignment="Left"/>
-                </Grid>
-            </TabItem>
+                            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="796,0,0,0"/>-->
+                    </Grid>
+                </GroupBox>
+                <GridSplitter Grid.Column="2" HorizontalAlignment="Left"/>
+            </Grid>
         </TabControl>
     </DockPanel>
 </Window>

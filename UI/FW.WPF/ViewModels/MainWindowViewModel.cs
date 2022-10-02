@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using FW.WPF.WebAPI.Interfaces;
@@ -44,9 +45,9 @@ public class MainWindowViewModel : ViewModel
     /// <summary>Выбор данных</summary>
     private LambdaCommand? _TabItemCommand;
     /// <summary>Выбор данных</summary>
-    public ICommand TabItemCommand => _TabItemCommand ??= new(OnTabItemCommandExecuted);
+    public ICommand TabItemCommand => _TabItemCommand ??= new(async ()=> await OnTabItemCommandExecuted(TabItem));
     /// <summary>Логика выполнения - Выбор данных</summary>
-    private async void OnTabItemCommandExecuted(object p)
+    private Task OnTabItemCommandExecuted(int p)
     {
         var selectedTab = (int)p;
         switch (selectedTab)
@@ -92,7 +93,7 @@ public class MainWindowViewModel : ViewModel
                  break;
             default: break;
         }
-      
+        return Task.CompletedTask;
         
         OnPropertyChanged(nameof(SelectedDish));
         

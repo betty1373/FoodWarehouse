@@ -12,5 +12,4 @@ namespace FW.Domain
         public Ingredients Ingredients { get; set; }
         [ForeignKey("DishesId")]
         public Dishes Dishes { get; set; }
-    }
 }
