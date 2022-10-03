@@ -65,7 +65,7 @@ public class MainWindowViewModel : ViewModel
               //  LoadDishRecipes(SelectedDish); 
                 break;
             case 1: 
-                if (LoginModel?.WarehouseName is string)
+                if (LoginModel?.WarehouseName is string && Products is null)
                 {
                     OnLoadProductsCommandExecuted(LoginModel);
                 }

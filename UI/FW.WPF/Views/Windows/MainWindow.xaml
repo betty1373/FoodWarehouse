@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:conv="clr-namespace:FW.WPF.Converters"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:vm="clr-namespace:FW.WPF.ViewModels"
         WindowStartupLocation="CenterScreen" Title="{Binding Title}"
         DataContext="{Binding MainModel, Source={StaticResource Locator}}"
         Width="1500" Height="900">
     <Window.Resources>
+        <conv:DeviceDescriptionConverter x:Key="DeviceDescriptionConverter" />
         <CollectionViewSource x:Key="ProductsByCategories" Source="{Binding Products}">
             <CollectionViewSource.GroupDescriptions>              
                 <PropertyGroupDescription PropertyName="CategoryName" />
@@ -210,7 +212,8 @@
                             <!--behaviors:GridViewColumnResize.Width="*"-->
                             <GridView.ColumnHeaderContainerStyle>
                                 <Style TargetType="GridViewColumnHeader">
-                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Setter Property="Width" Value="Auto" />
                                     <!--<Setter Property="Width" Value="50" />-->
                                 </Style>
                             </GridView.ColumnHeaderContainerStyle>
@@ -231,7 +234,7 @@
                                                     <Expander.Header>
                                                         <TextBlock Foreground="White">
                                                             <Run>Категория: </Run>
-                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name, Converter={StaticResource DeviceDescriptionConverter}}" />
                                                         </TextBlock>
                                                     </Expander.Header>
                                                     <Expander.Content>
