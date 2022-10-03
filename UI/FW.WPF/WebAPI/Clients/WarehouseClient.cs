@@ -13,13 +13,13 @@ using IdentityModel.Client;
 
 namespace FW.WPF.WebAPI.Clients;
 
-public class WarehauseClient : ClientBase<WarehouseResponseVM, WarehouseVM> , IWarehauseClient
+public class WarehouseClient : ClientBase<WarehouseResponseVM, WarehouseVM> , IWarehouseClient
 {
-    public WarehauseClient(HttpClient Client) : base(Client, WebAPIAddress.Warehause) { }
+    public WarehouseClient(HttpClient Client) : base(Client, WebAPIAddress.Warehouse) { }
     public async Task<WarehouseResponseVM> GetByParentIdAsync(string token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.GetFromJsonAsync<WarehouseResponseVM>($"{Address}", Cancel).ConfigureAwait(false);
+        var response = await Http.GetFromJsonAsync<WarehouseResponseVM>($"{Address}/GetByParentId", Cancel).ConfigureAwait(false);
         return response;
     }
 }

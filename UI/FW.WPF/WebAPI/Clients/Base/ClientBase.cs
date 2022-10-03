@@ -54,7 +54,7 @@ public abstract class ClientBase<T,K> : IClientBase<T,K>
     public async Task<IEnumerable<T>> GetAsync(int Skip, int Take, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.GetAsync($"{Address}/({Skip}:{Take})", Cancel).ConfigureAwait(false);
+        var response = await Http.GetAsync($"{Address}/GetPage/({Skip}:{Take})", Cancel).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<T>();
 

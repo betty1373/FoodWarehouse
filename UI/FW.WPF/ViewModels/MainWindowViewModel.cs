@@ -12,6 +12,7 @@ using FW.WPF.Views;
 using FW.WPF.Views.Windows;
 using FW.WPF.Identity.Interfaces;
 using FW.Domain;
+using System.Threading.Tasks;
 
 namespace FW.WPF.ViewModels;
 
@@ -20,56 +21,39 @@ public class MainWindowViewModel : ViewModel
     private readonly IClientBase<DishResponseVM, DishVM> _DishesClient;
     private readonly IRecipesClient _RecipesClient;
     private readonly IProductsClient _ProductsClient;
-  
-    //  private readonly IClientIdentity<LoginModel> _ClientIdentity;
-    //  private readonly ImagesClient _ImagesClient;
-
-    //    public IOrdersRepository OrdersRepository { get; }
-    //  public ICustomersRepository CustomersRepository { get; }
 
     public MainWindowViewModel(
-        //  IProductsRepository ProductsRepository,
-        //   IOrdersRepository OrdersRepository,
-        //    ICustomersRepository CustomersRepository,
         IRecipesClient RecipesClient,
         IProductsClient ProductsClient,
-      //  IWarehauseClient WarehauseClient,
-    IClientBase<DishResponseVM, DishVM> DishesClient
-//,
-  //      IClientIdentity<LoginModel> clientIdentity
-             //   IClientIdentity clientIdentity
-        //   ImagesClient ImagesClient
+        IClientBase<DishResponseVM, DishVM> DishesClient
         )
     {
-        //_ProductsRepository = ProductsRepository;
-        //this.OrdersRepository = OrdersRepository;
-        //this.CustomersRepository = CustomersRepository;
         _DishesClient = DishesClient;
         _RecipesClient = RecipesClient;
         _ProductsClient = ProductsClient;
-      //  _WarehauseClient = WarehauseClient;
-        //  _ClientIdentity = clientIdentity;
-        // _ClientIdentity = clientIdentity;
-        //   _ImagesClient = ImagesClient;
-
-        //   Cart = new(this);
     }
 
     int _tabItem = 0;
     public int TabItem
     {
         get => _tabItem;
-        set => Set(ref _tabItem, value); 
+        set
+        {
+            if (!Set(ref _tabItem, value)) return;
+            Task.Run(async () => await OnTabItemCommandExecuted(TabItem));
+            Console.WriteLine("Ogogo");
+        }
+       // set => Set(ref _tabItem, value); 
     }
     #region Command TabItemCommand - Выбор данных
     /// <summary>Выбор данных</summary>
     private LambdaCommand? _TabItemCommand;
     /// <summary>Выбор данных</summary>
-    public ICommand TabItemCommand => _TabItemCommand ??= new(OnTabItemCommandExecuted);
+    public ICommand TabItemCommand => _TabItemCommand ??= new (async ()=> await OnTabItemCommandExecuted(TabItem));
     /// <summary>Логика выполнения - Выбор данных</summary>
-    private async void OnTabItemCommandExecuted(object p)
+    private Task OnTabItemCommandExecuted(object p,CancellationToken Cancel = default)
     {
-        var selectedTab = p as int?;
+        var selectedTab = (int) p;
         switch (selectedTab)
         {
             case 0:
@@ -77,56 +61,80 @@ public class MainWindowViewModel : ViewModel
                 {
                     OnUpdateDataCommandExecuted();
                 }
-                SelectedDish = Dishes?.FirstOrDefault();
-                OnPropertyChanged(nameof(SelectedDish));
-                LoadDishRecipes(SelectedDish); 
+               
+              //  LoadDishRecipes(SelectedDish); 
                 break;
             case 1: 
-                 if (SelectedWarehause is null)
+                if (LoginModel?.WarehouseName is string)
                 {
-
-                    //try
-                    //{
-                    //    var warehause = await _WarehauseClient.GetByParentIdAsync(LoginModel?.AccessToken ?? "");
-
-                    //   var recipe_model = new RecipeViewModel
-                    //        {
-                    //            Id = recipe.Id,
-                    //            Quantity = recipe.Quantity,
-                    //            DishesId = recipe.DishesId,
-                    //            IngredientId = recipe.IngredientId,
-                    //            IngredientName = recipe.IngredientName,
-                    //        };
-                    //        recipe_view_models.Add(recipe_model);
-                        
-
-                    //    Recipes = recipe_view_models;
-                    //}
-                    //catch (OperationCanceledException) { }
-                    //catch (Exception e)
-                    //{
-                    //    MessageBox.Show(
-                    //        $"Ошибка при получении рецептов блюда:\r\n{e.Message}", "Error",
-                    //        MessageBoxButton.OK, MessageBoxImage.Error);
-                    //}
+                    OnLoadProductsCommandExecuted(LoginModel);
                 }
                  break;
             default: break;
         }
-      
+        Console.WriteLine("Egege");
+        return Task.CompletedTask;
         
-        OnPropertyChanged(nameof(SelectedDish));
+       // OnPropertyChanged(nameof(SelectedTab));
         
     }
     #endregion
-    #region SelectedWarehause : WarehauseViewModel? - Выбранный склад
-    /// <summary>Выбранный склад</summary>
-    private WarehauseViewModel? _SelectedWarehause;
-    /// <summary>Выбранный склад</summary>
-    public WarehauseViewModel? SelectedWarehause
+    #region Products : IEnumerable<ProductViewModel>? - Список продуктов
+    /// <summary>Список продуктов</summary>
+    private IEnumerable<ProductViewModel>? _Products;
+    /// <summary>Список продуктов</summary>
+    public IEnumerable<ProductViewModel>? Products
     {
-        get => _SelectedWarehause;
-        set => Set(ref _SelectedWarehause, value);
+        get => _Products;
+        private set
+        {
+            if (!Set(ref _Products, value)) return;
+        }
+    }
+    #endregion
+    private async void OnLoadProductsCommandExecuted(object? p)
+    {
+        if (p is not LoginModel { WarehouseId: var warehouse_id,
+                                  AccessToken: var access_token
+                                } login)
+        {
+            Products = null;
+            return;
+        }
+
+        try
+        {
+            var products = await _ProductsClient.GetByParentIdAsync(warehouse_id ?? Guid.Empty, access_token ?? "");
+            Products = products.Select(product =>
+                    new ProductViewModel
+                    {
+                        Id = product.Id,
+                        WarehouseId = product.WarehouseId,
+                        CategoryId = product.CategoryId,
+                        CategoryName = product.CategoryName,
+                        IngredientId = product.IngredientId,
+                        IngredientName = product.IngredientName,
+                     //   Name = product.Name,
+                        ExpirationDate = product.ExpirationDate,
+                        Quantity = product.Quantity
+                    }).ToArray();
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception e)
+        {
+            MessageBox.Show(
+                $"Ошибка при получении списка продуктов:\r\n{e.Message}", "Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+    #region SelectedProduct : ProductViewModel? - Выбранный продукт
+    /// <summary>Выбранный склад</summary>
+    private ProductViewModel? _SelectedProduct;
+    /// <summary>Выбранный склад</summary>
+    public ProductViewModel? SelectedProduct
+    {
+        get => _SelectedProduct;
+        set => Set(ref _SelectedProduct, value);
     }
     #endregion
     //  public CartOrderViewModel Cart { get; }
@@ -170,13 +178,18 @@ public class MainWindowViewModel : ViewModel
         set
         {
             if (!Set(ref _SelectedDish, value)) return;
-            LoadDishRecipes(value);
         }
     }
-
-    private async void LoadDishRecipes(DishViewModel? Dish)
+    #endregion
+    #region Command LoadRecipeCommand - Выбор данных
+    /// <summary>Выбор данных</summary>
+    private LambdaCommand? _LoadRecipeCommand;
+    /// <summary>Выбор данных</summary>
+    public ICommand LoadRecipeCommand => _LoadRecipeCommand ??= new(OnLoadRecipeCommandExecuted, p => p is DishViewModel);
+    /// <summary>Логика выполнения - Выбор данных</summary>
+    private async void OnLoadRecipeCommandExecuted(object? p)
     {
-        if (Dish is not { Id: var dish_id })
+        if (p is not DishViewModel { Id: var dish_id } Dish)
         {
             Recipes = null;
             return;
@@ -185,22 +198,14 @@ public class MainWindowViewModel : ViewModel
         try
         {
             var recipes = await _RecipesClient.GetByParentIdAsync(dish_id,LoginModel?.AccessToken??"");
-
-            var recipe_view_models = new List<RecipeViewModel>();
-            foreach (var recipe in recipes)
-            {
-                var recipe_model = new RecipeViewModel
+            Recipes = recipes.Select(recipe=>new RecipeViewModel
                 {
                     Id = recipe.Id,               
                     Quantity = recipe.Quantity,                   
                     DishesId = recipe.DishesId,
                     IngredientId = recipe.IngredientId,
                     IngredientName = recipe.IngredientName,
-                };
-                recipe_view_models.Add(recipe_model);
-            }
-
-            Recipes = recipe_view_models;
+                }).ToArray();
         }
         catch (OperationCanceledException) { }
         catch (Exception e)
@@ -262,13 +267,14 @@ public class MainWindowViewModel : ViewModel
 
         if (login_window.ShowDialog() != true) return;
         LoginModel = login_view_model.LoginModel;
-        if (Dishes is null) 
-        {
-            OnUpdateDataCommandExecuted();          
-        }
-        SelectedDish = Dishes?.FirstOrDefault();
-        OnPropertyChanged(nameof(SelectedDish));
-        LoadDishRecipes(SelectedDish);
+        OnPropertyChanged(nameof(LoginModel));
+        Task.Run(async ()=> await OnTabItemCommandExecuted(TabItem));        //if (Dishes is null) 
+        //{
+        //    OnUpdateDataCommandExecuted();          
+        //}
+        // SelectedDish = Dishes?.FirstOrDefault();
+        //  OnPropertyChanged(nameof(SelectedDish));
+        //   LoadDishRecipes(SelectedDish);
     }
     #endregion
 
@@ -291,14 +297,15 @@ public class MainWindowViewModel : ViewModel
             var dishes = await _DishesClient.GetAllAsync(LoginModel?.AccessToken, cancellation.Token);
             Dishes = dishes
                .Select(dish => new DishViewModel
-                {
-                    Id = dish.Id,
-                    Name = dish.Name,
-                    Description = dish.Description,
-                })
+               {
+                   Id = dish.Id,
+                   Name = dish.Name,
+                   Description = dish.Description,
+               })
                .ToArray();
+            Console.WriteLine("1");
         }
-        catch (OperationCanceledException e) when(e.CancellationToken == cancellation.Token)
+        catch (OperationCanceledException e) when (e.CancellationToken == cancellation.Token)
         {
 
         }
@@ -308,7 +315,12 @@ public class MainWindowViewModel : ViewModel
                 $"Ошибка при получении данных:\r\n{e.Message}", "Error",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
+        finally
+        {
+            _SelectedDish = Dishes?.FirstOrDefault();
+            OnPropertyChanged(nameof(SelectedDish));
+            Console.WriteLine("2");
+        }
         _UpdateDataCancellation = null;
     }
     #endregion

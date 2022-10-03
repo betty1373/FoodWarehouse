@@ -12,16 +12,16 @@ namespace FW.Web.Controllers
     public class ProductsController : EntityApiController<ProductVM, ProductResponseVM>
     {
         public ProductsController(IProductsRequestClient client) : base(client) { }
-      //  [HttpGet("[action]")]
+        [HttpGet("[action]/{WarehouseId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("warehause/{WarehauseId}")]
-        public async Task<IActionResult> GetByParentId(Guid WarehauseId)
+     //   [HttpGet("warehause/{WarehauseId}")]
+        public async Task<IActionResult> GetByParentId(Guid WarehouseId)
         {
             var client = (IProductsRequestClient)Client;
-            var response = await client.GetByParentId(WarehauseId);
+            var response = await client.GetByParentId(WarehouseId);
 
             if (!response.Any())
                 return NoContent();

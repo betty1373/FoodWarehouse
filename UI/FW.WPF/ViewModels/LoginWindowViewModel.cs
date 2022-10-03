@@ -15,14 +15,14 @@ namespace FW.WPF.ViewModels;
 
 public class LoginWindowViewModel : ViewModel
 {
-    private readonly IWarehauseClient _WarehauseClient;
+    private readonly IWarehouseClient _WarehouseClient;
     private readonly IClientIdentity<LoginModel> _ClientIdentity;
     public event EventHandler<EventArgs<ViewModel>>? Login;
     protected virtual void OnLoging(ViewModel model) => Login?.Invoke(this, model);
     public LoginWindowViewModel()//IClientIdentity<LoginModel> clientIdentity)
     {
         _ClientIdentity = App.Services.GetRequiredService<IClientIdentity<LoginModel>>();
-        _WarehauseClient = App.Services.GetRequiredService<IWarehauseClient>();
+        _WarehouseClient = App.Services.GetRequiredService<IWarehouseClient>();
         ErrorMessageViewModel = new MessageViewModel();
     }
     #region Title : string - Заголовок главного окна
@@ -77,11 +77,11 @@ public class LoginWindowViewModel : ViewModel
             login.AccessToken = token;
             if (login?.AccessToken is not string { Length: > 0 } accesstoken) return;
 
-            var warehause = await _WarehauseClient.GetByParentIdAsync(login?.AccessToken ?? "");
-            if (warehause?.Id is not Guid id) return; 
-            login.WarehauseId = warehause.Id;
-            login.WarehauseName = warehause.Name;
-            login.WarehauseAddress = warehause.Address;
+            var warehouse = await _WarehouseClient.GetByParentIdAsync(login?.AccessToken ?? "");
+            if (warehouse?.Id is not Guid id) return; 
+            login.WarehouseId = warehouse.Id;
+            login.WarehouseName = warehouse.Name;
+            login.WarehouseAddress = warehouse.Address;
             
         }
         catch (IdentityServerNotFoundException ex)

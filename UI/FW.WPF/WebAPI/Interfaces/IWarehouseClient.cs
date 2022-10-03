@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System;
 namespace FW.WPF.WebAPI.Interfaces;
 
-public interface IWarehauseClient : IClientBase<WarehouseResponseVM, WarehouseVM >
+public interface IWarehouseClient : IClientBase<WarehouseResponseVM, WarehouseVM >
 {
     Task<WarehouseResponseVM?> GetByParentIdAsync(string token, CancellationToken Cancel = default);
 }

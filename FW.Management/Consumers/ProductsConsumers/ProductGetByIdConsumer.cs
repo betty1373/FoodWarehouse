@@ -30,7 +30,7 @@ namespace FW.Management.Consumers.ProductsConsumers
             else
                 await msgContext.RespondAsync(new ProductResponseDto
                 { 
-                    Name = null,
+                    //Name = null,
                     Quantity = 0,
                     //ModifiedOn = DateTime.MinValue
                 });

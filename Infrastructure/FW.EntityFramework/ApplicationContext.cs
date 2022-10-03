@@ -72,21 +72,21 @@ namespace FW.EntityFramework
     /// <summary>
     ///  Класс для внешнего взаимодействия с БД
     /// </summary>
-    public class DBworker
-    {
-        /// <summary>
-        ///  Пример функции вывода данных
-        /// </summary>
-        public void OutAllProducts()
-        {
-            using (ApplicationContext? context = new ApplicationContext())
-            {
-                Console.WriteLine("___Products___");
-                foreach (Products i in context.Products)
-                {
-                    Console.WriteLine($"{i.Name} - {i.Quantity}");
-                }
-            }
-        }
-    }
+    //public class DBworker
+    //{
+    //    /// <summary>
+    //    ///  Пример функции вывода данных
+    //    /// </summary>
+    //    public void OutAllProducts()
+    //    {
+    //        using (ApplicationContext? context = new ApplicationContext())
+    //        {
+    //            Console.WriteLine("___Products___");
+    //            foreach (Products i in context.Products)
+    //            {
+    //                Console.WriteLine($"{i.Name} - {i.Quantity}");
+    //            }
+    //        }
+    //    }
+    //}
 }

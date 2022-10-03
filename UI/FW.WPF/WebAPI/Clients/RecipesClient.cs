@@ -19,7 +19,7 @@ public class RecipesClient : ClientBase<RecipeResponseVM, RecipeVM> , IRecipesCl
     public async Task<IEnumerable<RecipeResponseVM>> GetByParentIdAsync(Guid ParentId, string token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.GetAsync($"{Address}/dish/{ParentId}", Cancel).ConfigureAwait(false);
+        var response = await Http.GetAsync($"{Address}/GetByParentId/{ParentId}", Cancel).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<RecipeResponseVM>();
         if (response.StatusCode == HttpStatusCode.NotFound) return Enumerable.Empty<RecipeResponseVM>();
@@ -28,7 +28,7 @@ public class RecipesClient : ClientBase<RecipeResponseVM, RecipeVM> , IRecipesCl
                .EnsureSuccessStatusCode()
                .Content
                .ReadFromJsonAsync<IEnumerable<RecipeResponseVM>>(cancellationToken: Cancel)
-            ?? throw new InvalidOperationException("Не удалось загрузить список рецептов");
+            ?? throw new InvalidOperationException("Не удалось загрузить рецепт");
 
         return items!;
     }

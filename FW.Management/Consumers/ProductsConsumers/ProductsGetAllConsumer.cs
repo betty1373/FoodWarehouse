@@ -21,7 +21,7 @@ namespace FW.Management.Consumers.ProductsConsumers
 
             var productsDto = await _productsService.GetAll();
 
-            await msgContext.RespondAsync<ProductsResponseDto>(new ProductsResponseDto
+            await msgContext.RespondAsync(new ProductsResponseDto
             { 
                 Products = productsDto 
             });

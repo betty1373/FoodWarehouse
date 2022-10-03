@@ -19,7 +19,7 @@ public class ProductsClient : ClientBase<ProductResponseVM,ProductVM> , IProduct
     public async Task<IEnumerable<ProductResponseVM>> GetByParentIdAsync(Guid ParentId, string token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.GetAsync($"{Address}/warehause/{ParentId}", Cancel).ConfigureAwait(false);
+        var response = await Http.GetAsync($"{Address}/GetByParentId/{ParentId}", Cancel).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<ProductResponseVM>();
         if (response.StatusCode == HttpStatusCode.NotFound) return Enumerable.Empty<ProductResponseVM>();

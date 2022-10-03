@@ -22,7 +22,7 @@ namespace FW.Management.Consumers.ProductsConsumers
 
             var count = await _productsService.Count();
 
-            await msgContext.RespondAsync<CountResponseDto>(new CountResponseDto
+            await msgContext.RespondAsync(new CountResponseDto
             {
                 Count = count
             });

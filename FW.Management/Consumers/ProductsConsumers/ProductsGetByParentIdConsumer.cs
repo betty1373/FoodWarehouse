@@ -21,7 +21,7 @@ namespace FW.Management.Consumers.ProductsConsumers
             var parentId = msgContext.Message.WarehauseId;
             var productsDto = await _productsService.GetByParentId(parentId);
             
-            await msgContext.RespondAsync<ProductsResponseDto>(new ProductsResponseDto
+            await msgContext.RespondAsync(new ProductsResponseDto
             { 
                 Products = productsDto 
             });

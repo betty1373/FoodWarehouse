@@ -110,7 +110,7 @@ namespace FW.Migrations
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                  //  Name = table.Column<string>(type: "text", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Quantity = table.Column<double>(type: "double precision", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),

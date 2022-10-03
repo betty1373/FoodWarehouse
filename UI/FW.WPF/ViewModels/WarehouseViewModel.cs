@@ -2,7 +2,7 @@
 using System;
 namespace FW.WPF.ViewModels;
 
-public class WarehauseViewModel : ViewModel
+public class WarehouseViewModel : ViewModel
 {
     public Guid Id { get; init; }
     public string Name { get; init; } = null!;
