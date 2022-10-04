@@ -43,7 +43,7 @@ namespace FW.Web.RpcClients
         }
         public async Task<IEnumerable<RecipeResponseVM>> GetByParentId(Guid ParentId)
         {
-            var queryDto = new  RecipesGetByParentiIdDto{ DishId = ParentId };
+            var queryDto = new  RecipesGetByParentIdDto{ DishId = ParentId };
             var queryJsonDto = JsonSerializer.Serialize(queryDto);
 
             var responseJsonDto = await CallAsync(_exchangeName, _queueNames.GetByParentId, queryJsonDto);

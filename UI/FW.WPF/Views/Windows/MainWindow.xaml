@@ -15,7 +15,7 @@
         <CollectionViewSource x:Key="ProductsByCategories" Source="{Binding Products}">
             <CollectionViewSource.GroupDescriptions>              
                 <PropertyGroupDescription PropertyName="CategoryName" />
-                <PropertyGroupDescription PropertyName="CategoryId" />
+                <!--<PropertyGroupDescription PropertyName="CategoryId" />-->
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
@@ -32,13 +32,13 @@
         </StatusBar>
         <ToolBarTray>
             <ToolBar>
-                <Button Command="{Binding UpdateDataCommand}">
+                <!--<Button Command="{Binding UpdateDataCommand}">
                     <DockPanel>
                         <fa:ImageAwesome Height="18" Icon="Solid_CloudDownloadAlt"/>
                         <TextBlock Text="Обновить" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </DockPanel>
                 </Button>
-                <Separator/>
+                <Separator/>-->
                 <Button Command="{Binding CreateDishCommand}">
                     <DockPanel>
                         <fa:ImageAwesome Height="18" Icon="Solid_FolderPlus"/>
@@ -206,14 +206,14 @@
                     <ListView.View>
                         <GridView x:Name="gridView">
                             <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" Width="100" />
+                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}"  />
                             <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
                             <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding ExpirationDate}" />
                             <!--behaviors:GridViewColumnResize.Width="*"-->
                             <GridView.ColumnHeaderContainerStyle>
                                 <Style TargetType="GridViewColumnHeader">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Setter Property="Width" Value="Auto" />
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                   
                                     <!--<Setter Property="Width" Value="50" />-->
                                 </Style>
                             </GridView.ColumnHeaderContainerStyle>

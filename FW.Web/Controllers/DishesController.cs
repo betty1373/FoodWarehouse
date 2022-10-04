@@ -11,6 +11,21 @@ namespace FW.Web.Controllers
     public class DishesController : EntityApiController<DishVM, DishResponseVM>
     {
         public DishesController(IDishesRpcClient client) : base(client) { }
+
+        [HttpGet("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByParentId()
+        {
+            var client = (IDishesRpcClient)Client;
+            var response = await client.GetByParentId(UserId);
+
+            if (response == null)
+                return NoContent();
+            return Ok(response);
+        }
     }
  
 }

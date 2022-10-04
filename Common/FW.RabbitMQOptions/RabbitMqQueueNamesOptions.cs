@@ -5,7 +5,7 @@
         public const string KeyValue = "RabbitMQ:QueueNames";
 
         public QueueNames ChangesProducts { get; set; }
-        public QueueNames Dishes { get; set; }
+        public QueueNamesWithGetByParentId Dishes { get; set; }
         public QueueNames Ingredients { get; set; }
         public QueueNamesWithGetByParentId Products { get; set; }
         public QueueNamesWithGetByParentId Recipes { get; set; }

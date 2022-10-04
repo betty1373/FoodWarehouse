@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿
+using FW.WPF.ViewModels;
+using System.Windows.Controls;
 namespace FW.WPF.Views.Windows;
 
 public partial class MainWindow
@@ -7,6 +9,7 @@ public partial class MainWindow
     {
         InitializeComponent();
         recipes.SelectionChanged += Recipes_SelectionChanged;
+        (DataContext as MainWindowViewModel).GridView = gridView; 
     }
 
     private void Recipes_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

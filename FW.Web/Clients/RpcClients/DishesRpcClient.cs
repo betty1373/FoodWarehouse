@@ -6,6 +6,7 @@ using FW.Web.RpcClients.Interfaces;
 using FW.BusinessLogic.Contracts;
 using FW.Domain.Models;
 using FW.RabbitMQOptions;
+using FW.BusinessLogic.Contracts.Warehouses;
 
 namespace FW.Web.RpcClients
 {
@@ -13,7 +14,7 @@ namespace FW.Web.RpcClients
     {
         private readonly IMapper _mapper;
         private readonly string _exchangeName;
-        private readonly QueueNames _queueNames;
+        private readonly QueueNamesWithGetByParentId _queueNames;
 
         public DishesRpcClient(IMapper mapper, IConnectionRabbitMQ connection, IConfiguration configuration) :
             base(connection, configuration)
@@ -49,6 +50,17 @@ namespace FW.Web.RpcClients
             return items;
         }
 
+        public async Task<IEnumerable<DishResponseVM>> GetByParentId(Guid ParentId)
+        {
+            var queryDto = new DishesGetByParentIdDto { UserId = ParentId };
+            var queryJsonDto = JsonSerializer.Serialize(queryDto);
+
+            var responseJsonDto = await CallAsync(_exchangeName, _queueNames.GetByParentId, queryJsonDto);
+            var responseDto = JsonSerializer.Deserialize<DishesResponseDto>(responseJsonDto);
+
+            var items = _mapper.Map<List<DishResponseVM>>(responseDto?.Dishes);
+            return items;
+        }
         public async Task<DishResponseVM> Get(Guid id)
         {
             var queryDto = new DishGetByIdDto { Id = id};

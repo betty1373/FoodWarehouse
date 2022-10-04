@@ -14,7 +14,7 @@ public interface IClientBase<T,K> where T : class, IEntity
 
     Task<T?> GetByIdAsync(Guid Id, string? token, CancellationToken Cancel = default);
 
-    Task<Guid> AddAsync(K Item, string? token, CancellationToken Cancel = default);
+    Task<Guid?> AddAsync(K Item, string? token, CancellationToken Cancel = default);
 
     Task<bool> UpdateAsync(K Item, string? token, CancellationToken Cancel = default);
 

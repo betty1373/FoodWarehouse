@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.Category;
 using FW.BusinessLogic.Contracts.Dishes;
+using FW.BusinessLogic.Contracts.Recipes;
 using FW.BusinessLogic.Contracts.Warehouses;
 using FW.BusinessLogic.Services.Abstractions;
 using FW.Domain;
@@ -34,7 +35,12 @@ namespace FW.BusinessLogic.Services
             var items = await _dbContext.Dishes.Skip(Skip).Take(Take).ToListAsync();
             return _mapper.Map<List<DishResponseDto>>(items);
         }
+        public async Task<IEnumerable<DishResponseDto>> GetByParentId(Guid ParentId)
+        {
+            var items = await _dbContext.Dishes.Where(u => EF.Property<Guid?>(u, "UserId") == ParentId).ToListAsync();
 
+            return _mapper.Map<List<DishResponseDto>>(items);
+        }
         public async Task<DishResponseDto> GetById(Guid id)
         {
             var dish = await _dbContext.Dishes.FindAsync(id);

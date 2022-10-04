@@ -13,19 +13,22 @@ using FW.WPF.Views.Windows;
 using FW.WPF.Identity.Interfaces;
 using FW.Domain;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace FW.WPF.ViewModels;
 
 public class MainWindowViewModel : ViewModel
 {
-    private readonly IClientBase<DishResponseVM, DishVM> _DishesClient;
+    public GridView GridView { get; set; }
+
+    private readonly IDishesClient _DishesClient;
     private readonly IRecipesClient _RecipesClient;
     private readonly IProductsClient _ProductsClient;
 
     public MainWindowViewModel(
         IRecipesClient RecipesClient,
         IProductsClient ProductsClient,
-        IClientBase<DishResponseVM, DishVM> DishesClient
+        IDishesClient DishesClient
         )
     {
         _DishesClient = DishesClient;
@@ -40,7 +43,9 @@ public class MainWindowViewModel : ViewModel
         set
         {
             if (!Set(ref _tabItem, value)) return;
+            ResetGridView();
             Task.Run(async () => await OnTabItemCommandExecuted(TabItem));
+          
             Console.WriteLine("Ogogo");
         }
        // set => Set(ref _tabItem, value); 
@@ -64,15 +69,18 @@ public class MainWindowViewModel : ViewModel
                
               //  LoadDishRecipes(SelectedDish); 
                 break;
-            case 1: 
+            case 1:
+          
                 if (LoginModel?.WarehouseName is string && Products is null)
                 {
                     OnLoadProductsCommandExecuted(LoginModel);
+                    Console.WriteLine("Egege");
                 }
+                SelectedProduct = Products?.FirstOrDefault();
                  break;
             default: break;
         }
-        Console.WriteLine("Egege");
+      
         return Task.CompletedTask;
         
        // OnPropertyChanged(nameof(SelectedTab));
@@ -104,8 +112,8 @@ public class MainWindowViewModel : ViewModel
 
         try
         {
-            var products = await _ProductsClient.GetByParentIdAsync(warehouse_id ?? Guid.Empty, access_token ?? "");
-            Products = products.Select(product =>
+            var items = await _ProductsClient.GetByParentIdAsync(warehouse_id ?? Guid.Empty, access_token ?? "");
+            Products = items.Select(product =>
                     new ProductViewModel
                     {
                         Id = product.Id,
@@ -294,8 +302,8 @@ public class MainWindowViewModel : ViewModel
         _UpdateDataCancellation = cancellation;
         try
         {
-            var dishes = await _DishesClient.GetAllAsync(LoginModel?.AccessToken, cancellation.Token);
-            Dishes = dishes
+            var items = await _DishesClient.GetByParentIdAsync(LoginModel?.AccessToken, cancellation.Token);
+            Dishes = items
                .Select(dish => new DishViewModel
                {
                    Id = dish.Id,
@@ -408,7 +416,8 @@ public class MainWindowViewModel : ViewModel
 
         var new_Dish = new DishVM
         {
-            Name = message_model.Value
+            Name = message_model.Message,
+            Description = message_model.Value
         };
         //try
         //{
@@ -428,7 +437,7 @@ public class MainWindowViewModel : ViewModel
            
             Dishes = new List<DishViewModel>(Dishes!) { new DishViewModel
                {
-                   Id = result,
+                   Id = result ?? System.Guid.Empty,
                    Name = new_Dish.Name,
                    Description = new_Dish.Description,
                }
@@ -485,4 +494,20 @@ public class MainWindowViewModel : ViewModel
     }
 
     #endregion
+    public void ResetGridView()
+    {
+        if (GridView != null)
+        {
+            foreach (GridViewColumn c in GridView.Columns)
+            {
+                if (double.IsNaN(c.Width))
+                {
+                    c.Width = c.ActualWidth;
+
+                }
+                c.Width = double.NaN;
+
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using FW.BusinessLogic.Contracts.ChangesProducts;
 using FW.BusinessLogic.Contracts.Dishes;
 using FW.BusinessLogic.Contracts.Recipes;
+using FW.BusinessLogic.Contracts.Warehouses;
 
 namespace FW.BusinessLogic.Services.Abstractions
 {
@@ -52,5 +53,6 @@ namespace FW.BusinessLogic.Services.Abstractions
         /// <param name="dto">DTO обновления блюда</param>
         /// <returns>true: обновлен, false: не найден </returns>
         public Task<bool> Update(DishUpdateDto dto);
+        public Task<IEnumerable<DishResponseDto>> GetByParentId(Guid ParentId);
     }
 }

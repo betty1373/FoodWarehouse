@@ -5,7 +5,7 @@ using FW.EventBus.Interfaces;
 
 namespace FW.Management.EventHandlers.Recipes
 {
-    public class RecipesGetByParentIdEventHandler : IIntegrationEventHandler<RecipesGetByParentiIdDto>
+    public class RecipesGetByParentIdEventHandler : IIntegrationEventHandler<RecipesGetByParentIdDto>
     {
         private readonly ILogger _logger;
         private readonly IRecipesService _recipesService;
@@ -16,7 +16,7 @@ namespace FW.Management.EventHandlers.Recipes
             _recipesService = recipesService;
         }
 
-        public async Task Handle(IntegrationContext<RecipesGetByParentiIdDto> msgContext)
+        public async Task Handle(IntegrationContext<RecipesGetByParentIdDto> msgContext)
         {
             _logger.Information($"Received a message from exchange/queue: {msgContext.ExchangeName}/{msgContext.QueueName}");
 

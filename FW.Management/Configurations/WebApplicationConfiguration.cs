@@ -38,6 +38,7 @@ namespace FW.Management.Configurations
             eventBus.Subscribe<DishCreateEventHandler, DishCreateDto>(queueNames.Dishes.Create, exchangeNames.Dishes);
             eventBus.Subscribe<DishUpdateEventHandler, DishUpdateDto>(queueNames.Dishes.Update, exchangeNames.Dishes);
             eventBus.Subscribe<DishDeleteEventHandler, DishDeleteDto>(queueNames.Dishes.Delete, exchangeNames.Dishes);
+            eventBus.Subscribe<DishesGetByParentIdEventHandler, DishesGetByParentIdDto>(queueNames.Dishes.GetByParentId, exchangeNames.Dishes);
 
             eventBus.Subscribe<IngredientGetByIdEventHandler, IngredientGetByIdDto>(queueNames.Ingredients.Get, exchangeNames.Ingredients);
             eventBus.Subscribe<IngredientsGetPageEventHandler, IngredientsGetPageDto>(queueNames.Ingredients.GetPage, exchangeNames.Ingredients);
@@ -48,7 +49,7 @@ namespace FW.Management.Configurations
             eventBus.Subscribe<IngredientDeleteEventHandler, IngredientDeleteDto>(queueNames.Ingredients.Delete, exchangeNames.Ingredients);
 
             eventBus.Subscribe<RecipeGetByIdEventHandler, RecipeGetByIdDto>(queueNames.Recipes.Get, exchangeNames.Recipes);
-            eventBus.Subscribe<RecipesGetByParentIdEventHandler, RecipesGetByParentiIdDto>(queueNames.Recipes.GetByParentId, exchangeNames.Recipes); 
+            eventBus.Subscribe<RecipesGetByParentIdEventHandler, RecipesGetByParentIdDto>(queueNames.Recipes.GetByParentId, exchangeNames.Recipes); 
             eventBus.Subscribe<RecipesGetPageEventHandler, RecipesGetPageDto>(queueNames.Recipes.GetPage, exchangeNames.Recipes);
             eventBus.Subscribe<RecipesGetAllEventHandler, RecipesGetAllDto>(queueNames.Recipes.GetAll, exchangeNames.Recipes);
             eventBus.Subscribe<RecipesGetCountEventHandler, RecipesGetCountDto>(queueNames.Recipes.Count, exchangeNames.Recipes);

@@ -27,6 +27,7 @@ namespace FW.Management.Configurations
 
             services.AddScoped<IIntegrationEventHandler<DishGetByIdDto>, DishGetByIdEventHandler>();
             services.AddScoped<IIntegrationEventHandler<DishesGetPageDto>, DishesGetPageEventHandler>();
+            services.AddScoped<IIntegrationEventHandler<DishesGetByParentIdDto>, DishesGetByParentIdEventHandler>();
             services.AddScoped<IIntegrationEventHandler<DishesGetAllDto>, DishesGetAllEventHandler>();
             services.AddScoped<IIntegrationEventHandler<DishesGetCountDto>, DishesGetCountEventHandler>();
             services.AddScoped<IIntegrationEventHandler<DishCreateDto>, DishCreateEventHandler>();
@@ -42,7 +43,7 @@ namespace FW.Management.Configurations
             services.AddScoped<IIntegrationEventHandler<IngredientDeleteDto>, IngredientDeleteEventHandler>();
 
             services.AddScoped<IIntegrationEventHandler<RecipeGetByIdDto>, RecipeGetByIdEventHandler>();
-            services.AddScoped<IIntegrationEventHandler<RecipesGetByParentiIdDto>, RecipesGetByParentIdEventHandler>();
+            services.AddScoped<IIntegrationEventHandler<RecipesGetByParentIdDto>, RecipesGetByParentIdEventHandler>();
             services.AddScoped<IIntegrationEventHandler<RecipesGetPageDto>, RecipesGetPageEventHandler>();
             services.AddScoped<IIntegrationEventHandler<RecipesGetAllDto>, RecipesGetAllEventHandler>();
             services.AddScoped<IIntegrationEventHandler<RecipesGetCountDto>, RecipesGetCountEventHandler>();

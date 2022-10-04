@@ -9,6 +9,7 @@ using System;
 using FW.WPF.WebAPI.Interfaces;
 using IdentityModel.Client;
 using FW.Domain;
+using FW.WPF.WebAPI;
 
 namespace FW.WPF.WebAPI.Clients.Base;
 
@@ -74,22 +75,22 @@ public abstract class ClientBase<T,K> : IClientBase<T,K>
         return item;
     }
 
-    public async Task<Guid> AddAsync(K Item, string? token, CancellationToken Cancel = default)
+    public async Task<Guid?> AddAsync(K Item, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.PostAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
+        var response = await Http.PostAsJsonAsync($"{Address}/Add", Item, Cancel).ConfigureAwait(false);
 
-        var created_item = await response
+        var result = await response
            .EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<Guid>(cancellationToken: Cancel);
+           .ReadFromJsonAsync<ResponseStatusResult>(cancellationToken: Cancel);
 
-        return created_item;
+        return result?.Id;
     }
     public async Task<bool> UpdateAsync(K Item, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.PutAsJsonAsync(Address, Item, Cancel).ConfigureAwait(false);
+        var response = await Http.PutAsJsonAsync($"{Address}/Edit", Item, Cancel).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.NotFound)
             return false;
@@ -100,7 +101,7 @@ public abstract class ClientBase<T,K> : IClientBase<T,K>
     public async Task<Guid?> RemoveAsync(Guid Id, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.DeleteAsync($"{Address}/{Id}", Cancel).ConfigureAwait(false);
+        var response = await Http.DeleteAsync($"{Address}/Delete/{Id}", Cancel).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
@@ -108,8 +109,8 @@ public abstract class ClientBase<T,K> : IClientBase<T,K>
         var result = await response
            .EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<Guid>(cancellationToken: Cancel);
+           .ReadFromJsonAsync<ResponseStatusResult>(cancellationToken: Cancel);
 
-        return result;
+        return result?.Id;
     }
 }
