@@ -1,9 +1,8 @@
-﻿namespace FW.BusinessLogic.Contracts
+﻿namespace FW.BusinessLogic.Contracts;
+
+public enum StatusResult
 {
-    public enum StatusResult
-    {
-        Ok = 200,
-        NotFound = 404,
-        Error = 500
-    }
+    Ok = 200,
+    NotFound = 404,
+    Error = 500
 }

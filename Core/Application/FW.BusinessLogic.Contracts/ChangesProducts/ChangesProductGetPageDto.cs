@@ -1,10 +1,9 @@
 ﻿using FW.EventBus.Interfaces;
 
-namespace FW.BusinessLogic.Contracts.ChangesProducts
+namespace FW.BusinessLogic.Contracts.ChangesProducts;
+
+public class ChangesProductGetPageDto : IIntegrationEvent
 {
-    public class ChangesProductGetPageDto : IIntegrationEvent
-    {
-        public int Skip { get; set; }
-        public int Take { get; set; }
-    }
+    public int Skip { get; set; }
+    public int Take { get; set; }
 }

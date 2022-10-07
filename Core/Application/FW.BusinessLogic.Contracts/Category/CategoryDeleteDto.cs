@@ -1,7 +1,6 @@
-﻿namespace FW.BusinessLogic.Contracts.Category
+﻿namespace FW.BusinessLogic.Contracts.Category;
+
+public class CategoryDeleteDto
 {
-    public class CategoryDeleteDto
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

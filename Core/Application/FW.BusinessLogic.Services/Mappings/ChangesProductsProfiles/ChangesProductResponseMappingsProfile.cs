@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.ChangesProducts;
 using FW.Domain;
+namespace FW.BusinessLogic.Services.Mappings.ChangesProductsProfiles;
 
-namespace FW.BusinessLogic.Services.Mappings.ChangesProductsProfiles
+public class ChangesProductResponseMappingsProfile : Profile
 {
-    public class ChangesProductResponseMappingsProfile : Profile
+    public ChangesProductResponseMappingsProfile()
     {
-        public ChangesProductResponseMappingsProfile()
-        {
-            CreateMap<ChangesProducts, ChangesProductResponseDto>();
-            CreateMap<ChangesProductResponseDto, ChangesProducts>()
-                .ForMember(p => p.Products, map => map.Ignore());
-        }
+        CreateMap<ChangesProducts, ChangesProductResponseDto>();
+        CreateMap<ChangesProductResponseDto, ChangesProducts>()
+            .ForMember(p => p.Products, map => map.Ignore());
     }
 }

@@ -2,7 +2,7 @@
 using System;
 namespace FW.WPF.ViewModels;
 
-public class CategoryViewModel : ViewModel
+public class CategoryModel 
 {
     public Guid Id { get; init; }
     public string Name { get; init; } = null!;

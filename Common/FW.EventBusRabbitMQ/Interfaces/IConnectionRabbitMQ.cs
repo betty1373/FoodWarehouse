@@ -1,9 +1,8 @@
 ﻿using RabbitMQ.Client;
 
-namespace FW.EventBus.Interfaces
+namespace FW.EventBus.Interfaces;
+
+public interface IConnectionRabbitMQ : IDisposable
 {
-    public interface IConnectionRabbitMQ : IDisposable
-    {
-        public IConnection Get();
-    }
+    public IConnection Get();
 }

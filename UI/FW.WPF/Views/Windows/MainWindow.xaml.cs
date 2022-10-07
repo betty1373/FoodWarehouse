@@ -17,7 +17,7 @@ public partial class MainWindow
         var listBox = sender as ListBox;
         if (listBox != null) 
         {
-            listBox.ScrollIntoView(listBox.Items[0]);
+            listBox.ScrollIntoView(listBox.SelectedItem);
         }
     }
 }

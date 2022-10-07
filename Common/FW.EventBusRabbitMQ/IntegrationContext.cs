@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FW.EventBus
+namespace FW.EventBus;
+
+public class IntegrationContext<TE> where TE : IIntegrationEvent
 {
-    public class IntegrationContext<TE> where TE : IIntegrationEvent
-    {
-        public string CorrelationId { get; set; }
-        public TE Message { get; set; }
-        public string ExchangeName { get; set; }
-        public string QueueName { get; set; }
-        public Func<object,Task> RespondAsync{ get; set; }
-    }
+    public string CorrelationId { get; set; }
+    public TE Message { get; set; }
+    public string ExchangeName { get; set; }
+    public string QueueName { get; set; }
+    public Func<object,Task> RespondAsync{ get; set; }
 }

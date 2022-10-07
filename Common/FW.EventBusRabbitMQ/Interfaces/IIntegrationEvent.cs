@@ -1,4 +1,3 @@
-﻿namespace FW.EventBus.Interfaces
-{
-    public interface IIntegrationEvent { }
-}
+﻿namespace FW.EventBus.Interfaces;
+
+public interface IIntegrationEvent { }

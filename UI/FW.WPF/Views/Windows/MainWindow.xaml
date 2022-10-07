@@ -31,7 +31,28 @@
             </StatusBarItem>
         </StatusBar>
         <ToolBarTray>
-            <ToolBar>
+            <ToolBar >
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding CreateDishCommand}" MinWidth="110">
+                        <DockPanel>
+                            <fa:ImageAwesome Height="18" Icon="Solid_FolderPlus"/>
+                            <TextBlock Text="Add dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Command="{Binding UpdateDishCommand}" MinWidth="110"  CommandParameter="{Binding SelectedDish}">
+                        <DockPanel>
+                            <fa:ImageAwesome Height="18" Icon="Solid_Folder"/>
+                            <TextBlock Text="Edit dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Command="{Binding RemoveDishCommand}" MinWidth="110"
+                        CommandParameter="{Binding SelectedDish}">
+                        <DockPanel>
+                            <fa:ImageAwesome Height="18" Icon="Solid_FolderMinus"/>
+                            <TextBlock Text="Delete dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </DockPanel>
+                    </Button>
+                </StackPanel>
                 <!--<Button Command="{Binding UpdateDataCommand}">
                     <DockPanel>
                         <fa:ImageAwesome Height="18" Icon="Solid_CloudDownloadAlt"/>
@@ -39,19 +60,7 @@
                     </DockPanel>
                 </Button>
                 <Separator/>-->
-                <Button Command="{Binding CreateDishCommand}">
-                    <DockPanel>
-                        <fa:ImageAwesome Height="18" Icon="Solid_FolderPlus"/>
-                        <TextBlock Text="Создать блюдо" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                    </DockPanel>
-                </Button>
-                <Button Command="{Binding RemoveDishCommand}"
-                        CommandParameter="{Binding SelectedDish}">
-                    <DockPanel>
-                        <fa:ImageAwesome Height="18" Icon="Solid_FolderMinus"/>
-                        <TextBlock Text="Удалить блюдо" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                    </DockPanel>
-                </Button>
+            
                 <Separator/>
                 <Button Command="{Binding CreateProductCommand}">
                     <DockPanel>
@@ -115,7 +124,7 @@
                                 <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=d}" TextWrapping="Wrap"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" FontWeight="Bold"/>
                             </DockPanel>
-                            <ListBox ItemsSource="{Binding Recipes}" Grid.Row="1" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
+                            <ListBox ItemsSource="{Binding SelectedDish.Recipes}" Grid.Row="1" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
                                 VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="recipes">
                                 <ListBox.InputBindings>
                                     <MouseBinding MouseAction="LeftDoubleClick" 

@@ -2,17 +2,15 @@
 using FW.BusinessLogic.Contracts.Category;
 using FW.Domain;
 using Microsoft.EntityFrameworkCore;
-namespace FW.BusinessLogic.Services.Mappings.CategoryProfiles
+namespace FW.BusinessLogic.Services.Mappings.CategoryProfiles;
+public class CategoryUpdateMappingsProfile : Profile
 {
-    public class CategoryUpdateMappingsProfile : Profile
+    public CategoryUpdateMappingsProfile()
     {
-        public CategoryUpdateMappingsProfile()
-        {
-            CreateMap<Categories, CategoryUpdateDto>()
-                .ForMember(p => p.UserId, m => m.MapFrom(src => EF.Property<Guid?>(src, "UserId")));
-            CreateMap<CategoryUpdateDto, Categories>()
-              //  .ForMember(p => p.ModifiedOn, map => map.Ignore())
-                ;
-        }
+        CreateMap<Categories, CategoryUpdateDto>()
+            .ForMember(p => p.UserId, m => m.MapFrom(src => EF.Property<Guid?>(src, "UserId")));
+        CreateMap<CategoryUpdateDto, Categories>()
+          //  .ForMember(p => p.ModifiedOn, map => map.Ignore())
+            ;
     }
 }

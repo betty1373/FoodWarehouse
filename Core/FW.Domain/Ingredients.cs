@@ -1,7 +1,6 @@
-﻿namespace FW.Domain
+﻿namespace FW.Domain;
+
+public class Ingredients : Base
 {
-    public class Ingredients : Base
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

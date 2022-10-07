@@ -1,7 +1,5 @@
-﻿
-using FW.WPF.WebAPI.Clients;
+﻿using FW.WPF.WebAPI.Clients;
 using FW.WPF.WebAPI.Interfaces;
-using FW.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Polly.Extensions.Http;
 using Polly;
@@ -9,8 +7,8 @@ using System;
 using System.Net.Http;
 using FW.WPF.Identity.Interfaces;
 using FW.WPF.Identity.Clients;
-using FW.WPF.Identity.Clients.Base;
 using FW.WPF.ViewModels;
+using FW.Domain.Models;
 
 namespace FW.WebAPI.Infrastructure;
 
@@ -21,7 +19,7 @@ public static class Registrator
         services.AddHttpClient("FW.WebApi", client => client.BaseAddress = new(Address))
            .AddTypedClient<IProductsClient, ProductsClient>()
            .AddTypedClient<IWarehouseClient, WarehouseClient>()
-           //.AddTypedClient<ICustomersRepository, CustomersClient>()
+           .AddTypedClient<IClientBase<IngredientResponseVM,IngredientVM>, IngredientsClient>()
            //.AddTypedClient<IOrdersRepository, OrdersClient>()
            //.AddTypedClient<IRepository<Product>, ProductsClient>()
            //.AddTypedClient<IRepository<Order>, OrdersClient>()

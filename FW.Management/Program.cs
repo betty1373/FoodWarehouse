@@ -1,9 +1,5 @@
 using Serilog;
-using AutoMapper;
 using FW.EntityFramework;
-using FW.BusinessLogic.Services.Abstractions;
-using FW.BusinessLogic.Services;
-using FW.RabbitMQOptions;
 using FW.Management.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +12,7 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
     builder.Environment.ApplicationName = typeof(Program).Assembly.FullName;
-    builder.Services.ConfigureLogger();
+    builder.Services.ConfigureLogger(builder.Configuration);
     builder.Services.ConfigureMapper();
     builder.Services.AddDbContext<ApplicationContext>(options =>
     {

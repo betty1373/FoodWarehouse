@@ -38,7 +38,7 @@ public abstract class EntityApiController<T, K> : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("[action]/{Skip}:{Take})")]
+    [HttpGet("[action]/{Skip}:{Take}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

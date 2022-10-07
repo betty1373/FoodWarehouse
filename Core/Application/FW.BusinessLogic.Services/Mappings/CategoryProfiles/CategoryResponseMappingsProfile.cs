@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.Category;
 using FW.Domain;
+namespace FW.BusinessLogic.Services.Mappings.CategoryProfiles;
 
-namespace FW.BusinessLogic.Services.Mappings.CategoryProfiles
+public class CategoryResponseMappingsProfile : Profile
 {
-    public class CategoryResponseMappingsProfile : Profile
+    public CategoryResponseMappingsProfile()
     {
-        public CategoryResponseMappingsProfile()
-        {
-            CreateMap<Categories, CategoryResponseDto>();
-            CreateMap<CategoryResponseDto, Categories>();
-        }
+        CreateMap<Categories, CategoryResponseDto>();
+        CreateMap<CategoryResponseDto, Categories>();
     }
 }

@@ -87,10 +87,10 @@ public abstract class ClientBase<T,K> : IClientBase<T,K>
 
         return result?.Id;
     }
-    public async Task<bool> UpdateAsync(K Item, string? token, CancellationToken Cancel = default)
+    public async Task<bool> UpdateAsync(Guid Id, K Item, string? token, CancellationToken Cancel = default)
     {
         Http.SetBearerToken(token);
-        var response = await Http.PutAsJsonAsync($"{Address}/Edit", Item, Cancel).ConfigureAwait(false);
+        var response = await Http.PutAsJsonAsync($"{Address}/Edit/{Id}", Item, Cancel).ConfigureAwait(false);
 
         if (response.StatusCode == HttpStatusCode.NotFound)
             return false;

@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Common\FW.RabbitMQOptions\FW.RabbitMQOptions.csproj" />
     <ProjectReference Include="..\Core\Application\FW.BusinessLogic.Contracts\FW.BusinessLogic.Contracts.csproj" />
     <ProjectReference Include="..\Core\Application\FW.BusinessLogic.Services\FW.BusinessLogic.Services.csproj" />
+    <ProjectReference Include="..\FW.LoggerOptions\FW.LogOptions.csproj" />
   </ItemGroup>
 
 </Project>

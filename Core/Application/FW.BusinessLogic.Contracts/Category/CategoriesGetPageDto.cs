@@ -1,8 +1,7 @@
-﻿namespace FW.BusinessLogic.Contracts.Category
+﻿namespace FW.BusinessLogic.Contracts.Category;
+
+public class CategoriesGetPageDto
 {
-    public class CategoriesGetPageDto
-    {
-        public int Skip { get; set; }
-        public int Take { get; set; }
-    }
+    public int Skip { get; set; }
+    public int Take { get; set; }
 }

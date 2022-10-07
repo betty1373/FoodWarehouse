@@ -1,36 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="ViewModels\WarehouseViewModel.cs" />
     <Compile Remove="Views\Windows\LoginWindow.xaml.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <None Remove="Resources\login-background.jpg" />
   </ItemGroup>
-
   <ItemGroup>
     <Page Remove="Views\Windows\LoginWindow.xaml" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.9" />
-
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="PasswordBoxMVVM" Version="1.0.5" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -66,16 +59,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Styles\Base\" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\FW.Domain\FW.Domain.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="Resources\login-background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

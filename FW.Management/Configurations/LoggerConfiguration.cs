@@ -1,19 +1,18 @@
 ﻿using Serilog;
+using FW.LogOptions;
+namespace FW.Management.Configurations;
 
-namespace FW.Management.Configurations
+public static class LoggerConfiguration
 {
-    public static class LoggerConfiguration
+    public static void ConfigureLogger(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void ConfigureLogger(this IServiceCollection services)
-        {
-            string UrlSeq = "http://db_seq:5341";
+        var logger_options = configuration.GetSection(LoggerOptions.KeyValue).Get<LoggerOptions>();
 
-            Log.Logger = new Serilog.LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.Seq(UrlSeq)
-                .CreateLogger();
+        Log.Logger = new Serilog.LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.Seq(logger_options.Url)
+            .CreateLogger();
 
-            services.AddSingleton(Log.Logger);
-        }
+        services.AddSingleton(Log.Logger);
     }
 }

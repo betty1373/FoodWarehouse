@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FW.WPF.ViewModels.Base;
-namespace FW.WPF.ViewModels;
+namespace FW.WPF.Models;
 
-public class RecipeViewModel : ViewModel
+public class RecipeModel 
 {
     public Guid Id { get; init; }
     public Guid IngredientId { get; init; }

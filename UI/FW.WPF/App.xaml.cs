@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using FW.WebAPI.Infrastructure;
 using FW.WPF.ViewModels;
@@ -32,6 +33,7 @@ public partial class App
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        Thread.Sleep(TimeSpan.FromSeconds(5));
         IsDesignMode = false;
         var host = Hosting;
 

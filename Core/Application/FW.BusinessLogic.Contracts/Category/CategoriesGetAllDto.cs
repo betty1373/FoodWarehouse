@@ -1,4 +1,3 @@
-﻿namespace FW.BusinessLogic.Contracts.Category
-{
-    public class CategoriesGetAllDto { }
-}
+﻿namespace FW.BusinessLogic.Contracts.Category;
+
+public class CategoriesGetAllDto { }

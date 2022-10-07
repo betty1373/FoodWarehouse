@@ -12,7 +12,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Environment.ApplicationName = typeof(Program).Assembly.FullName;
 
-    builder.Services.ConfigureLogger();
+    builder.Services.ConfigureLogger(builder.Configuration);
     builder.Services.ConfigureMapper();
     builder.Services.AddConnectionRabbitMQ();
     builder.Services.ConfigureMassTransit(builder.Configuration);

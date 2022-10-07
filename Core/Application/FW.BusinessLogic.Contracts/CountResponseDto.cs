@@ -1,7 +1,6 @@
-﻿namespace FW.BusinessLogic.Contracts
+﻿namespace FW.BusinessLogic.Contracts;
+
+public class CountResponseDto 
 {
-    public class CountResponseDto 
-    {
-        public int Count { get; set; }
-    }
+    public int Count { get; set; }
 }

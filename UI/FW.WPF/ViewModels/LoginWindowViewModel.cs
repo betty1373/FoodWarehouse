@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Windows.Input;
-using FW.Domain.Models;
 using FW.WPF.Commands;
 using FW.WPF.Infrastructure;
 using FW.WPF.ViewModels.Base;
 using FW.WPF.Identity.Interfaces;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using FW.WPF.Identity.Clients;
 using FW.WPF.Domain.Exceptions;
 using FW.WPF.WebAPI.Interfaces;
 

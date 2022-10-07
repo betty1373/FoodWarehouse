@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
-using FW.WPF.Commands;
-using FW.WPF.Infrastructure;
 using FW.WPF.ViewModels.Base;
 using FW.WPF.Identity.Interfaces;
 
