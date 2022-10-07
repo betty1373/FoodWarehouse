@@ -94,7 +94,10 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Header="Блюда" Grid.Column="0">
-                        <ListBox ItemsSource="{Binding Dishes}" Name="dishes"
+                        <DataGrid ItemsSource="{Binding Dishes}" Name="dishes">
+                            
+                        </DataGrid>
+                        <!--<ListBox ItemsSource="{Binding Dishes}" Name="dishes"
                          DisplayMemberPath="Name"
                          SelectedItem="{Binding SelectedDish,Mode=TwoWay}">
                             <i:Interaction.Triggers>
@@ -108,7 +111,7 @@
                                         Command="{Binding AddToDishesCommand}"
                                         CommandParameter="{Binding SelectedDish}"/>
                             </ListBox.InputBindings>
-                        </ListBox>
+                        </ListBox>-->
                     </GroupBox>
                     <GroupBox Header="Рецепты" Grid.Column="1">
                         <Grid>
@@ -124,7 +127,7 @@
                                 <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=d}" TextWrapping="Wrap"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" FontWeight="Bold"/>
                             </DockPanel>
-                            <ListBox ItemsSource="{Binding SelectedDish.Recipes}" Grid.Row="1" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
+                            <ListBox ItemsSource="{Binding SelectedDish.Recipe}" Grid.Row="1" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
                                 VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="recipes">
                                 <ListBox.InputBindings>
                                     <MouseBinding MouseAction="LeftDoubleClick" 
@@ -215,7 +218,7 @@
                     <ListView.View>
                         <GridView x:Name="gridView">
                             <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}"  />
+                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" />
                             <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
                             <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding ExpirationDate}" />
                             <!--behaviors:GridViewColumnResize.Width="*"-->

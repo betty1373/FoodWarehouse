@@ -16,34 +16,81 @@ using System.Xml.Linq;
 using System.Linq;
 using FW.WPF.Models;
 using FW.WPF.Views.Windows;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace FW.WPF.ViewModels;
 
-public class DishWindowViewModel : ViewModel
+public class DishViewModel : ViewModel
 {
     private MainWindowViewModel MainModel { get; } = null!;
     private readonly IDishesClient _DishesClient;
     private readonly IClientBase<IngredientResponseVM, IngredientVM> _IngredientsClient;
     private readonly IRecipesClient _RecipesClient;
-    public DishWindowViewModel(MainWindowViewModel? MainModel)//IClientIdentity<LoginModel> clientIdentity)
+    public DishViewModel(MainWindowViewModel? MainModel)//IClientIdentity<LoginModel> clientIdentity)
     {
         this.MainModel = MainModel;
         _DishesClient = App.Services.GetRequiredService<IDishesClient>();
         _RecipesClient = App.Services.GetRequiredService<IRecipesClient>();
         _IngredientsClient = App.Services.GetRequiredService<IClientBase<IngredientResponseVM, IngredientVM>>();
         ErrorMessageViewModel = new MessageViewModel();
-        OnUpdateDataCommandExecuted();
     }
+    private IEnumerable<DishModel>? _Dishes;
+    public IEnumerable<DishModel> Dishes
+    {
+        get => _Dishes;
+        private set
+        {         
+           if (!Set(ref _Dishes, value)) return;   
+        }
+     }
     public MessageViewModel ErrorMessageViewModel { get; }
     private DishModel? _DishModel = new();
 
     /// <summary>Данные пользователя</summary>
     public DishModel? DishModel
     {
-        get => _DishModel;
+        get
+        {
+            if (_DishModel == null)
+                Task.Run(() => GetDishesAsync(MainModel?.LoginModel?.AccessToken));
+            return null;
+        }
         set
         {
             if (!Set(ref _DishModel, value)) return;
+        }
+    }
+    private async Task<IEnumerable<DishModel>> GetDishesAsync(string token)
+    {
+        try
+        {
+            var items = await _DishesClient.GetByParentIdAsync(token, cancellation.Token);
+            Dishes = items
+            .Select(dish => new DishModel
+               {
+                   Id = dish.Id,
+                   Name = dish.Name,
+                   Description = dish.Description,
+               })
+               .ToArray();
+                }
+                catch (OperationCanceledException e) when (e.CancellationToken == cancellation.Token)
+        {
+
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(
+                $"Ошибка при получении данных:\r\n{e.Message}", "Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            SelectedDish = Dishes?.FirstOrDefault();
+            //OnPropertyChanged(nameof(SelectedDish));
+           
         }
     }
     public string ErrorMessage

@@ -76,7 +76,7 @@
                 </Grid>
             </DockPanel>
         </GroupBox>
-        <DataGrid ItemsSource="{Binding DishModel.Recipe}" SelectedItem="{Binding SelectedItem}" IsReadOnly="False" CanUserAddRows="True">
+        <!--<DataGrid ItemsSource="{Binding DishModel.Recipe}" SelectedItem="{Binding SelectedItem}" IsReadOnly="False" CanUserAddRows="True">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Ингредиент" DisplayMemberPath="" Width="*"/>
                 <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" IsReadOnly="False"/>
@@ -107,6 +107,6 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid>-->
     </DockPanel>
 </Window>

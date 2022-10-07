@@ -23,17 +23,17 @@ public class MainWindowViewModel : ViewModel
 {
     public GridView GridView { get; set; }
 
-    private readonly IDishesClient _DishesClient;
+   // private readonly IDishesClient _DishesClient;
     private readonly IRecipesClient _RecipesClient;
     private readonly IProductsClient _ProductsClient;
 
     public MainWindowViewModel(
         IRecipesClient RecipesClient,
-        IProductsClient ProductsClient,
-        IDishesClient DishesClient
+        IProductsClient ProductsClient
+     //   IDishesClient DishesClient
         )
     {
-        _DishesClient = DishesClient;
+    //    _DishesClient = DishesClient;
         _RecipesClient = RecipesClient;
         _ProductsClient = ProductsClient;
     }
