@@ -64,7 +64,7 @@ public class DishValidationRule : ValidationRule
         System.Globalization.CultureInfo cultureInfo)
     {
         DishModel item = (value as BindingGroup).Items[0] as DishModel;
-        if (item.Description > course.EndDate)
+        if (item.Description.Equals(String.Empty))
         {
             return new ValidationResult(false,
                 "Start Date must be earlier than End Date.");

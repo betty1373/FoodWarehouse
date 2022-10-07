@@ -9,7 +9,7 @@
     FontSize="24"
     mc:Ignorable="d"  
     xmlns:mv="clr-namespace:FW.WPF.ViewModels"
-    d:DataContext="{d:DesignInstance mv:LoginWindowViewModel, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance mv:LoginViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>

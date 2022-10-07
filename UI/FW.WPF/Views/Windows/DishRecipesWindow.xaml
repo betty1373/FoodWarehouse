@@ -9,7 +9,7 @@
         xmlns:e="clr-namespace:FW.WPF.Models"
         WindowStartupLocation="CenterOwner"
         Title="Блюдо"
-        d:DataContext="{d:DesignInstance vm:DishWindowViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance vm:DishViewModel, IsDesignTimeCreatable=True}"
         Width="800" Height="600">
     <DockPanel Margin="10">
         <DockPanel DockPanel.Dock="Top" LastChildFill="False">

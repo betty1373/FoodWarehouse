@@ -313,35 +313,35 @@ public class MainWindowViewModel : ViewModel
     {
         var cancellation = new CancellationTokenSource();
         _UpdateDataCancellation = cancellation;
-        try
-        {
-            var items = await _DishesClient.GetByParentIdAsync(LoginModel?.AccessToken, cancellation.Token);
-            Dishes = items
-               .Select(dish => new DishModel
-               {
-                   Id = dish.Id,
-                   Name = dish.Name,
-                   Description = dish.Description,
-               })
-               .ToArray();
-            Console.WriteLine("1");
-        }
-        catch (OperationCanceledException e) when (e.CancellationToken == cancellation.Token)
-        {
+        //try
+        //{
+        //    var items = await _DishesClient.GetByParentIdAsync(LoginModel?.AccessToken, cancellation.Token);
+        //    Dishes = items
+        //       .Select(dish => new DishModel
+        //       {
+        //           Id = dish.Id,
+        //           Name = dish.Name,
+        //           Description = dish.Description,
+        //       })
+        //       .ToArray();
+        //    Console.WriteLine("1");
+        //}
+        //catch (OperationCanceledException e) when (e.CancellationToken == cancellation.Token)
+        //{
 
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show(
-                $"Ошибка при получении данных:\r\n{e.Message}", "Error",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        finally
-        {
-            SelectedDish = Dishes?.FirstOrDefault();
-            //OnPropertyChanged(nameof(SelectedDish));
-            Console.WriteLine("2");
-        }
+        //}
+        //catch (Exception e)
+        //{
+        //    MessageBox.Show(
+        //        $"Ошибка при получении данных:\r\n{e.Message}", "Error",
+        //        MessageBoxButton.OK, MessageBoxImage.Error);
+        //}
+        //finally
+        //{
+        //    SelectedDish = Dishes?.FirstOrDefault();
+        //    //OnPropertyChanged(nameof(SelectedDish));
+        //    Console.WriteLine("2");
+        //}
         _UpdateDataCancellation = null;
     }
     #endregion
@@ -395,158 +395,158 @@ public class MainWindowViewModel : ViewModel
         //window.ShowDialog();
     }
     #endregion
-    #region Command CreateDishCommand - Создать блюдо
-    /// <summary>Создать блюдо</summary>
-    private LambdaCommand? _CreateDishCommand;
-    /// <summary>Создать блюдо</summary>
-    public ICommand CreateDishCommand => _CreateDishCommand ??= new(OnCreateDishCommandExecuted);
-    /// <summary>Логика выполнения - Создать блюдо</summary>
-    private async void OnCreateDishCommandExecuted()
-    {
-        var message_model = new TextDialogViewModel
-        {
-            Title = "Add new dish",
-            Message = "Название блюда",
-            Value = "Описание"
-        };
+    //#region Command CreateDishCommand - Создать блюдо
+    ///// <summary>Создать блюдо</summary>
+    //private LambdaCommand? _CreateDishCommand;
+    ///// <summary>Создать блюдо</summary>
+    //public ICommand CreateDishCommand => _CreateDishCommand ??= new(OnCreateDishCommandExecuted);
+    ///// <summary>Логика выполнения - Создать блюдо</summary>
+    //private async void OnCreateDishCommandExecuted()
+    //{
+    //    var message_model = new TextDialogViewModel
+    //    {
+    //        Title = "Add new dish",
+    //        Message = "Название блюда",
+    //        Value = "Описание"
+    //    };
 
-        var message_dlg = new TextDialogWindow
-        {
-            Owner = Application.Current.MainWindow,
-            DataContext = message_model,
-        };
+    //    var message_dlg = new TextDialogWindow
+    //    {
+    //        Owner = Application.Current.MainWindow,
+    //        DataContext = message_model,
+    //    };
 
-        message_model.Completed += (_, e) =>
-        {
-            message_dlg.DialogResult = e.Arg;
-            message_dlg.Close();
-        };
+    //    message_model.Completed += (_, e) =>
+    //    {
+    //        message_dlg.DialogResult = e.Arg;
+    //        message_dlg.Close();
+    //    };
 
-        if (message_dlg.ShowDialog() != true) return;
+    //    if (message_dlg.ShowDialog() != true) return;
 
-        var new_Dish = new DishVM
-        {
-            Name = message_model.Message,
-            Description = message_model.Value
-        };
+    //    var new_Dish = new DishVM
+    //    {
+    //        Name = message_model.Message,
+    //        Description = message_model.Value
+    //    };
       
-        try
-        {
-            var result = await _DishesClient.AddAsync(new_Dish, LoginModel?.AccessToken);
+    //    try
+    //    {
+    //        var result = await _DishesClient.AddAsync(new_Dish, LoginModel?.AccessToken);
            
-            Dishes = new List<DishModel>(Dishes!) { new DishModel
-               {
-                   Id = result ?? System.Guid.Empty,
-                   Name = new_Dish.Name,
-                   Description = new_Dish.Description,
-               }
-            };
-            SelectedDish = Dishes?.Where(c => c.Id.Equals(result)).FirstOrDefault();
-            OnPropertyChanged(nameof(SelectedDish));
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Ошибка добавления блюда {e.Message}", "Ошибка!",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-    #endregion
-    #region Command UpdateDishCommand - Создать блюдо
-    /// <summary>Создать блюдо</summary>
-    private LambdaCommand? _UpdateDishCommand;
-    /// <summary>Создать блюдо</summary>
-    public ICommand UpdateDishCommand => _UpdateDishCommand ??= new(OnUpdateDishCommandExecuted, p => p is DishModel);
-    /// <summary>Логика выполнения - Создать блюдо</summary>
-    private async void OnUpdateDishCommandExecuted(object? p)
-    {
-        if (p is not DishModel { Id: var Dish_id } Dish) return;
-        var message_model = new TextDialogViewModel
-        {
-            Title = "Edit dish",
-            Message = Dish.Name,
-            Value = Dish.Description
-        };
+    //        Dishes = new List<DishModel>(Dishes!) { new DishModel
+    //           {
+    //               Id = result ?? System.Guid.Empty,
+    //               Name = new_Dish.Name,
+    //               Description = new_Dish.Description,
+    //           }
+    //        };
+    //        SelectedDish = Dishes?.Where(c => c.Id.Equals(result)).FirstOrDefault();
+    //        OnPropertyChanged(nameof(SelectedDish));
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        MessageBox.Show($"Ошибка добавления блюда {e.Message}", "Ошибка!",
+    //            MessageBoxButton.OK, MessageBoxImage.Error);
+    //    }
+    //}
+    //#endregion
+    //#region Command UpdateDishCommand - Создать блюдо
+    ///// <summary>Создать блюдо</summary>
+    //private LambdaCommand? _UpdateDishCommand;
+    ///// <summary>Создать блюдо</summary>
+    //public ICommand UpdateDishCommand => _UpdateDishCommand ??= new(OnUpdateDishCommandExecuted, p => p is DishModel);
+    ///// <summary>Логика выполнения - Создать блюдо</summary>
+    //private async void OnUpdateDishCommandExecuted(object? p)
+    //{
+    //    if (p is not DishModel { Id: var Dish_id } Dish) return;
+    //    var message_model = new TextDialogViewModel
+    //    {
+    //        Title = "Edit dish",
+    //        Message = Dish.Name,
+    //        Value = Dish.Description
+    //    };
 
-        var message_dlg = new TextDialogWindow
-        {
-            Owner = Application.Current.MainWindow,
-            DataContext = message_model,
-        };
+    //    var message_dlg = new TextDialogWindow
+    //    {
+    //        Owner = Application.Current.MainWindow,
+    //        DataContext = message_model,
+    //    };
 
-        message_model.Completed += (_, e) =>
-        {
-            message_dlg.DialogResult = e.Arg;
-            message_dlg.Close();
-        };
+    //    message_model.Completed += (_, e) =>
+    //    {
+    //        message_dlg.DialogResult = e.Arg;
+    //        message_dlg.Close();
+    //    };
 
-        if (message_dlg.ShowDialog() != true) return;
+    //    if (message_dlg.ShowDialog() != true) return;
 
-        var new_Dish = new DishVM
-        {
-            Name = message_model.Message,
-            Description = message_model.Value
-        };
+    //    var new_Dish = new DishVM
+    //    {
+    //        Name = message_model.Message,
+    //        Description = message_model.Value
+    //    };
 
-        try
-        {
-            var result = await _DishesClient.UpdateAsync(Dish.Id,new_Dish, LoginModel?.AccessToken);
+    //    try
+    //    {
+    //        var result = await _DishesClient.UpdateAsync(Dish.Id,new_Dish, LoginModel?.AccessToken);
          
-            Dishes = Dishes?.Where(c => !c.Id.Equals(Dish_id)).ToArray();
-            Dishes = new List<DishModel>(Dishes!) { new DishModel
-               {
-                   Id = Dish.Id,
-                   Name = new_Dish.Name,
-                   Description = new_Dish.Description,
-               }
-            };
-            SelectedDish = Dishes?.Where(x=> x.Id.Equals(Dish.Id)).FirstOrDefault();
-            OnPropertyChanged(nameof(SelectedDish));
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Ошибка редактирования блюда {e.Message}", "Ошибка!",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-    #endregion
-    #region Command RemoveDishCommand - Удаление блюда
-    /// <summary>Удаление категории</summary>
-    private LambdaCommand? _RemoveDishCommand;
-    /// <summary>Удаление категории</summary>
-    public ICommand RemoveDishCommand => _RemoveDishCommand ??= new(OnRemoveDishCommandExecuted, p => p is DishModel);
-    /// <summary>Логика выполнения - Удаление категории</summary>
-    private async void OnRemoveDishCommandExecuted(object? p)
-    {
-        if (p is not DishModel { Id: var Dish_id } Dish) return;
-        if (MessageBox.Show(
-                $"Подтверждаете удаление блюда {Dish.Name}",
-                "Удаление блюда",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) != MessageBoxResult.Yes)
-            return;
+    //        Dishes = Dishes?.Where(c => !c.Id.Equals(Dish_id)).ToArray();
+    //        Dishes = new List<DishModel>(Dishes!) { new DishModel
+    //           {
+    //               Id = Dish.Id,
+    //               Name = new_Dish.Name,
+    //               Description = new_Dish.Description,
+    //           }
+    //        };
+    //        SelectedDish = Dishes?.Where(x=> x.Id.Equals(Dish.Id)).FirstOrDefault();
+    //        OnPropertyChanged(nameof(SelectedDish));
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        MessageBox.Show($"Ошибка редактирования блюда {e.Message}", "Ошибка!",
+    //            MessageBoxButton.OK, MessageBoxImage.Error);
+    //    }
+    //}
+    //#endregion
+    //#region Command RemoveDishCommand - Удаление блюда
+    ///// <summary>Удаление категории</summary>
+    //private LambdaCommand? _RemoveDishCommand;
+    ///// <summary>Удаление категории</summary>
+    //public ICommand RemoveDishCommand => _RemoveDishCommand ??= new(OnRemoveDishCommandExecuted, p => p is DishModel);
+    ///// <summary>Логика выполнения - Удаление категории</summary>
+    //private async void OnRemoveDishCommandExecuted(object? p)
+    //{
+    //    if (p is not DishModel { Id: var Dish_id } Dish) return;
+    //    if (MessageBox.Show(
+    //            $"Подтверждаете удаление блюда {Dish.Name}",
+    //            "Удаление блюда",
+    //            MessageBoxButton.YesNo,
+    //            MessageBoxImage.Question,
+    //            MessageBoxResult.No) != MessageBoxResult.Yes)
+    //        return;
 
-        try
-        {
-            var result = await _DishesClient.RemoveAsync(Dish_id, LoginModel?.AccessToken);
-            if (result is null)
-            {
-                MessageBox.Show(
-                    $"Ошибка удаления блюда {Dish.Name}", "Ошибка!",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+    //    try
+    //    {
+    //        var result = await _DishesClient.RemoveAsync(Dish_id, LoginModel?.AccessToken);
+    //        if (result is null)
+    //        {
+    //            MessageBox.Show(
+    //                $"Ошибка удаления блюда {Dish.Name}", "Ошибка!",
+    //                MessageBoxButton.OK, MessageBoxImage.Warning);
+    //            return;
+    //        }
 
-            Dishes = Dishes?.Where(c => !c.Id.Equals(Dish_id)).ToArray();
-            SelectedDish = null;
-            OnPropertyChanged(nameof(SelectedDish));
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Ошибка в процессе удаления блюда {e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-    #endregion
+    //        Dishes = Dishes?.Where(c => !c.Id.Equals(Dish_id)).ToArray();
+    //        SelectedDish = null;
+    //        OnPropertyChanged(nameof(SelectedDish));
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        MessageBox.Show($"Ошибка в процессе удаления блюда {e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+    //    }
+    //}
+  //  #endregion
     public void ResetGridView()
     {
         if (GridView != null)

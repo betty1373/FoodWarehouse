@@ -9,7 +9,7 @@
         xmlns:e="clr-namespace:FW.WPF.Models"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
-        d:DataContext="{d:DesignInstance vm:DishWindowViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance vm:DishViewModel, IsDesignTimeCreatable=True}"
         Title="{Binding TotalItemsCount, StringFormat=Товаров в корзине {0}}"
         Width="500" Height="450">
     <DockPanel Margin="10">

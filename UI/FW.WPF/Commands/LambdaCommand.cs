@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using FW.WPF.Commands.Base;
+using System.Threading.Tasks;
 
 namespace FW.WPF.Commands;
 
@@ -61,3 +62,16 @@ public class RelayCommand : ICommand
         _execute(parameter);
     }
 }
+public static class TaskExtensions
+{
+    public async static void Await(this Task task,Action completedCallback,Action<Exception> errorCallback)
+    {
+        try
+        {
+            await task;
+            completedCallback?.Invoke();
+        }
+        catch (Exception ex) { errorCallback?.Invoke(ex); }
+    }
+}
+
