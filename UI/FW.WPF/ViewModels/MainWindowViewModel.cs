@@ -30,12 +30,14 @@ public class MainWindowViewModel : ViewModel
     public MainWindowViewModel(
         IRecipesClient RecipesClient,
         IProductsClient ProductsClient
+        
      //   IDishesClient DishesClient
         )
     {
     //    _DishesClient = DishesClient;
         _RecipesClient = RecipesClient;
         _ProductsClient = ProductsClient;
+       
     }
 
     int _tabItem;
@@ -64,12 +66,13 @@ public class MainWindowViewModel : ViewModel
         switch (selectedTab)
         {
             case 0:
-                if (Dishes is null)
+                if (DishesModel is null)
                 {
-                    OnUpdateDataCommandExecuted();
+
+                    DishesModel = new DishViewModel(LoginModel);
                 }
-               
-              //  LoadDishRecipes(SelectedDish); 
+
+               // LoadDishRecipes(SelectedDish);
                 break;
             case 1:
           
@@ -163,20 +166,22 @@ public class MainWindowViewModel : ViewModel
     public LoginModel? LoginModel { get => _LoginModel; set => Set(ref _LoginModel, value); }
     #endregion
 
-    #region Dishes : IEnumerable<DishViewModel>? - Список блюд
-    /// <summary>Список блюд</summary>
-    private IEnumerable<DishModel>? _Dishes;
-    /// <summary>Список блюд</summary>
-    public IEnumerable<DishModel>? Dishes
-    {
-        get => _Dishes;
-        private set
-        {
-            if (!Set(ref _Dishes, value)) return;
-            SelectedDish = null;
-        }
-    }
-    #endregion
+    //#region Dishes : IEnumerable<DishViewModel>? - Список блюд
+    ///// <summary>Список блюд</summary>
+    //private IEnumerable<DishModel>? _Dishes;
+    ///// <summary>Список блюд</summary>
+    //public IEnumerable<DishModel>? Dishes
+    //{
+    //    get => _Dishes;
+    //    private set
+    //    {
+    //        if (!Set(ref _Dishes, value)) return;
+    //        SelectedDish = null;
+    //    }
+    //}
+    //#endregion
+    private DishViewModel? _DishesModel;
+    public DishViewModel? DishesModel { get => _DishesModel; set => Set(ref _DishesModel, value); }
 
     #region SelectedDish : DishViewModel? - Выбранное блюдо
     /// <summary>Выбранное блюдо</summary>

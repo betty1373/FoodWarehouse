@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:conv="clr-namespace:FW.WPF.Converters"
+        xmlns:local="clr-namespace:FW.WPF.ViewModels"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:vm="clr-namespace:FW.WPF.ViewModels"
         WindowStartupLocation="CenterScreen" Title="{Binding Title}"
@@ -33,20 +34,20 @@
         <ToolBarTray>
             <ToolBar >
                 <StackPanel Orientation="Vertical">
-                    <Button Command="{Binding CreateDishCommand}" MinWidth="110">
+                    <Button Command="" MinWidth="110">
                         <DockPanel>
                             <fa:ImageAwesome Height="18" Icon="Solid_FolderPlus"/>
                             <TextBlock Text="Add dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
                         </DockPanel>
                     </Button>
-                    <Button Command="{Binding UpdateDishCommand}" MinWidth="110"  CommandParameter="{Binding SelectedDish}">
+                    <Button Command="{Binding DishesModel.EditCommand}" MinWidth="110"  CommandParameter="{Binding SelectedDish}">
                         <DockPanel>
                             <fa:ImageAwesome Height="18" Icon="Solid_Folder"/>
                             <TextBlock Text="Edit dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
                         </DockPanel>
                     </Button>
-                    <Button Command="{Binding RemoveDishCommand}" MinWidth="110"
-                        CommandParameter="{Binding SelectedDish}">
+                    <Button Command="{Binding DishesModel.DeleteCommand}" MinWidth="110"
+                        CommandParameter="{Binding SelectedDish.Id}">
                         <DockPanel>
                             <fa:ImageAwesome Height="18" Icon="Solid_FolderMinus"/>
                             <TextBlock Text="Delete dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
@@ -90,13 +91,88 @@
             <TabItem Header="Блюда" >
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Блюда" Grid.Column="0">
-                        <DataGrid ItemsSource="{Binding Dishes}" Name="dishes">
-                            
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Блюда" Grid.Column="0">                        
+                        <DataGrid ItemsSource="{Binding DishesModel.Dishes}" Name="dishes" 
+                                  SelectedItem="{Binding SelectedDish}" SelectionMode="Single" IsReadOnly="False">
+                            <DataGrid.Resources>
+                                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                    <Setter Property="Padding" Value="-2"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="True">
+                                            <Setter Property="Background" Value="Red"/>
+                                            <Setter Property="ToolTip" 
+                Value="{Binding RelativeSource={RelativeSource Self},
+                  Path=(Validation.Errors)[0].ErrorContent}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Resources>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="RowEditEnding">
+                                    <i:InvokeCommandAction Command="{Binding DishesModel.EditCommand,RelativeSource={RelativeSource AncestorType=Window}}"
+                                           CommandParameter="{Binding SelectedDish}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" 
+          Binding="{Binding Name, TargetNullValue=(enter a dish name)}"/>
+                                <DataGridTextColumn Header="Description"
+          EditingElementStyle="{StaticResource errorStyle}"
+          Binding="{Binding Description, ValidatesOnExceptions=True}"/>
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <DockPanel Background="GhostWhite">
+                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Description}" TextWrapping="Wrap" Height="Auto" Margin="10" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                            <DataGrid.RowValidationRules>
+                                <local:DishValidationRule ValidationStep="UpdatedValue"/>
+                            </DataGrid.RowValidationRules>
+                            <DataGrid.RowValidationErrorTemplate>
+                                <ControlTemplate>
+                                    <Grid Margin="0,-2,0,-2"
+            ToolTip="{Binding RelativeSource={RelativeSource
+            FindAncestor, AncestorType={x:Type DataGridRow}},
+            Path=(Validation.Errors)[0].ErrorContent}">
+                                        <Ellipse StrokeThickness="0" Fill="Red" 
+              Width="{TemplateBinding FontSize}" 
+              Height="{TemplateBinding FontSize}" />
+                                        <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+              FontWeight="Bold" Foreground="White" 
+              HorizontalAlignment="Center"  />
+                                    </Grid>
+                                </ControlTemplate>
+                            </DataGrid.RowValidationErrorTemplate>
                         </DataGrid>
+                    </GroupBox>
+                    <Grid x:Name="GridCreateNewDish" Visibility="Visible" Grid.Row="1" DataContext="{Binding DishesModel}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Name:" Margin="0 10 0 0"/>
+                            <Label Content="Description:" Grid.Row="1"/>                            
+                            <TextBox Text="{Binding Path=DishModel.Name}" Height="20" Width="150" Grid.Column="1"/>
+                            <TextBox Text="{Binding Path=DishModel.Description}" TextWrapping="WrapWithOverflow" Height="20" Width="150" Grid.Row="1" Grid.Column="1"/>                            
+                            <Button Height="20" Width="100" Content="POST" HorizontalAlignment="Center"       
+                                    Margin="20 10 0 0" Command="{Binding SaveCommand}" Grid.Row="2" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Center" Margin="20 8 0 0" Grid.Row="35" Grid.ColumnSpan="2"/>
+                        </Grid>
                         <!--<ListBox ItemsSource="{Binding Dishes}" Name="dishes"
                          DisplayMemberPath="Name"
                          SelectedItem="{Binding SelectedDish,Mode=TwoWay}">
@@ -112,8 +188,8 @@
                                         CommandParameter="{Binding SelectedDish}"/>
                             </ListBox.InputBindings>
                         </ListBox>-->
-                    </GroupBox>
-                    <GroupBox Header="Рецепты" Grid.Column="1">
+                  
+                    <GroupBox Header="Рецепт" Grid.Column="1">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="830"/>
@@ -123,10 +199,10 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <DockPanel DockPanel.Dock="Top" >
+                            <!--<DockPanel DockPanel.Dock="Top" >
                                 <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=d}" TextWrapping="Wrap"
                                     VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" FontWeight="Bold"/>
-                            </DockPanel>
+                            </DockPanel>-->
                             <ListBox ItemsSource="{Binding SelectedDish.Recipe}" Grid.Row="1" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
                                 VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="recipes">
                                 <ListBox.InputBindings>

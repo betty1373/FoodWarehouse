@@ -24,18 +24,18 @@ namespace FW.WPF.ViewModels;
 
 public class DishViewModel : ViewModel
 {
-    private MainWindowViewModel? MainModel { get; } = null!;
+    private LoginModel? LoginModel { get; } = null!;
     private readonly IDishesClient _DishesClient;
     private readonly IClientBase<IngredientResponseVM, IngredientVM> _IngredientsClient;
     private readonly IRecipesClient _RecipesClient;
-    public DishViewModel(MainWindowViewModel? MainModel)//IClientIdentity<LoginModel> clientIdentity)
+    public DishViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
     {
-        this.MainModel = MainModel;
+        this.LoginModel = loginModel;
         _DishesClient = App.Services.GetRequiredService<IDishesClient>();
         _RecipesClient = App.Services.GetRequiredService<IRecipesClient>();
         _IngredientsClient = App.Services.GetRequiredService<IClientBase<IngredientResponseVM, IngredientVM>>();
         ErrorMessageViewModel = new MessageViewModel();
-        GetDishesAsync(MainModel?.LoginModel.AccessToken).Await(Completed, HandleEror);
+        GetDishesAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
     }
     private IEnumerable<DishModel>? _Dishes;
     public IEnumerable<DishModel>? Dishes
@@ -115,7 +115,7 @@ public class DishViewModel : ViewModel
         _UpdateDataCancellation = cancellation;
         try
         {
-            var items = await _IngredientsClient.GetAllAsync(MainModel.LoginModel?.AccessToken, cancellation.Token);
+            var items = await _IngredientsClient.GetAllAsync(LoginModel?.AccessToken, cancellation.Token);
             Ingredients = items.Select(p => new IngredientModel
             {
                 Id = p.Id,
@@ -270,7 +270,7 @@ public class DishViewModel : ViewModel
                 Description = DishModel.Description
             };
             
-            var result = await _DishesClient.UpdateAsync(DishModel.Id, new_Dish, MainModel?.LoginModel.AccessToken);
+            var result = await _DishesClient.UpdateAsync(DishModel.Id, new_Dish, LoginModel.AccessToken);
 
              Dishes = Dishes?.Where(c => !c.Id.Equals(DishModel.Id)).ToArray();
             Dishes = new List<DishModel>(Dishes!) { new DishModel
@@ -288,7 +288,7 @@ public class DishViewModel : ViewModel
         {
             try
             {
-                var result = await _DishesClient.RemoveAsync(id, MainModel?.LoginModel.AccessToken);
+                var result = await _DishesClient.RemoveAsync(id, LoginModel.AccessToken);
                 MessageBox.Show("Record successfully deleted.");
             }
             catch (Exception ex)
