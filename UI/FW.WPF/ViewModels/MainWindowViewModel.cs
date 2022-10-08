@@ -24,18 +24,18 @@ public class MainWindowViewModel : ViewModel
     public GridView GridView { get; set; }
 
    // private readonly IDishesClient _DishesClient;
-    private readonly IRecipesClient _RecipesClient;
+  
     private readonly IProductsClient _ProductsClient;
 
     public MainWindowViewModel(
-        IRecipesClient RecipesClient,
+       
         IProductsClient ProductsClient
         
      //   IDishesClient DishesClient
         )
     {
     //    _DishesClient = DishesClient;
-        _RecipesClient = RecipesClient;
+       
         _ProductsClient = ProductsClient;
        
     }
@@ -68,11 +68,13 @@ public class MainWindowViewModel : ViewModel
             case 0:
                 if (DishesModel is null)
                 {
-
                     DishesModel = new DishViewModel(LoginModel);
                 }
-
-               // LoadDishRecipes(SelectedDish);
+                //if (RecipesModel is null)
+                //{
+                //    RecipesModel = new RecipeViewModel(LoginModel);
+                //}
+                // LoadDishRecipes(SelectedDish);
                 break;
             case 1:
           
@@ -180,75 +182,72 @@ public class MainWindowViewModel : ViewModel
     //    }
     //}
     //#endregion
+
+    private IEnumerable<IngredientModel>? _Ingredients;
+    /// <summary>Список блюд</summary>
+    public IEnumerable<IngredientModel>? Ingredients
+    {
+        get => _Ingredients;
+        private set
+        {
+            if (!Set(ref _Ingredients, value)) return;
+            // SelectedDish = null;
+        }
+    }
+  
     private DishViewModel? _DishesModel;
     public DishViewModel? DishesModel { get => _DishesModel; set => Set(ref _DishesModel, value); }
 
-    #region SelectedDish : DishViewModel? - Выбранное блюдо
-    /// <summary>Выбранное блюдо</summary>
-    private DishModel? _SelectedDish;
-    /// <summary>Выбранное блюдо</summary>
-    public DishModel? SelectedDish
-    {
-        get => _SelectedDish;
-        set
-        {
-            if (!Set(ref _SelectedDish, value)) return;
-            if (_SelectedDish?.Recipe is null)
-            {
-                OnLoadRecipeCommandExecuted(SelectedDish);
-            }
-        }
-    }
-    #endregion
 
-    private LambdaCommand _DishCommand;
-    public ICommand DishCommand => _DishCommand ?? (_DishCommand = new (ExecuteDishCommand,p => p is object));
+    
+  //  private LambdaCommand _DishCommand;
+  //  public ICommand DishCommand => _DishCommand ?? (_DishCommand = new (ExecuteDishCommand,p => p is object));
 
-    private void ExecuteDishCommand(object? obj)
-    {
-        if ((obj as SelectionChangedEventArgs)?.AddedItems.Count > 0)
-        {
-            SelectedDish = ((obj as SelectionChangedEventArgs)?.AddedItems[0] is DishModel) ? (DishModel) (obj as SelectionChangedEventArgs)?.AddedItems[0] : null;
-        }
-    }
-    #region Command LoadRecipeCommand - Выбор данных
-    /// <summary>Выбор данных</summary>
-    private LambdaCommand? _LoadRecipeCommand;
-    /// <summary>Выбор данных</summary>
-    public ICommand LoadRecipeCommand => _LoadRecipeCommand ??= new(OnLoadRecipeCommandExecuted, p => p is DishModel);
-    /// <summary>Логика выполнения - Выбор данных</summary>
-    private async void OnLoadRecipeCommandExecuted(object? p)
-    {
-        if (p is not DishModel { Id: var dish_id } Dish)
-        {
-           // Dish.Recipes = null;
-            return;
-        }
+    //private void ExecuteDishCommand(object? obj)
+    //{
+    //    if ((obj as SelectionChangedEventArgs)?.AddedItems.Count > 0)
+    //    {
+    //        SelectedDish = ((obj as SelectionChangedEventArgs)?.AddedItems[0] is DishModel) ? (DishModel) (obj as SelectionChangedEventArgs)?.AddedItems[0] : null;
+    //    }
+    //}
+    //#region Command LoadRecipeCommand - Выбор данных
+    ///// <summary>Выбор данных</summary>
+    //private LambdaCommand? _LoadRecipeCommand;
+    ///// <summary>Выбор данных</summary>
+    //public ICommand LoadRecipeCommand => _LoadRecipeCommand ??= new(OnLoadRecipeCommandExecuted, p => p is DishModel);
+    ///// <summary>Логика выполнения - Выбор данных</summary>
+    //private async void OnLoadRecipeCommandExecuted(object? p)
+    //{
+    //    if (p is not DishModel { Id: var dish_id } Dish)
+    //    {
+    //       // Dish.Recipes = null;
+    //        return;
+    //    }
 
-        try
-        {
-            var recipes = await _RecipesClient.GetByParentIdAsync(dish_id,LoginModel?.AccessToken??"");
-            SelectedDish.Recipe = recipes.Select(recipe=>new RecipeModel
-                {
-                    Id = recipe.Id,               
-                    Quantity = recipe.Quantity,                   
-                    DishesId = recipe.DishesId,
-                    IngredientId = recipe.IngredientId,
-                    IngredientName = recipe.IngredientName,
-                }).ToList();
-        }
-        catch (OperationCanceledException) { }
-        catch (Exception e)
-        {
-            MessageBox.Show(
-                $"Ошибка при получении рецептов блюда:\r\n{e.Message}", "Error",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+    //    try
+    //    {
+    //        var recipes = await _RecipesClient.GetByParentIdAsync(dish_id,LoginModel?.AccessToken??"");
+    //        SelectedDish.Recipe = recipes.Select(recipe=>new RecipeModel
+    //            {
+    //                Id = recipe.Id,               
+    //                Quantity = recipe.Quantity,                   
+    //                DishesId = recipe.DishesId,
+    //                IngredientId = recipe.IngredientId,
+    //                IngredientName = recipe.IngredientName,
+    //            }).ToList();
+    //    }
+    //    catch (OperationCanceledException) { }
+    //    catch (Exception e)
+    //    {
+    //        MessageBox.Show(
+    //            $"Ошибка при получении рецептов блюда:\r\n{e.Message}", "Error",
+    //            MessageBoxButton.OK, MessageBoxImage.Error);
+    //    }
         
-        OnPropertyChanged(nameof(SelectedDish));
-    }
+    //    OnPropertyChanged(nameof(SelectedDish));
+    //}
 
-    #endregion
+    //#endregion
 
     //#region  Recipes  : IEnumerable<ProductViewModel>? - Список товаров
     ///// <summary>Список товаров</summary>

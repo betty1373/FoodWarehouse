@@ -30,7 +30,7 @@ public class DishModel : ViewModel,IEditableObject
         set => Set(ref _Description, value);
     }
 
-    public List<RecipeModel>? Recipe { get; set; }
+    public IEnumerable<RecipeModel>? Recipe { get; set; }
     private DishModel backupCopy;
     
     private bool inEdit;

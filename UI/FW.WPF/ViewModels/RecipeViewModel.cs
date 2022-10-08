@@ -22,77 +22,63 @@ using System.Net.Http;
 
 namespace FW.WPF.ViewModels;
 
-public class DishViewModel : ViewModel
+public class RecipeViewModel : ViewModel
 {
-    #region SelectedDish : DishViewModel? - Выбранное блюдо
-    /// <summary>Выбранное блюдо</summary>
-    private DishModel? _SelectedDish;
-    /// <summary>Выбранное блюдо</summary>
-    public DishModel? SelectedDish
-    {
-        get => _SelectedDish;
-        set
-        {
-            if (!Set(ref _SelectedDish, value)) return;
-            if (RecipesModel is  null)
-            {
-                RecipesModel = new RecipeViewModel(LoginModel, this);
-                RecipesModel.GetRecipesAsync().Await(Completed, HandleEror);
-            }
-        }
-    }
-    #endregion
-    private RecipeViewModel? _RecipesModel;
-    public RecipeViewModel? RecipesModel { get => _RecipesModel; set => Set(ref _RecipesModel, value); }
     private LoginModel? LoginModel { get; } = null!;
-    private readonly IDishesClient _DishesClient;
-   
-    public DishViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
+    private DishViewModel? DishViewModel { get; } = null!;
+    private readonly IClientBase<IngredientResponseVM, IngredientVM> _IngredientsClient;
+    private readonly IRecipesClient _RecipesClient;
+    public RecipeViewModel(LoginModel? loginModel,DishViewModel dishViewModel)//IClientIdentity<LoginModel> clientIdentity)
     {
-        this.LoginModel = loginModel;
-        _DishesClient = App.Services.GetRequiredService<IDishesClient>();
+        LoginModel = loginModel;
+        _RecipesClient = App.Services.GetRequiredService<IRecipesClient>();
+       DishViewModel = dishViewModel;
         ErrorMessageViewModel = new MessageViewModel();
-        GetDishesAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
+       
     }
-    private IEnumerable<DishModel>? _Dishes;
-    public IEnumerable<DishModel>? Dishes
+    private IEnumerable<RecipeModel>? _Recipes;
+    public IEnumerable<RecipeModel>? Recipes
     {
-        get => _Dishes;
+        get
+        {
+         
+            return _Recipes;
+        }
 
         private set
         {
-            if (!Set(ref _Dishes, value)) return;
+            if (!Set(ref _Recipes, value)) return;
         }
     }
     public MessageViewModel ErrorMessageViewModel { get; }
-    private DishModel? _DishModel = new();
+    private RecipeModel? _RecipeModel = new();
 
     /// <summary>Данные пользователя</summary>
-    public DishModel? DishModel
+    public RecipeModel? RecipeModel
     {
-        get => _DishModel;
+        get => _RecipeModel;
 
         set
         {
-            if (!Set(ref _DishModel, value)) return;
+            if (!Set(ref _RecipeModel, value)) return;
         }
     }
     private void Completed()
     {
-        ErrorMessage = "Dishes loaded";
+        ErrorMessage = "Recipes loaded";
     }
     private void HandleEror(Exception ex)
     {
         ErrorMessage = ex.ToString();
     }
-    private async Task GetDishesAsync(string token)
+    public async Task GetRecipesAsync()
     {
-        var items = await _DishesClient.GetByParentIdAsync(token);
-        Dishes = items.Select(dish => new DishModel
+        var items = await _RecipesClient.GetByParentIdAsync(DishViewModel.SelectedDish.Id,LoginModel?.AccessToken);
+        Recipes = items.Select(item => new RecipeModel
         {
-            Id = dish.Id,
-            Name = dish.Name,
-            Description = dish.Description,
+            Id = item.Id,
+            IngredientId = item.IngredientId,
+            Quantity = item.Quantity,
         }).ToArray();
     }
     public string ErrorMessage
@@ -154,46 +140,47 @@ public class DishViewModel : ViewModel
     }
     public void Reset()
     {
-        DishModel.Name = string.Empty;
-        DishModel.Id = Guid.Empty;
-        DishModel.Description = string.Empty;
+        
+        RecipeModel.Id = Guid.Empty;
+        RecipeModel.Quantity = 0;
+        RecipeModel.IngredientId = Guid.Empty;
     }
     public void Edit(Guid id)
     {
-        var model = Dishes?.Where(x => x.Id.Equals(id)).FirstOrDefault();
-        DishModel.Id = model.Id;
-        DishModel.Name = model.Name;
-        DishModel.Description = model.Description;
+        var model = Recipes?.Where(x => x.Id.Equals(id)).FirstOrDefault();
+        RecipeModel.Id = model.Id;
+        RecipeModel.IngredientId = model.IngredientId;
+        RecipeModel.Quantity = model.Quantity;
     }
     public async Task Save()
     {
-        if (DishModel!= null)
+        if (RecipeModel != null)
         {
-            var new_Dish = new DishVM
+            var new_Recipe = new RecipeVM
             {
-                Name = DishModel.Name,
-                Description = DishModel.Description
+                IngredientId = RecipeModel.IngredientId,
+                Quantity = RecipeModel.Quantity
             };
             
-            var result = await _DishesClient.AddAsync(new_Dish, LoginModel.AccessToken);
+            var result = await _RecipesClient.UpdateAsync(RecipeModel.Id, new_Recipe, LoginModel.AccessToken);
 
-          //   Dishes = Dishes?.Where(c => !c.Id.Equals(DishModel.Id)).ToArray();
-            Dishes = new List<DishModel>(Dishes!) { new DishModel
+            Recipes = Recipes?.Where(c => !c.Id.Equals(RecipeModel.Id)).ToArray();
+            Recipes = new List<RecipeModel>(Recipes!) { new RecipeModel
              {
-                   Id = result ?? System.Guid.Empty,
-                   Name = new_Dish.Name,
-                   Description = new_Dish.Description,
+                   Id = RecipeModel.Id,
+                   IngredientId = new_Recipe.IngredientId,
+                   Quantity = new_Recipe.Quantity,
              } };             
         }
     }
     public async void Delete(Guid id)
     {
-        if (MessageBox.Show("Confirm delete of this record?", "Dish", MessageBoxButton.YesNo)
+        if (MessageBox.Show("Confirm delete of this record?", "Recipe", MessageBoxButton.YesNo)
             == MessageBoxResult.Yes)
         {
             try
             {
-                var result = await _DishesClient.RemoveAsync(id, LoginModel.AccessToken);
+                var result = await _RecipesClient.RemoveAsync(id, LoginModel.AccessToken);
                 MessageBox.Show("Record successfully deleted.");
             }
             catch (Exception ex)
@@ -202,7 +189,7 @@ public class DishViewModel : ViewModel
             }
             finally
             {
-                Dishes = Dishes?.Where(c => !c.Id.Equals(id)).ToArray();
+                Recipes = Recipes?.Where(c => !c.Id.Equals(id)).ToArray();
             }
         }
     }

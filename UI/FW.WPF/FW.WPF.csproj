@@ -7,12 +7,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="ViewModels\WarehouseViewModel.cs" />
+    <Compile Remove="Views\Windows\DishRecipesWindow.xaml.cs" />
+    <Compile Remove="Views\Windows\DishView.xaml.cs" />
     <Compile Remove="Views\Windows\LoginWindow.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\login-background.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Page Remove="Views\Windows\DishRecipesWindow.xaml" />
+    <Page Remove="Views\Windows\DishView.xaml" />
     <Page Remove="Views\Windows\LoginWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
