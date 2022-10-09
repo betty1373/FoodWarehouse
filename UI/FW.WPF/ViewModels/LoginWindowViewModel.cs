@@ -21,6 +21,7 @@ public class LoginWindowViewModel : ViewModel
         _ClientIdentity = App.Services.GetRequiredService<IClientIdentity<LoginModel>>();
         _WarehouseClient = App.Services.GetRequiredService<IWarehouseClient>();
         ErrorMessageViewModel = new MessageViewModel();
+        LoginModel = App.Services.GetRequiredService<LoginModel>();
     }
     #region Title : string - Заголовок главного окна
 
@@ -31,7 +32,7 @@ public class LoginWindowViewModel : ViewModel
     public string Title { get => _Title; set => Set(ref _Title, value); }
 
     #endregion
-    private LoginModel? _LoginModel = new();
+    private LoginModel? _LoginModel;
 
     /// <summary>Данные пользователя</summary>
     public LoginModel? LoginModel
@@ -101,6 +102,7 @@ public class LoginWindowViewModel : ViewModel
             ErrorMessage = "Login failed.";
             return;
         }
+        login.IsLogin = true;
         OnLoging(login);
     }
 

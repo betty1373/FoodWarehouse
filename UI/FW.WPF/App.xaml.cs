@@ -27,6 +27,7 @@ public partial class App
     private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
         services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<LoginModel>();
         services.AddWebAPI(host.Configuration["WebAPI"]);
         services.AddIdentityAPI(host.Configuration["IdentityAPI"]);
     }

@@ -21,6 +21,10 @@ public class LoginModel:ViewModel,IUserIdentity
     public string? WarehouseName { get => _WarehouseName; set => Set(ref _WarehouseName, value); }
     private string? _WarehouseAddress;
     public string? WarehouseAddress { get => _WarehouseAddress; set => Set(ref _WarehouseAddress, value); }
+    
+    private bool _isLogin;
+    public bool IsLogin {get => _isLogin; set => Set(ref _isLogin, value);}
+    
     public override string ToString()
     {
         return $"User: {UserName} Склад: {WarehouseName}, {WarehouseAddress}";

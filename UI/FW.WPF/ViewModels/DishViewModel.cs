@@ -37,11 +37,23 @@ public class DishViewModel : ViewModel
             if (RecipesModel is  null)
             {
                 RecipesModel = new RecipeViewModel(LoginModel, this);
-                RecipesModel.GetRecipesAsync().Await(Completed, HandleEror);
+                RecipesModel.GetRecipesAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
             }
         }
     }
     #endregion
+    private LambdaCommand _RefreshCommand;
+    public ICommand RefreshCommand => _RefreshCommand ?? (_RefreshCommand = new (ExecuteRefreshCommand,p => p is string { Length: > 0 }));
+
+    private void ExecuteRefreshCommand(object? p)
+    {
+            if (p is not string {Length: > 0} token)
+            {
+                Dishes =  null;
+                return;
+            }
+            GetDishesAsync(token).Await(Completed, HandleEror);
+    }
     private RecipeViewModel? _RecipesModel;
     public RecipeViewModel? RecipesModel { get => _RecipesModel; set => Set(ref _RecipesModel, value); }
     private LoginModel? LoginModel { get; } = null!;
@@ -52,7 +64,7 @@ public class DishViewModel : ViewModel
         this.LoginModel = loginModel;
         _DishesClient = App.Services.GetRequiredService<IDishesClient>();
         ErrorMessageViewModel = new MessageViewModel();
-        GetDishesAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
+       
     }
     private IEnumerable<DishModel>? _Dishes;
     public IEnumerable<DishModel>? Dishes
@@ -94,6 +106,8 @@ public class DishViewModel : ViewModel
             Name = dish.Name,
             Description = dish.Description,
         }).ToArray();
+        SelectedDish = Dishes.FirstOrDefault();
+        OnPropertyChanged(nameof(SelectedDish));
     }
     public string ErrorMessage
     {

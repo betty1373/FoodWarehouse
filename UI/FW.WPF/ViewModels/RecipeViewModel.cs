@@ -63,6 +63,19 @@ public class RecipeViewModel : ViewModel
             if (!Set(ref _RecipeModel, value)) return;
         }
     }
+    private LambdaCommand _RefreshCommand;
+    public ICommand RefreshCommand => _RefreshCommand ?? (_RefreshCommand = new(ExecuteRefreshCommand,p=> p is string { Length: > 0 }));
+
+    private void ExecuteRefreshCommand(object? p)
+    {
+        if (p is not string { Length: > 0 } token)
+        {
+            Recipes = null;
+            return;
+        }
+        GetRecipesAsync(token).Await(Completed, HandleEror);
+    }
+
     private void Completed()
     {
         ErrorMessage = "Recipes loaded";
@@ -71,9 +84,9 @@ public class RecipeViewModel : ViewModel
     {
         ErrorMessage = ex.ToString();
     }
-    public async Task GetRecipesAsync()
+    public async Task GetRecipesAsync(string token)
     {
-        var items = await _RecipesClient.GetByParentIdAsync(DishViewModel.SelectedDish.Id,LoginModel?.AccessToken);
+        var items = await _RecipesClient.GetByParentIdAsync(DishViewModel.SelectedDish.Id,token);
         Recipes = items.Select(item => new RecipeModel
         {
             Id = item.Id,

@@ -28,6 +28,7 @@ public class MainWindowViewModel : ViewModel
     private readonly IProductsClient _ProductsClient;
 
     public MainWindowViewModel(
+        LoginModel loginModel,
        
         IProductsClient ProductsClient
         
@@ -35,7 +36,7 @@ public class MainWindowViewModel : ViewModel
         )
     {
     //    _DishesClient = DishesClient;
-       
+       _LoginModel = loginModel;
         _ProductsClient = ProductsClient;
        
     }
@@ -69,6 +70,7 @@ public class MainWindowViewModel : ViewModel
                 if (DishesModel is null)
                 {
                     DishesModel = new DishViewModel(LoginModel);
+                    DishesModel.RefreshCommand.Execute(LoginModel?.AccessToken);
                 }
                 //if (RecipesModel is null)
                 //{

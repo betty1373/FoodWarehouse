@@ -82,12 +82,12 @@
             </ToolBar>
         </ToolBarTray>       
         <TabControl SelectedIndex="{Binding TabItem, Mode=TwoWay}" >
-            <!--<i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding DataContext.TabItemCommand,RelativeSource={RelativeSource AncestorType=Window}}"
-                                           CommandParameter="{Binding TabItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>-->
+            <i:Interaction.Triggers>
+                <i:DataTrigger Binding="{Binding LoginModel.IsLogin}" Value="True" >
+                    <i:InvokeCommandAction Command="{Binding DishesModel.RefreshCommand}"
+                                           CommandParameter="{Binding LoginModel.AccessToken}"/>
+                </i:DataTrigger>
+            </i:Interaction.Triggers>
             <TabItem Header="Блюда" >
                 <Grid >
                     <Grid.ColumnDefinitions>
@@ -114,6 +114,11 @@
                                     </Style.Triggers>
                                 </Style>
                             </DataGrid.Resources>
+                            <DataGrid.RowHeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="Способ приготовления"/>
+                                </DataTemplate>
+                            </DataGrid.RowHeaderTemplate>
                             <!--<i:Interaction.Triggers>
                                 <i:EventTrigger EventName="RowEditEnding">
                                     <i:InvokeCommandAction Command="{Binding DishesModel.EditCommand,RelativeSource={RelativeSource AncestorType=Window}}"
@@ -121,11 +126,12 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>-->
                             <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                                 <DataGridTextColumn Header="Name" 
           Binding="{Binding Name, TargetNullValue=(enter a dish name)}"/>
-                                <DataGridTextColumn Header="Description"
+                                <!--<DataGridTextColumn Header="Description"
           EditingElementStyle="{StaticResource errorStyle}"
-          Binding="{Binding Description, ValidatesOnExceptions=True}"/>
+          Binding="{Binding Description, ValidatesOnExceptions=True}"/>-->
                             </DataGrid.Columns>
                             <DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
