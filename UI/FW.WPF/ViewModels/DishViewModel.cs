@@ -24,11 +24,14 @@ namespace FW.WPF.ViewModels;
 
 public class DishViewModel : ViewModel
 {
+    private bool _isFormVisible;
+    public bool IsFormVisible { get => _isFormVisible; set => Set(ref _isFormVisible, value); }
+
     #region SelectedDish : DishViewModel? - Выбранное блюдо
     /// <summary>Выбранное блюдо</summary>
-    private DishModel? _SelectedDish;
+    private DishResponseVM? _SelectedDish;
     /// <summary>Выбранное блюдо</summary>
-    public DishModel? SelectedDish
+    public DishResponseVM? SelectedDish
     {
         get => _SelectedDish;
         set
@@ -36,8 +39,8 @@ public class DishViewModel : ViewModel
             if (!Set(ref _SelectedDish, value)) return;
             if (RecipesModel is  null)
             {
-                RecipesModel = new RecipeViewModel(LoginModel, this);
-                RecipesModel.GetRecipesAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
+                RecipesModel = new RecipeViewModel(LoginModel);                
+                RecipesModel.RefreshCommand.Execute(SelectedDish.Id);
             }
         }
     }
@@ -63,11 +66,10 @@ public class DishViewModel : ViewModel
     {
         this.LoginModel = loginModel;
         _DishesClient = App.Services.GetRequiredService<IDishesClient>();
-        ErrorMessageViewModel = new MessageViewModel();
-       
+        ErrorMessageViewModel = new MessageViewModel();       
     }
-    private IEnumerable<DishModel>? _Dishes;
-    public IEnumerable<DishModel>? Dishes
+    private IEnumerable<DishResponseVM>? _Dishes;
+    public IEnumerable<DishResponseVM>? Dishes
     {
         get => _Dishes;
 
@@ -100,18 +102,14 @@ public class DishViewModel : ViewModel
     private async Task GetDishesAsync(string token)
     {
         var items = await _DishesClient.GetByParentIdAsync(token);
-        Dishes = items.Select(dish => new DishModel
-        {
-            Id = dish.Id,
-            Name = dish.Name,
-            Description = dish.Description,
-        }).ToArray();
-        SelectedDish = Dishes.FirstOrDefault();
+        Dishes = items;
+        SelectedDish = Dishes?.FirstOrDefault();
         OnPropertyChanged(nameof(SelectedDish));
     }
     public string ErrorMessage
     {
         set => ErrorMessageViewModel.Message = value;
+        get => ErrorMessageViewModel.Message;
     }
     /// <summary>Заголовок главного окна</summary>
     private string _Title = "Вход в систему";
@@ -119,6 +117,7 @@ public class DishViewModel : ViewModel
     /// <summary>Заголовок главного окна</summary>
     public string Title { get => _Title; set => Set(ref _Title, value); }
 
+   
     private ICommand _saveCommand;
     private ICommand _resetCommand;
     private ICommand _editCommand;
@@ -171,6 +170,7 @@ public class DishViewModel : ViewModel
         DishModel.Name = string.Empty;
         DishModel.Id = Guid.Empty;
         DishModel.Description = string.Empty;
+        IsFormVisible = !IsFormVisible;
     }
     public void Edit(Guid id)
     {
@@ -178,6 +178,7 @@ public class DishViewModel : ViewModel
         DishModel.Id = model.Id;
         DishModel.Name = model.Name;
         DishModel.Description = model.Description;
+        IsFormVisible = true;
     }
     public async Task Save()
     {
@@ -188,16 +189,30 @@ public class DishViewModel : ViewModel
                 Name = DishModel.Name,
                 Description = DishModel.Description
             };
-            
-            var result = await _DishesClient.AddAsync(new_Dish, LoginModel.AccessToken);
+            if (DishModel.Id.Equals(Guid.Empty))
+            {            
+                var result = await _DishesClient.AddAsync(new_Dish, LoginModel.AccessToken);
 
-          //   Dishes = Dishes?.Where(c => !c.Id.Equals(DishModel.Id)).ToArray();
-            Dishes = new List<DishModel>(Dishes!) { new DishModel
-             {
-                   Id = result ?? System.Guid.Empty,
-                   Name = new_Dish.Name,
-                   Description = new_Dish.Description,
-             } };             
+                
+                Dishes = new List<DishResponseVM>(Dishes!) { new DishResponseVM
+                 {
+                       Id = result ?? System.Guid.Empty,
+                       Name = new_Dish.Name,
+                       Description = new_Dish.Description,
+                 } };
+            }
+            else
+            {
+                var result = await _DishesClient.UpdateAsync(DishModel.Id, new_Dish, LoginModel.AccessToken);
+                Dishes = Dishes?.Where(c => !c.Id.Equals(DishModel.Id)).ToArray();
+                Dishes = new List<DishResponseVM>(Dishes!) { new DishResponseVM
+                 {
+                       Id = DishModel.Id,
+                       Name = new_Dish.Name,
+                       Description = new_Dish.Description,
+                 } };
+            }
+            SelectedDish = Dishes?.Where(c => c.Id.Equals(DishModel.Id)).FirstOrDefault();
         }
     }
     public async void Delete(Guid id)

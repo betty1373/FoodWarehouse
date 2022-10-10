@@ -10,11 +10,8 @@ using FW.WPF.ViewModels;
 using FW.WPF.ViewModels.Base;
 namespace FW.WPF.Models;
 
-public class RecipeModel : ViewModel, IEditableObject
+public class RecipeModel : ViewModel
 {
-   
-    public string IngredientName { get; init; } = null!;
-
     private Guid _Id;
     public Guid Id
     {
@@ -38,33 +35,6 @@ public class RecipeModel : ViewModel, IEditableObject
     {
         get => _Quantity;
         set => Set(ref _Quantity, value);
-    }
-
-    private RecipeModel backupCopy;
-
-    private bool inEdit;
-
-    public void BeginEdit()
-    {
-        if (inEdit) return;
-        inEdit = true;
-        backupCopy = MemberwiseClone() as RecipeModel;
-    }
-
-    public void CancelEdit()
-    {
-        if (!inEdit) return;
-        inEdit = false;
-        DishesId = backupCopy.DishesId;
-        Id = backupCopy.Id;
-       IngredientId = backupCopy.IngredientId;
-    }
-
-    public void EndEdit()
-    {
-        if (!inEdit) return;
-        inEdit = false;
-        backupCopy = null;
     }
 }
    

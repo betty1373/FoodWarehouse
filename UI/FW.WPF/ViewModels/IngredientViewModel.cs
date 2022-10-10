@@ -23,75 +23,51 @@ using FW.WPF.WebAPI.Clients;
 
 namespace FW.WPF.ViewModels;
 
-public class RecipeViewModel : ViewModel
+public class IngredientViewModel : ViewModel
 {
     private bool _isFormVisible;
     public bool IsFormVisible { get => _isFormVisible; set => Set(ref _isFormVisible, value); }
+
     private LoginModel? LoginModel { get; } = null!;
-    private IngredientViewModel? _IngredientsModel;
-    public IngredientViewModel? IngredientsModel { get => _IngredientsModel; set => Set(ref _IngredientsModel, value); }
-  
-    private readonly IRecipesClient _RecipesClient;
-    public RecipeViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
+    private readonly IClientBase<IngredientResponseVM, IngredientVM> _IngredientsClient;
+    
+    public IngredientViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
     {
         LoginModel = loginModel;
-        _RecipesClient = App.Services.GetRequiredService<IRecipesClient>();    
+        _IngredientsClient = App.Services.GetRequiredService<IClientBase<IngredientResponseVM, IngredientVM>>();
+        RefreshCommand.Execute(this);   
         ErrorMessageViewModel = new MessageViewModel();
-        IngredientsModel = new IngredientViewModel(LoginModel);
-        IngredientsModel.RefreshCommand.Execute(null);
+       
     }
-
-    public RecipeResponseVM? _SelectedRecipe;
-    public RecipeResponseVM? SelectedRecipe
+    private IEnumerable<IngredientResponseVM>? _Ingredients;
+    public IEnumerable<IngredientResponseVM>? Ingredients
     {
-        get => _SelectedRecipe;
-        set
-        {
-            if (!Set(ref _SelectedRecipe, value)) return;
-            if (IngredientsModel is null)
-            {
-                IngredientsModel = new IngredientViewModel(LoginModel);
-                IngredientsModel.RefreshCommand.Execute(null);
-            }
-        }
-    }
-    private IEnumerable<RecipeResponseVM>? _Recipes;
-    public IEnumerable<RecipeResponseVM>? Recipes
-    {
-        get
-        {         
-            return _Recipes;
-        }
+        get => _Ingredients;
 
         private set
         {
-            if (!Set(ref _Recipes, value)) return;
+            if (!Set(ref _Ingredients, value)) return;
         }
     }
     public MessageViewModel ErrorMessageViewModel { get; }
-    private RecipeModel? _RecipeModel = new();
+    private IngredientModel? _IngredientModel = new();
 
     /// <summary>Данные пользователя</summary>
-    public RecipeModel? RecipeModel
+    public IngredientModel? IngredientModel
     {
-        get => _RecipeModel;
+        get => _IngredientModel;
 
         set
         {
-            if (!Set(ref _RecipeModel, value)) return;
+            if (!Set(ref _IngredientModel, value)) return;
         }
     }
     private LambdaCommand _RefreshCommand;
-    public ICommand RefreshCommand => _RefreshCommand ?? (_RefreshCommand = new(ExecuteRefreshCommand,p=> p is Guid { }));
+    public ICommand RefreshCommand => _RefreshCommand ?? (_RefreshCommand = new(ExecuteRefreshCommand));
 
-    private void ExecuteRefreshCommand(object? p)
+    private void ExecuteRefreshCommand()
     {
-        if (p is not Guid { } id)
-        {
-            Recipes = null;
-            return;
-        }
-        GetRecipesAsync(id).Await(Completed, HandleEror);
+       GetIngredientsAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
     }
 
     private void Completed()
@@ -102,12 +78,10 @@ public class RecipeViewModel : ViewModel
     {
         ErrorMessage = ex.ToString();
     }
-    public async Task GetRecipesAsync(Guid id)
+    public async Task GetIngredientsAsync(string token)
     {
-        var items = await _RecipesClient.GetByParentIdAsync(id,LoginModel.AccessToken);
-        Recipes = items;
-        SelectedRecipe = Recipes?.FirstOrDefault();
-        OnPropertyChanged(nameof(SelectedRecipe));
+        var items = await _IngredientsClient.GetAllAsync(token);
+        Ingredients = items;
     }
     public string ErrorMessage
     {
@@ -167,52 +141,44 @@ public class RecipeViewModel : ViewModel
         }
     }
     public void Reset()
-    {        
-        RecipeModel.Id = Guid.Empty;
-        RecipeModel.Quantity = 0;
-        RecipeModel.IngredientId = Guid.Empty;
-        IsFormVisible = !IsFormVisible;
+    {
+       IngredientModel.Id = Guid.Empty;
+       IngredientModel.Name = String.Empty;
     }
     public void Edit(Guid id)
     {
-        var model = Recipes?.Where(x => x.Id.Equals(id)).FirstOrDefault();
-        RecipeModel.Id = model.Id;
-        RecipeModel.IngredientId = model.IngredientId;
-        RecipeModel.Quantity = model.Quantity;
-        IsFormVisible = !IsFormVisible;
+        var model = Ingredients?.Where(x => x.Id.Equals(id)).FirstOrDefault();
+        IngredientModel.Id = model.Id;
+        IngredientModel.Name = model.Name;
     }
     public async Task Save()
     {
-        if (RecipeModel != null)
+        if (IngredientModel != null)
         {
-            var item = new RecipeVM
+            var item = new IngredientVM
             {
-                IngredientId = RecipeModel.IngredientId,
-                Quantity = RecipeModel.Quantity
+                Name = IngredientModel.Name
             };
-            if (RecipeModel.Id.Equals(Guid.Empty))
+            if (IngredientModel.Id.Equals(Guid.Empty))
             {
-                var result = await _RecipesClient.AddAsync(item, LoginModel.AccessToken);
-
-                Recipes = new List<RecipeResponseVM>(Recipes!) { new RecipeResponseVM
+                var result = await _IngredientsClient.AddAsync(item, LoginModel.AccessToken);
+                Ingredients = new List<IngredientResponseVM>(Ingredients!) { new IngredientResponseVM
                  {
                        Id = result ?? System.Guid.Empty,
-                       IngredientId = item.IngredientId,
-                       Quantity = item.Quantity
+                       Name = item.Name
                  } };
             }
             else
             {
-                var result = await _RecipesClient.UpdateAsync(RecipeModel.Id, item, LoginModel.AccessToken);
-                Recipes = Recipes?.Where(c => !c.Id.Equals(RecipeModel.Id)).ToArray();
-                Recipes = new List<RecipeResponseVM>(Recipes!) { new RecipeResponseVM
+                var result = await _IngredientsClient.UpdateAsync(IngredientModel.Id, item, LoginModel.AccessToken);
+                Ingredients = Ingredients?.Where(c => !c.Id.Equals(IngredientModel.Id)).ToArray();
+                Ingredients = new List<IngredientResponseVM>(Ingredients!) { new IngredientResponseVM
                  {
-                       Id = RecipeModel.Id,
-                       IngredientId = item.IngredientId,
-                       Quantity = item.Quantity
-                 } };
+                       Id = IngredientModel.Id,
+                       Name = item.Name
+                }
+                };
             }
-            SelectedRecipe = Recipes?.Where(c => c.Id.Equals(RecipeModel.Id)).FirstOrDefault();
         }
     }
     public async void Delete(Guid id)
@@ -222,7 +188,7 @@ public class RecipeViewModel : ViewModel
         {
             try
             {
-                var result = await _RecipesClient.RemoveAsync(id, LoginModel.AccessToken);
+                var result = await _IngredientsClient.RemoveAsync(id, LoginModel.AccessToken);
                 MessageBox.Show("Record successfully deleted.");
             }
             catch (Exception ex)
@@ -231,7 +197,7 @@ public class RecipeViewModel : ViewModel
             }
             finally
             {
-                Recipes = Recipes?.Where(c => !c.Id.Equals(id)).ToArray();
+                Ingredients = Ingredients?.Where(c => !c.Id.Equals(id)).ToArray();
             }
         }
     }

@@ -20,7 +20,8 @@ public class RecipesService : IRecipesService
     public async Task<IEnumerable<RecipeResponseDto>> GetAll()
     {
        // var items = await _dbContext.Recipes.Include(x => x.Ingredients).ThenInclude(ing => ing.Name).ToListAsync();
-        var items = await _dbContext.Recipes.Include(x => x.Ingredients).ToListAsync();
+  //      var items = await _dbContext.Recipes.Include(x => x.Ingredients).ToListAsync();
+        var items = await _dbContext.Recipes.ToListAsync();
         return _mapper.Map<List<RecipeResponseDto>>(items);
     } 
     public async Task<int> Count()

@@ -28,17 +28,14 @@ public class MainWindowViewModel : ViewModel
     private readonly IProductsClient _ProductsClient;
 
     public MainWindowViewModel(
-        LoginModel loginModel,
-       
-        IProductsClient ProductsClient
-        
+        LoginModel loginModel,       
+        IProductsClient ProductsClient        
      //   IDishesClient DishesClient
         )
     {
     //    _DishesClient = DishesClient;
        _LoginModel = loginModel;
-        _ProductsClient = ProductsClient;
-       
+        _ProductsClient = ProductsClient;       
     }
 
     int _tabItem;
@@ -185,18 +182,7 @@ public class MainWindowViewModel : ViewModel
     //}
     //#endregion
 
-    private IEnumerable<IngredientModel>? _Ingredients;
-    /// <summary>Список блюд</summary>
-    public IEnumerable<IngredientModel>? Ingredients
-    {
-        get => _Ingredients;
-        private set
-        {
-            if (!Set(ref _Ingredients, value)) return;
-            // SelectedDish = null;
-        }
-    }
-  
+   
     private DishViewModel? _DishesModel;
     public DishViewModel? DishesModel { get => _DishesModel; set => Set(ref _DishesModel, value); }
 

@@ -9,13 +9,13 @@ using System.Windows.Data;
 
 namespace FW.WPF.ViewModels;
 
-public class DishModel : ViewModel,IEditableObject
+public class DishModel : ViewModel
 {
     private Guid _Id;
     public Guid Id
-    { 
-       get => _Id;
-       set => Set(ref _Id, value);
+    {
+        get => _Id;
+        set => Set(ref _Id, value);
     }
     private string _Name;
     public string Name
@@ -29,35 +29,35 @@ public class DishModel : ViewModel,IEditableObject
         get => _Description;
         set => Set(ref _Description, value);
     }
-
-    public IEnumerable<RecipeModel>? Recipe { get; set; }
-    private DishModel backupCopy;
-    
-    private bool inEdit;
-
-    public void BeginEdit()
-    {
-        if (inEdit) return;
-        inEdit = true;
-        backupCopy = MemberwiseClone() as DishModel;
-    }
-
-    public void CancelEdit()
-    {
-        if (!inEdit) return;
-        inEdit = false;
-        Name = backupCopy.Name;
-        Id = backupCopy.Id;
-        Description = backupCopy.Description;
-    }
-
-    public void EndEdit()
-    {
-        if (!inEdit) return;
-        inEdit = false;
-        backupCopy = null;
-    }
 }
+ //   public IEnumerable<RecipeModel>? Recipe { get; set; }
+    //private DishModel backupCopy;
+    
+    //private bool inEdit;
+
+    //public void BeginEdit()
+    //{
+    //    if (inEdit) return;
+    //    inEdit = true;
+    //    backupCopy = MemberwiseClone() as DishModel;
+    //}
+
+    //public void CancelEdit()
+    //{
+    //    if (!inEdit) return;
+    //    inEdit = false;
+    //    Name = backupCopy.Name;
+    //    Id = backupCopy.Id;
+    //    Description = backupCopy.Description;
+    //}
+
+    //public void EndEdit()
+    //{
+    //    if (!inEdit) return;
+    //    inEdit = false;
+    //    backupCopy = null;
+    //}
+//}
 public class DishValidationRule : ValidationRule
 {
     public override ValidationResult Validate(object value,

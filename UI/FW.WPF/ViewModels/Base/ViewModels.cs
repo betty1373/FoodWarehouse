@@ -17,4 +17,5 @@ public abstract class ViewModel : INotifyPropertyChanged
         OnPropertyChanged(PropertyName);
         return true;
     }
+    
 }

@@ -7,8 +7,8 @@ public class RecipeResponseMappingsProfile : Profile
 {
     public RecipeResponseMappingsProfile()
     {
-        CreateMap<Recipes, RecipeResponseDto>()
-            .ForMember(d => d.IngredientName, o => o.MapFrom(s => s.Ingredients.Name));
+        CreateMap<Recipes, RecipeResponseDto>();
+           // .ForMember(d => d.IngredientName, o => o.MapFrom(s => s.Ingredients.Name));
 //.AfterMap((s, d, context) => context.Mapper.Map(s.Concert, d));
         //      .ForMember(p => p.IngredientName, map => map.Ignore());
         CreateMap<RecipeResponseDto, Recipes>()
