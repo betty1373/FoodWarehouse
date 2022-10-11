@@ -121,6 +121,7 @@ public class RecipeViewModel : ViewModel
 
     private ICommand _saveCommand;
     private ICommand _resetCommand;
+    private ICommand _addCommand;
     private ICommand _editCommand;
     private ICommand _deleteCommand;
     public ICommand ResetCommand
@@ -156,6 +157,16 @@ public class RecipeViewModel : ViewModel
         }
     }
 
+    public ICommand AddCommand
+    {
+        get
+        {
+            if (_addCommand == null)
+                _addCommand = new RelayCommand(param => Add((Guid)param), null);
+
+            return _addCommand;
+        }
+    }
     public ICommand DeleteCommand
     {
         get
@@ -170,13 +181,20 @@ public class RecipeViewModel : ViewModel
     {        
         RecipeModel.Id = Guid.Empty;
         RecipeModel.Quantity = 0;
+        RecipeModel.DishesId = Guid.Empty;
         RecipeModel.IngredientId = Guid.Empty;
+        IsFormVisible = !IsFormVisible;
+    }
+    public void Add(Guid id)
+    {
+        RecipeModel.DishesId = id;
         IsFormVisible = !IsFormVisible;
     }
     public void Edit(Guid id)
     {
         var model = Recipes?.Where(x => x.Id.Equals(id)).FirstOrDefault();
         RecipeModel.Id = model.Id;
+        RecipeModel.DishesId = model.DishesId;
         RecipeModel.IngredientId = model.IngredientId;
         RecipeModel.Quantity = model.Quantity;
         IsFormVisible = !IsFormVisible;
@@ -187,6 +205,7 @@ public class RecipeViewModel : ViewModel
         {
             var item = new RecipeVM
             {
+                DishesId = RecipeModel.DishesId,
                 IngredientId = RecipeModel.IngredientId,
                 Quantity = RecipeModel.Quantity
             };
@@ -197,9 +216,11 @@ public class RecipeViewModel : ViewModel
                 Recipes = new List<RecipeResponseVM>(Recipes!) { new RecipeResponseVM
                  {
                        Id = result ?? System.Guid.Empty,
+                       DishesId = item.DishesId,
                        IngredientId = item.IngredientId,
                        Quantity = item.Quantity
                  } };
+                SelectedRecipe = Recipes?.Where(c => c.Id.Equals(result)).FirstOrDefault();
             }
             else
             {
@@ -208,11 +229,13 @@ public class RecipeViewModel : ViewModel
                 Recipes = new List<RecipeResponseVM>(Recipes!) { new RecipeResponseVM
                  {
                        Id = RecipeModel.Id,
+                       DishesId = item.DishesId,
                        IngredientId = item.IngredientId,
                        Quantity = item.Quantity
                  } };
+                SelectedRecipe = Recipes?.Where(c => c.Id.Equals(RecipeModel.Id)).FirstOrDefault();
             }
-            SelectedRecipe = Recipes?.Where(c => c.Id.Equals(RecipeModel.Id)).FirstOrDefault();
+            OnPropertyChanged(nameof(SelectedRecipe));
         }
     }
     public async void Delete(Guid id)

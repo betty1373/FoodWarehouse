@@ -37,11 +37,11 @@ public class DishViewModel : ViewModel
         set
         {
             if (!Set(ref _SelectedDish, value)) return;
-            if (RecipesModel is  null)
+            if (RecipesModel is null)
             {
-                RecipesModel = new RecipeViewModel(LoginModel);                
-                RecipesModel.RefreshCommand.Execute(SelectedDish.Id);
+                RecipesModel = new RecipeViewModel(LoginModel);
             }
+            RecipesModel.RefreshCommand.Execute(SelectedDish?.Id ?? Guid.Empty);
         }
     }
     #endregion
@@ -184,35 +184,35 @@ public class DishViewModel : ViewModel
     {
         if (DishModel!= null)
         {
-            var new_Dish = new DishVM
+            var item = new DishVM
             {
                 Name = DishModel.Name,
                 Description = DishModel.Description
             };
             if (DishModel.Id.Equals(Guid.Empty))
             {            
-                var result = await _DishesClient.AddAsync(new_Dish, LoginModel.AccessToken);
-
-                
+                var result = await _DishesClient.AddAsync(item, LoginModel.AccessToken);                
                 Dishes = new List<DishResponseVM>(Dishes!) { new DishResponseVM
                  {
                        Id = result ?? System.Guid.Empty,
-                       Name = new_Dish.Name,
-                       Description = new_Dish.Description,
+                       Name = item.Name,
+                       Description = item.Description,
                  } };
+                SelectedDish = Dishes?.Where(c => c.Id.Equals(result)).FirstOrDefault();
             }
             else
             {
-                var result = await _DishesClient.UpdateAsync(DishModel.Id, new_Dish, LoginModel.AccessToken);
+                var result = await _DishesClient.UpdateAsync(DishModel.Id,item, LoginModel.AccessToken);
                 Dishes = Dishes?.Where(c => !c.Id.Equals(DishModel.Id)).ToArray();
                 Dishes = new List<DishResponseVM>(Dishes!) { new DishResponseVM
                  {
                        Id = DishModel.Id,
-                       Name = new_Dish.Name,
-                       Description = new_Dish.Description,
+                       Name = item.Name,
+                       Description = item.Description,
                  } };
-            }
-            SelectedDish = Dishes?.Where(c => c.Id.Equals(DishModel.Id)).FirstOrDefault();
+                SelectedDish = Dishes?.Where(c => c.Id.Equals(DishModel.Id)).FirstOrDefault();
+            }           
+            OnPropertyChanged(nameof(SelectedDish));
         }
     }
     public async void Delete(Guid id)
