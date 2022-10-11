@@ -6,7 +6,7 @@ using FW.WPF.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using FW.WPF.Models;
 namespace FW.WPF;
 
 public partial class App
@@ -27,6 +27,9 @@ public partial class App
     private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
         services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<IngredientViewModel>();
+        services.AddSingleton<DishViewModel>();
+        services.AddSingleton<RecipeViewModel>();
         services.AddSingleton<LoginModel>();
         services.AddWebAPI(host.Configuration["WebAPI"]);
         services.AddIdentityAPI(host.Configuration["IdentityAPI"]);

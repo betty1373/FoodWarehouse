@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Converters\Class1.cs" />
     <Compile Remove="ViewModels\WarehouseViewModel.cs" />
     <Compile Remove="Views\Windows\DishRecipesWindow.xaml.cs" />
     <Compile Remove="Views\Windows\DishView.xaml.cs" />
@@ -64,7 +65,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Styles\Base\" />
   </ItemGroup>
   <ItemGroup>

@@ -69,6 +69,11 @@ public class MainWindowViewModel : ViewModel
                     DishesModel = new DishViewModel(LoginModel);
                     DishesModel.RefreshCommand.Execute(LoginModel?.AccessToken);
                 }
+                if (IngredientsModel is null)
+                {
+                    IngredientsModel = new IngredientViewModel(LoginModel);
+                    IngredientsModel.RefreshCommand.Execute(null);
+                }
                 //if (RecipesModel is null)
                 //{
                 //    RecipesModel = new RecipeViewModel(LoginModel);
@@ -186,10 +191,12 @@ public class MainWindowViewModel : ViewModel
     private DishViewModel? _DishesModel;
     public DishViewModel? DishesModel { get => _DishesModel; set => Set(ref _DishesModel, value); }
 
+    private IngredientViewModel? _IngredientsModel;
+    public IngredientViewModel? IngredientsModel { get => _IngredientsModel; set => Set(ref _IngredientsModel, value); }
 
-    
-  //  private LambdaCommand _DishCommand;
-  //  public ICommand DishCommand => _DishCommand ?? (_DishCommand = new (ExecuteDishCommand,p => p is object));
+
+    //  private LambdaCommand _DishCommand;
+    //  public ICommand DishCommand => _DishCommand ?? (_DishCommand = new (ExecuteDishCommand,p => p is object));
 
     //private void ExecuteDishCommand(object? obj)
     //{
@@ -231,7 +238,7 @@ public class MainWindowViewModel : ViewModel
     //            $"Ошибка при получении рецептов блюда:\r\n{e.Message}", "Error",
     //            MessageBoxButton.OK, MessageBoxImage.Error);
     //    }
-        
+
     //    OnPropertyChanged(nameof(SelectedDish));
     //}
 

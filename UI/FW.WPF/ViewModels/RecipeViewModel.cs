@@ -28,8 +28,7 @@ public class RecipeViewModel : ViewModel
     private bool _isFormVisible;
     public bool IsFormVisible { get => _isFormVisible; set => Set(ref _isFormVisible, value); }
     private LoginModel? LoginModel { get; } = null!;
-    private IngredientViewModel? _IngredientsModel;
-    public IngredientViewModel? IngredientsModel { get => _IngredientsModel; set => Set(ref _IngredientsModel, value); }
+  
   
     private readonly IRecipesClient _RecipesClient;
     public RecipeViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
@@ -37,8 +36,7 @@ public class RecipeViewModel : ViewModel
         LoginModel = loginModel;
         _RecipesClient = App.Services.GetRequiredService<IRecipesClient>();    
         ErrorMessageViewModel = new MessageViewModel();
-        IngredientsModel = new IngredientViewModel(LoginModel);
-        IngredientsModel.RefreshCommand.Execute(null);
+      
     }
 
     public RecipeResponseVM? _SelectedRecipe;
@@ -48,11 +46,7 @@ public class RecipeViewModel : ViewModel
         set
         {
             if (!Set(ref _SelectedRecipe, value)) return;
-            if (IngredientsModel is null)
-            {
-                IngredientsModel = new IngredientViewModel(LoginModel);
-                IngredientsModel.RefreshCommand.Execute(null);
-            }
+                  
         }
     }
     private IEnumerable<RecipeResponseVM>? _Recipes;

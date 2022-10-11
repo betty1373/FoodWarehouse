@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
 using System.Net.Http;
-using FW.WPF.ViewModels;
+using FW.WPF.Models;
 using FW.WPF.Identity.Clients.Base;
 namespace FW.WPF.Identity.Clients;
 

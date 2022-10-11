@@ -19,6 +19,7 @@
                 <!--<PropertyGroupDescription PropertyName="CategoryId" />-->
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
+        <CollectionViewSource x:Key="Ingredients" Source="{Binding IngredientsModel.Ingredients}" />
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -88,7 +89,7 @@
                     </Button>
                 </StackPanel>
             </ToolBar>
-        </ToolBarTray>       
+        </ToolBarTray>        
         <TabControl SelectedIndex="{Binding TabItem, Mode=TwoWay}" >
             <i:Interaction.Triggers>
                 <i:DataTrigger Binding="{Binding LoginModel.IsLogin}" Value="True" >
@@ -96,17 +97,18 @@
                                            CommandParameter="{Binding LoginModel.AccessToken}"/>
                 </i:DataTrigger>
             </i:Interaction.Triggers>
-            <TabItem Header="Блюда" >
+            <TabItem Header="{Binding DishesModel.Title}" >
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <GroupBox Header="Блюда" Grid.Column="0" DataContext="{Binding DishesModel}">                        
+                    <GroupBox Grid.Column="0" DataContext="{Binding DishesModel}" Grid.RowSpan="2">                        
                         <DataGrid ItemsSource="{Binding Dishes}" Name="dishes" 
                                   SelectedItem="{Binding SelectedDish}" SelectionMode="Single" IsReadOnly="False">
                             <DataGrid.Resources>
@@ -141,13 +143,13 @@
           EditingElementStyle="{StaticResource errorStyle}"
           Binding="{Binding Description, ValidatesOnExceptions=True}"/>-->
                             </DataGrid.Columns>
-                            <DataGrid.RowDetailsTemplate>
+                            <!--<DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
                                     <DockPanel Background="GhostWhite">
                                         <TextBlock DockPanel.Dock="Left" Text="{Binding Description}" TextWrapping="Wrap" Height="Auto" Margin="10" />
                                     </DockPanel>
                                 </DataTemplate>
-                            </DataGrid.RowDetailsTemplate>
+                            </DataGrid.RowDetailsTemplate>-->
                             <!--<DataGrid.RowValidationRules>
                                 <local:DishValidationRule ValidationStep="UpdatedValue"/>
                             </DataGrid.RowValidationRules>
@@ -168,7 +170,7 @@
                             </DataGrid.RowValidationErrorTemplate>-->
                         </DataGrid>
                     </GroupBox>
-                    <GroupBox DataContext="{Binding DishesModel}" Grid.Row="1">
+                    <GroupBox DataContext="{Binding DishesModel}" Grid.Row="2" Header="DishForm">
                         <Grid x:Name="FormDish"  
                           Visibility="{Binding IsFormVisible,Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.RowDefinitions>
@@ -185,8 +187,10 @@
                             <Label Content="Description:" Grid.Row="1"/>
                             <TextBox Text="{Binding DishModel.Name}" Height="20"  Width="Auto" MinWidth="150" Grid.Column="1"/>
                             <TextBox Text="{Binding DishModel.Description}" TextWrapping="WrapWithOverflow" Height="20" MinWidth="150" Width="Auto" Grid.Row="1" Grid.Column="1"/>
-                            <Button Height="50" Width="100" Content="POST" HorizontalAlignment="Center"       
-                                    Margin="20 10 0 0" Command="{Binding SaveCommand}" Grid.Row="2" Grid.ColumnSpan="2"/>
+                            <Button Height="50" Width="100" Content="Save" HorizontalAlignment="Center"       
+                                    Margin="20 10 0 0" Command="{Binding SaveCommand}" Grid.Row="2" Grid.Column="0"/>
+                            <Button Height="50" Width="100" Content="Cancel" HorizontalAlignment="Center"       
+                                    Margin="20 10 0 0" Command="{Binding ResetCommand}" Grid.Row="2" Grid.Column="1"/>
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Center" Margin="20 0 0 0" Grid.Row="3" Height="30" Grid.ColumnSpan="2"/>
                         </Grid>
                     </GroupBox>
@@ -204,27 +208,20 @@
                                         Command="{Binding AddToDishesCommand}"
                                         CommandParameter="{Binding SelectedDish}"/>
                             </ListBox.InputBindings>
-                        </ListBox>-->                  
-                    <GroupBox Header="Рецепт" Grid.Column="1" DataContext="{Binding DishesModel.RecipesModel}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="830"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="3*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <!--<DockPanel DockPanel.Dock="Top" >
-                                <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=d}" TextWrapping="Wrap"
-                                    VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" FontWeight="Bold"/>
-                            </DockPanel>-->
-                            <DataGrid ItemsSource="{Binding Recipes}" Grid.Row="0" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
-                                VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="recipes">
+                        </ListBox>-->
+                    <GroupBox Header="Description" Grid.Column="1" DataContext="{Binding DishesModel}" FontWeight="Bold">
+                        <DockPanel DockPanel.Dock="Top">
+                            <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=Description}" TextWrapping="Wrap"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" />
+                        </DockPanel>
+                    </GroupBox>
+                    <GroupBox Header="Recipe" Grid.Column="1" DataContext="{Binding DishesModel.RecipesModel}" Grid.Row="1">                                                  
+                            <DataGrid ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedRecipe,Mode=TwoWay}"
+                                VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="recipes" Height="Auto">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                                     <DataGridComboBoxColumn Header="Ingredient" DisplayMemberPath="Name" SelectedValuePath="Id" 
-                                      SelectedValueBinding="{Binding IngredientId}" ItemsSource="{Binding IngredientsModel.Ingredients}"/>
+                                      SelectedValueBinding="{Binding IngredientId}" ItemsSource="{Binding Source={StaticResource Ingredients}}"/>
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
                                 </DataGrid.Columns>
                             </DataGrid>                          
@@ -259,11 +256,9 @@
                                 <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding DataContext.SelectedCategory.Name, RelativeSource={RelativeSource AncestorType=Window}}" Margin="5,0,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Описание:"/>
                                 <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Description}" Margin="5,0,0,0"/>
-                            </Grid>-->
-                            <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>
-                        </Grid>
+                            </Grid>-->                        
                     </GroupBox>
-                    <GroupBox DataContext="{Binding DishesModel.RecipesModel}" Grid.Row="1" Grid.Column="1">
+                    <GroupBox DataContext="{Binding DishesModel.RecipesModel}" Grid.Row="2" Grid.Column="1" Header="RecipeForm">
                         <Grid x:Name="FormRecipe" Visibility="{Binding IsFormVisible,Converter={StaticResource BoolToVisibilityConverter}}" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -276,43 +271,39 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="Quantity:" Margin="0 10 0 0"/>
+                            <Label Content="Quantity:" Grid.Row="2" Margin="0 10 0 0"/>
                             <Label Content="Ingredient:" Grid.Row="1"/>
-                            <Label Content="Dish:" Grid.Row="2"/>
-                            <TextBox Text="{Binding Path=RecipeModel.Quantity}" Height="20"  Width="Auto" MinWidth="150" Grid.Column="1"/>
-                            <ComboBox DisplayMemberPath="Name" SelectedValue="{Binding RecipeModel.IngredientId,Mode=TwoWay}" ItemsSource="{Binding IngredientsModel.Ingredients}" 
+                            <Label Content="Id:" Grid.Row="0"/>
+                            <TextBox Text="{Binding Path=RecipeModel.Quantity}" Height="20"  Width="Auto" MinWidth="150" Grid.Row="2" Grid.Column="1"/>
+                            <ComboBox DisplayMemberPath="Name" SelectedValue="{Binding RecipeModel.IngredientId,Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Ingredients}}" 
                                   SelectedValuePath="Id" Height="20"  Width="Auto" Grid.Row="1" Grid.Column="1"/>
-                            <TextBlock Text="{Binding RecipeModel.DishesId}" Height="20"  Width="Auto" Grid.Row="2" MinWidth="150" Grid.Column="1"/>
-                            <Button Height="50" Width="100" Content="POST" HorizontalAlignment="Center"       
-                                    Margin="20 10 0 0" Command="{Binding SaveCommand}" Grid.Row="3" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="{Binding RecipeModel.Id}" Height="20"  Width="Auto" Grid.Row="0" MinWidth="150" Grid.Column="1"/>
+                            <Button Height="50" Width="100" Content="Save" HorizontalAlignment="Center"       
+                                    Margin="20 10 0 0" Command="{Binding SaveCommand}" Grid.Row="3" Grid.Column="0"/>
+                            <Button Height="50" Width="100" Content="Cancel" HorizontalAlignment="Center"       
+                                    Margin="20 10 0 0" Command="{Binding ResetCommand}" Grid.Row="3" Grid.Column="1"/>
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Center" Margin="20 8 0 0" Grid.Row="4" Grid.ColumnSpan="2"/>
                         </Grid>
                     </GroupBox>
-                    <GridSplitter Grid.Column="1" HorizontalAlignment="Left"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Продукты">
+            <TabItem Header="Products">
                 <ListView x:Name="ProductsByCategoriesListView" ItemsSource="{Binding Source={StaticResource ProductsByCategories}}" SelectedItem="{Binding SelectedProduct}" 
                           HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single"  >
                     <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">
-                            <!--<Setter Property="ToolTip" Value="{Binding Path=ValueType, Converter={StaticResource ParamValueTypeToTooltipConverter}}">
-                            </Setter>-->
+                        <Style TargetType="{x:Type ListViewItem}">                          
                             <Setter Property="HorizontalContentAlignment" Value="Left" />
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView x:Name="gridView">
                             <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" />
+                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" />                          
                             <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
                             <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding ExpirationDate}" />
-                            <!--behaviors:GridViewColumnResize.Width="*"-->
                             <GridView.ColumnHeaderContainerStyle>
                                 <Style TargetType="GridViewColumnHeader">
                                     <Setter Property="Visibility" Value="Collapsed" />
-                                   
-                                    <!--<Setter Property="Width" Value="50" />-->
                                 </Style>
                             </GridView.ColumnHeaderContainerStyle>
                         </GridView>
@@ -325,14 +316,11 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsExpanded="False" BorderBrush="Black" BorderThickness="0,0,0,1" Background="DarkGray">
-                                                    <!--<dxmvvm:Interaction.Behaviors>
-                                                        <behaviors:PersistGroupExpandedStateBehavior GroupName="{Binding Name}" />
-                                                    </dxmvvm:Interaction.Behaviors>-->
+                                                <Expander IsExpanded="False" BorderBrush="Black" BorderThickness="0,0,0,1" Background="DarkGray">                                                  
                                                     <Expander.Header>
                                                         <TextBlock Foreground="White">
                                                             <Run>Категория: </Run>
-                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name, Converter={StaticResource DeviceDescriptionConverter}}" />
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
                                                         </TextBlock>
                                                     </Expander.Header>
                                                     <Expander.Content>

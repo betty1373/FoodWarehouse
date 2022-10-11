@@ -20,7 +20,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Net.Http;
 using FW.WPF.WebAPI.Clients;
-
 namespace FW.WPF.ViewModels;
 
 public class IngredientViewModel : ViewModel

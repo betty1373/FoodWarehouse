@@ -9,7 +9,7 @@ using FW.WPF.Identity.Interfaces;
 using FW.WPF.Identity.Clients;
 using FW.WPF.ViewModels;
 using FW.Domain.Models;
-
+using FW.WPF.Models;
 namespace FW.WebAPI.Infrastructure;
 
 public static class Registrator
@@ -20,10 +20,6 @@ public static class Registrator
            .AddTypedClient<IProductsClient, ProductsClient>()
            .AddTypedClient<IWarehouseClient, WarehouseClient>()
            .AddTypedClient<IClientBase<IngredientResponseVM,IngredientVM>, IngredientsClient>()
-           //.AddTypedClient<IOrdersRepository, OrdersClient>()
-           //.AddTypedClient<IRepository<Product>, ProductsClient>()
-           //.AddTypedClient<IRepository<Order>, OrdersClient>()
-           //.AddTypedClient<IRepository<Customer>, CustomersClient>()
            .AddTypedClient<IDishesClient, DishesClient>()
            .AddTypedClient<IRecipesClient, RecipesClient>()
         //    .AddTypedClient<IClientIdentity, ClientIdentity>()
@@ -37,7 +33,7 @@ public static class Registrator
     {
         services.AddHttpClient("FW.Identity", client => client.BaseAddress = new(Address))
           .AddTypedClient<IClientIdentity<LoginModel>, ClientIdentity>()
-        .SetHandlerLifetime(TimeSpan.FromMinutes(15));
+          .SetHandlerLifetime(TimeSpan.FromMinutes(15));
        // services.AddTransient<IClientIdentity<LoginModel>, ClientIdentity>();
         return services;
     }

@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace FW.WPF.ViewModels;
+namespace FW.WPF.Models;
 
 public class IngredientModel : ViewModel
 {

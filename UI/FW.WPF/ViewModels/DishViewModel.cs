@@ -19,7 +19,6 @@ using FW.WPF.Views.Windows;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Net.Http;
-
 namespace FW.WPF.ViewModels;
 
 public class DishViewModel : ViewModel
@@ -112,7 +111,7 @@ public class DishViewModel : ViewModel
         get => ErrorMessageViewModel.Message;
     }
     /// <summary>Заголовок главного окна</summary>
-    private string _Title = "Вход в систему";
+    private string _Title = "Dishes";
 
     /// <summary>Заголовок главного окна</summary>
     public string Title { get => _Title; set => Set(ref _Title, value); }

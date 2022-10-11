@@ -7,7 +7,7 @@ using FW.WPF.Identity.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using FW.WPF.Domain.Exceptions;
 using FW.WPF.WebAPI.Interfaces;
-
+using FW.WPF.Models;
 namespace FW.WPF.ViewModels;
 
 public class LoginWindowViewModel : ViewModel

@@ -2,7 +2,7 @@
 using FW.WPF.ViewModels.Base;
 using FW.WPF.Identity.Interfaces;
 
-namespace FW.WPF.ViewModels;
+namespace FW.WPF.Models;
 
 public class LoginModel:ViewModel,IUserIdentity
 {

@@ -1,6 +1,6 @@
 ﻿using FW.WPF.ViewModels.Base;
 using System;
-namespace FW.WPF.ViewModels;
+namespace FW.WPF.Models;
 
 public class CategoryModel 
 {
