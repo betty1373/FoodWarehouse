@@ -65,10 +65,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="lib\DropDownMenuControl\" />
     <Folder Include="Styles\Base\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\FW.Domain\FW.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DropdownMenuControl">
+      <HintPath>lib\DropDownMenuControl\DropdownMenuControl.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\login-background.jpg">

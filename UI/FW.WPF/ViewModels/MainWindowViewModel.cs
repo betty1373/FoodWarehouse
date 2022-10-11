@@ -16,6 +16,7 @@ using FW.Domain;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using FW.WPF.WebAPI.Clients;
 
 namespace FW.WPF.ViewModels;
 
@@ -451,11 +452,11 @@ public class MainWindowViewModel : ViewModel
     //        Name = message_model.Message,
     //        Description = message_model.Value
     //    };
-      
+
     //    try
     //    {
     //        var result = await _DishesClient.AddAsync(new_Dish, LoginModel?.AccessToken);
-           
+
     //        Dishes = new List<DishModel>(Dishes!) { new DishModel
     //           {
     //               Id = result ?? System.Guid.Empty,
@@ -512,7 +513,7 @@ public class MainWindowViewModel : ViewModel
     //    try
     //    {
     //        var result = await _DishesClient.UpdateAsync(Dish.Id,new_Dish, LoginModel?.AccessToken);
-         
+
     //        Dishes = Dishes?.Where(c => !c.Id.Equals(Dish_id)).ToArray();
     //        Dishes = new List<DishModel>(Dishes!) { new DishModel
     //           {
@@ -568,8 +569,39 @@ public class MainWindowViewModel : ViewModel
     //        MessageBox.Show($"Ошибка в процессе удаления блюда {e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
     //    }
     //}
-  //  #endregion
-    public void ResetGridView()
+    //  #endregion
+    private ICommand _PrepareCommand;
+    public ICommand PrepareCommand
+    {
+        get
+        {
+            if (_PrepareCommand == null)
+                _PrepareCommand = new RelayCommand((param) => PrepareDish((Guid)param), null);
+
+            return _PrepareCommand;
+        }
+    }
+    public async void PrepareDish(Guid id)
+    {
+        if (MessageBox.Show("Confirm prepare of this dish?", "Dish", MessageBoxButton.YesNo)
+            == MessageBoxResult.Yes)
+        {
+            try
+            {
+                // var result = await _DishesClient.RemoveAsync(id, LoginModel.AccessToken);
+                MessageBox.Show("Record successfully prepared.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occured while saving. " + ex.InnerException);
+            }
+            finally
+            {
+                // Dishes = Dishes?.Where(c => !c.Id.Equals(id)).ToArray();
+            }
+        }
+    }
+        public void ResetGridView()
     {
         if (GridView != null)
         {
