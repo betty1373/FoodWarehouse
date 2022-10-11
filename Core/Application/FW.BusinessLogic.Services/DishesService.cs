@@ -34,7 +34,7 @@ public class DishesService : IDishesService
     }
     public async Task<IEnumerable<DishResponseDto>> GetByParentId(Guid ParentId)
     {
-        var items = await _dbContext.Dishes.Where(u => EF.Property<Guid?>(u, "UserId") == ParentId).ToListAsync();
+        var items = await _dbContext.Dishes.Where(u => EF.Property<Guid?>(u, "UserId").Equals(ParentId)).ToListAsync();
 
         return _mapper.Map<List<DishResponseDto>>(items);
     }

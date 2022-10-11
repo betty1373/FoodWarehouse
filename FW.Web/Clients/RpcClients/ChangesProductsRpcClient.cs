@@ -6,6 +6,7 @@ using FW.Web.RpcClients.Interfaces;
 using FW.BusinessLogic.Contracts;
 using FW.Domain.Models;
 using FW.RabbitMQOptions;
+using FW.BusinessLogic.Contracts.Recipes;
 
 namespace FW.Web.RpcClients
 {
@@ -13,7 +14,7 @@ namespace FW.Web.RpcClients
     {
         private readonly IMapper _mapper;
         private readonly string _exchangeName;
-        private readonly QueueNames _queueNames;
+        private readonly QueueNamesWithGetByParentId _queueNames;
 
         public ChangesProductsRpcClient(IMapper mapper, IConnectionRabbitMQ connection, IConfiguration configuration) :
             base(connection, configuration)
@@ -29,7 +30,17 @@ namespace FW.Web.RpcClients
             foreach (string qName in _queueNames.AllNames)
                 ConfigureRpcClient(_exchangeName, qName);
         }
+        public async Task<IEnumerable<ChangesProductResponseVM>> GetByParentId(Guid ParentId)
+        {
+            var queryDto = new ChangesProductsGetByParentIdDto { ProductId = ParentId };
+            var queryJsonDto = JsonSerializer.Serialize(queryDto);
 
+            var responseJsonDto = await CallAsync(_exchangeName, _queueNames.GetByParentId, queryJsonDto);
+            var responseDto = JsonSerializer.Deserialize<ChangesProductsResponseDto>(responseJsonDto);
+
+            var items = _mapper.Map<List<ChangesProductResponseVM>>(responseDto?.ChangesProducts);
+            return items;
+        }
         public async Task<int> Count()
         {
             var queryDto = new ChangesProductsGetCountDto();

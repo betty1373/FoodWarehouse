@@ -18,6 +18,7 @@ namespace FW.Management.Configurations
         public static void ConfigureEventHandlers(this IServiceCollection services)
         {
             services.AddScoped<IIntegrationEventHandler<ChangesProductGetByIdDto>, ChangesProductGetByIdEventHandler>();
+            services.AddScoped<IIntegrationEventHandler<ChangesProductsGetByParentIdDto>, ChangesProductsGetByParentIdEventHandler>();
             services.AddScoped<IIntegrationEventHandler<ChangesProductGetPageDto>, ChangesProductsGetPageEventHandler>();
             services.AddScoped<IIntegrationEventHandler<ChangesProductsGetAllDto>, ChangesProductsGetAllEventHandler>();
             services.AddScoped<IIntegrationEventHandler<ChangesProductsGetCountDto>, ChangesProductsGetCountEventHandler>();

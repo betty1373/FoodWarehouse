@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.ChangesProducts;
+using FW.BusinessLogic.Contracts.Products;
 using FW.BusinessLogic.Services.Abstractions;
 using FW.Domain;
 using FW.EntityFramework;
@@ -26,6 +27,12 @@ public class ChangesProductsService : IChangesProductsService
     {
         var count = await _dbContext.ChangesProducts.CountAsync();
         return count;
+    }
+    public async Task<IEnumerable<ChangesProductResponseDto>> GetByParentId(Guid ParentId)
+    {
+        var items = await _dbContext.ChangesProducts.Where(p => p.ProductId.Equals(ParentId)).ToListAsync();
+
+        return _mapper.Map<List<ChangesProductResponseDto>>(items);
     }
     public async Task<IEnumerable<ChangesProductResponseDto>> GetPaged(int Skip, int Take)
     {

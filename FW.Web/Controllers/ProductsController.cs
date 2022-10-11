@@ -12,6 +12,7 @@ namespace FW.Web.Controllers
     public class ProductsController : EntityApiController<ProductVM, ProductResponseVM>
     {
         public ProductsController(IProductsRequestClient client) : base(client) { }
+
         [HttpGet("[action]/{WarehouseId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

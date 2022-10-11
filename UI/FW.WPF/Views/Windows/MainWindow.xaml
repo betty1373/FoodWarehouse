@@ -14,10 +14,11 @@
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <CollectionViewSource x:Key="ProductsByCategories" Source="{Binding Products}">
-            <CollectionViewSource.GroupDescriptions>              
+            <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="CategoryName" />
-                <!--<PropertyGroupDescription PropertyName="CategoryId" />-->
             </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="ProductChanges" Source="{Binding ChangesProduct}">
         </CollectionViewSource>
         <CollectionViewSource x:Key="Ingredients" Source="{Binding IngredientsModel.Ingredients}" />
     </Window.Resources>
@@ -38,7 +39,7 @@
                     <Button MinWidth="110" Command="{Binding ResetCommand}">
                         <DockPanel>
                             <fa:ImageAwesome Height="18" Icon="Solid_Folder"/>
-                            <TextBlock Text="Add Dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                            <TextBlock Text="Add Dish" VerticalAlignment="Center" Margin="5"/>
                         </DockPanel>
                     </Button>
                     <Button MinWidth="110" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedDish.Id}">
@@ -55,14 +56,7 @@
                             <TextBlock Text="Delete Dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
                         </DockPanel>
                     </Button>
-                </StackPanel>
-                <!--<Button Command="{Binding UpdateDataCommand}">
-                    <DockPanel>
-                        <fa:ImageAwesome Height="18" Icon="Solid_CloudDownloadAlt"/>
-                        <TextBlock Text="Обновить" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                    </DockPanel>
-                </Button>
-                <Separator/>-->            
+                </StackPanel>                          
                 <Separator/>
                 <StackPanel Orientation="Horizontal" DataContext="{Binding DishesModel}">
                     <Button Command="{Binding RecipesModel.AddCommand}" CommandParameter="{Binding SelectedDish.Id}">
@@ -288,65 +282,130 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Products">
-                <ListView x:Name="ProductsByCategoriesListView" ItemsSource="{Binding Source={StaticResource ProductsByCategories}}" SelectedItem="{Binding SelectedProduct}" 
-                          HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single"  >
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">                          
-                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.View>
-                        <GridView x:Name="gridView">
-                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" />                          
-                            <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
-                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding ExpirationDate}" />
-                            <GridView.ColumnHeaderContainerStyle>
-                                <Style TargetType="GridViewColumnHeader">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </Style>
-                            </GridView.ColumnHeaderContainerStyle>
-                        </GridView>
-                    </ListView.View>
-                    <ListView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.ContainerStyle>
-                                <Style TargetType="{x:Type GroupItem}">
-                                    <Setter Property="Margin" Value="0,0,0,5"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsExpanded="False" BorderBrush="Black" BorderThickness="0,0,0,1" Background="DarkGray">                                                  
-                                                    <Expander.Header>
-                                                        <TextBlock Foreground="White">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="ProductsByCategoriesListView" ItemsSource="{Binding Source={StaticResource ProductsByCategories}}"
+                              SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Stretch" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single"  >
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView x:Name="gridView">
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
+                                <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" />
+                                <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
+                                <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding ExpirationDate,StringFormat=dd.mm.YY}" />
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </Style>
+                                </GridView.ColumnHeaderContainerStyle>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander IsExpanded="False" BorderBrush="Black" BorderThickness="0,0,0,1" Background="DarkGray">
+                                                        <Expander.Header>
+                                                            <TextBlock Foreground="White">
                                                             <Run>Категория: </Run>
                                                             <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
                                                         </TextBlock>
-                                                    </Expander.Header>
-                                                    <Expander.Content>
-                                                        <Border Background="White" Margin="2" CornerRadius="3">
-                                                            <ItemsPresenter />
-                                                        </Border>
-                                                    </Expander.Content>
-                                                </Expander>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <DockPanel Background="LightGray" LastChildFill="True" >
-                                        <!--<Image x:Name="TargetImageBlock" Source="/ResourcesMonitor;component/Images/23.png" DockPanel.Dock="Left" Width="16" Height="16" Margin="5,3,0,3" />-->
-                                        <TextBlock Text="{Binding Path=Name}" Foreground="Black" Margin="10,0,0,0" />
-                                    </DockPanel>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ListView.GroupStyle>
-                </ListView>
+                                                        </Expander.Header>
+                                                        <Expander.Content>
+                                                            <Border Background="White" Margin="2" CornerRadius="3">
+                                                                <ItemsPresenter />
+                                                            </Border>
+                                                        </Expander.Content>
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Background="LightGray" LastChildFill="True" >
+                                            <TextBlock Text="{Binding Path=Name}" Foreground="Black" Margin="10,0,0,0" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                    <ListView x:Name="ProductsChanges" ItemsSource="{Binding Source={StaticResource ProductChanges}}"
+                             HorizontalAlignment="Stretch" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single"  >
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView x:Name="gridView1">
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
+                                <GridViewColumn Header="Наименование" DisplayMemberBinding="{Binding IngredientName}" />
+                                <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
+                                <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding ExpirationDate,StringFormat=dd.mm.YY}" />
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <Style TargetType="GridViewColumnHeader">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </Style>
+                                </GridView.ColumnHeaderContainerStyle>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander IsExpanded="False" BorderBrush="Black" BorderThickness="0,0,0,1" Background="DarkGray">
+                                                        <Expander.Header>
+                                                            <TextBlock Foreground="White">
+                                                            <Run>Категория: </Run>
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
+                                                        </TextBlock>
+                                                        </Expander.Header>
+                                                        <Expander.Content>
+                                                            <Border Background="White" Margin="2" CornerRadius="3">
+                                                                <ItemsPresenter />
+                                                            </Border>
+                                                        </Expander.Content>
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Background="LightGray" LastChildFill="True" >
+                                            <TextBlock Text="{Binding Path=Name}" Foreground="Black" Margin="10,0,0,0" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                </Grid>
                 <!--<Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

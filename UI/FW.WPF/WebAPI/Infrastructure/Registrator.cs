@@ -20,6 +20,7 @@ public static class Registrator
            .AddTypedClient<IProductsClient, ProductsClient>()
            .AddTypedClient<IWarehouseClient, WarehouseClient>()
            .AddTypedClient<IClientBase<IngredientResponseVM,IngredientVM>, IngredientsClient>()
+           .AddTypedClient<IChangesProductsClient, ChangesProductsClient>()
            .AddTypedClient<IDishesClient, DishesClient>()
            .AddTypedClient<IRecipesClient, RecipesClient>()
         //    .AddTypedClient<IClientIdentity, ClientIdentity>()

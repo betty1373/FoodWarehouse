@@ -79,7 +79,7 @@ public class WarehousesService : IWarehousesService
     }
     public async Task<WarehouseResponseDto> GetByParentId(Guid ParentId)
     {
-        var item = await _dbContext.Warehouses.Where(u => EF.Property<Guid?>(u, "UserId") == ParentId).FirstOrDefaultAsync();
+        var item = await _dbContext.Warehouses.Where(u => EF.Property<Guid?>(u, "UserId").Equals(ParentId)).FirstOrDefaultAsync();
         var dto = _mapper.Map<WarehouseResponseDto>(item);
         return dto;
     }

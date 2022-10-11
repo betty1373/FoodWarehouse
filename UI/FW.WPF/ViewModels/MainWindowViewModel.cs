@@ -22,20 +22,20 @@ namespace FW.WPF.ViewModels;
 public class MainWindowViewModel : ViewModel
 {
     public GridView GridView { get; set; }
-
-   // private readonly IDishesClient _DishesClient;
-  
     private readonly IProductsClient _ProductsClient;
+    private readonly IChangesProductsClient _ChangesProductsClient;
 
     public MainWindowViewModel(
         LoginModel loginModel,       
-        IProductsClient ProductsClient        
-     //   IDishesClient DishesClient
+        IProductsClient productsClient,
+        IChangesProductsClient changesProductsClient
+        //   IDishesClient DishesClient
         )
     {
-    //    _DishesClient = DishesClient;
-       _LoginModel = loginModel;
-        _ProductsClient = ProductsClient;       
+        //    _DishesClient = DishesClient;
+        _LoginModel = loginModel;
+        _ProductsClient = productsClient;
+        _ChangesProductsClient = changesProductsClient;
     }
 
     int _tabItem;
@@ -100,9 +100,9 @@ public class MainWindowViewModel : ViewModel
     #endregion
     #region Products : IEnumerable<ProductViewModel>? - Список продуктов
     /// <summary>Список продуктов</summary>
-    private IEnumerable<ProductViewModel>? _Products;
+    private IEnumerable<ProductResponseVM>? _Products;
     /// <summary>Список продуктов</summary>
-    public IEnumerable<ProductViewModel>? Products
+    public IEnumerable<ProductResponseVM>? Products
     {
         get => _Products;
         private set
@@ -124,19 +124,7 @@ public class MainWindowViewModel : ViewModel
         try
         {
             var items = await _ProductsClient.GetByParentIdAsync(warehouse_id ?? Guid.Empty, access_token ?? "");
-            Products = items.Select(product =>
-                    new ProductViewModel
-                    {
-                        Id = product.Id,
-                        WarehouseId = product.WarehouseId,
-                        CategoryId = product.CategoryId,
-                        CategoryName = product.CategoryName,
-                        IngredientId = product.IngredientId,
-                        IngredientName = product.IngredientName,
-                     //   Name = product.Name,
-                        ExpirationDate = product.ExpirationDate,
-                        Quantity = product.Quantity
-                    }).ToArray();
+            Products = items;
         }
         catch (OperationCanceledException) { }
         catch (Exception e)
@@ -146,14 +134,49 @@ public class MainWindowViewModel : ViewModel
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+    private IEnumerable<ChangesProductResponseVM>? _ChangesProduct;
+    /// <summary>Список продуктов</summary>
+    public IEnumerable<ChangesProductResponseVM>? ChangesProduct
+    {
+        get => _ChangesProduct;
+        private set
+        {
+            if (!Set(ref _ChangesProduct, value)) return;
+        }
+    }
+    private async void OnChangesProductCommandExecuted(object? p)
+    {
+        if (p is not Guid { } id)
+        { 
+            ChangesProduct = null;
+            return;
+        }
+
+        try
+        {
+            var items = await _ChangesProductsClient.GetByParentIdAsync(id, LoginModel?.AccessToken ?? "");
+            ChangesProduct = items;
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception e)
+        {
+            MessageBox.Show(
+                $"Ошибка при получении движения продукта:\r\n{e.Message}", "Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
     #region SelectedProduct : ProductViewModel? - Выбранный продукт
     /// <summary>Выбранный склад</summary>
-    private ProductViewModel? _SelectedProduct;
+    private ProductResponseVM? _SelectedProduct;
     /// <summary>Выбранный склад</summary>
-    public ProductViewModel? SelectedProduct
+    public ProductResponseVM? SelectedProduct
     {
         get => _SelectedProduct;
-        set => Set(ref _SelectedProduct, value);
+        set
+        {
+            Set(ref _SelectedProduct, value);
+            OnChangesProductCommandExecuted(SelectedProduct?.Id);
+        }
     }
     #endregion
     //  public CartOrderViewModel Cart { get; }
@@ -259,16 +282,16 @@ public class MainWindowViewModel : ViewModel
     //}
     //#endregion
 
-    #region SelectedRecipe : RecipeViewModel? - Выбранный рецепт
-    /// <summary>Выбранный рецепт</summary>
-    private RecipeModel? _SelectedRecipe;
-    /// <summary>Выбранный рецепт</summary>
-    public RecipeModel? SelectedRecipe
-    {
-        get => _SelectedRecipe;
-        set => Set(ref _SelectedRecipe, value);
-    }
-    #endregion
+    //#region SelectedRecipe : RecipeViewModel? - Выбранный рецепт
+    ///// <summary>Выбранный рецепт</summary>
+    //private RecipeModel? _SelectedRecipe;
+    ///// <summary>Выбранный рецепт</summary>
+    //public RecipeModel? SelectedRecipe
+    //{
+    //    get => _SelectedRecipe;
+    //    set => Set(ref _SelectedRecipe, value);
+    //}
+    //#endregion
 
     #region Command LoginCommand - Вход в систему
     /// <summary>Вход в систему</summary>

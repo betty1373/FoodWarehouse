@@ -5,5 +5,6 @@ namespace FW.Web.RpcClients.Interfaces
 {
     public interface IChangesProductsRpcClient: IBaseClient<ChangesProductVM, ChangesProductResponseVM>
     {
+        public Task<IEnumerable<ChangesProductResponseVM>> GetByParentId(Guid ParentId);
     }
 }

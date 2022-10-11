@@ -24,6 +24,7 @@ namespace FW.Management.Configurations
             var queueNames = builder.Configuration.GetSection(RabbitMqQueueNamesOptions.KeyValue).Get<RabbitMqQueueNamesOptions>();
 
             eventBus.Subscribe<ChangesProductGetByIdEventHandler, ChangesProductGetByIdDto>(queueNames.ChangesProducts.Get, exchangeNames.ChangesProducts);
+            eventBus.Subscribe<ChangesProductsGetByParentIdEventHandler, ChangesProductsGetByParentIdDto>(queueNames.ChangesProducts.GetByParentId, exchangeNames.ChangesProducts);
             eventBus.Subscribe<ChangesProductsGetPageEventHandler, ChangesProductGetPageDto>(queueNames.ChangesProducts.GetPage, exchangeNames.ChangesProducts);
             eventBus.Subscribe<ChangesProductsGetAllEventHandler, ChangesProductsGetAllDto>(queueNames.ChangesProducts.GetAll, exchangeNames.ChangesProducts);
             eventBus.Subscribe<ChangesProductsGetCountEventHandler, ChangesProductsGetCountDto>(queueNames.ChangesProducts.Count, exchangeNames.ChangesProducts);

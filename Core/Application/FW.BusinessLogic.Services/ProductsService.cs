@@ -35,7 +35,7 @@ public  class ProductsService : IProductsService
 
     public async Task<IEnumerable<ProductResponseDto>> GetByParentId(Guid ParentId)
     {
-        var items = await _dbContext.Products.Include(x => x.Ingredients).Include(x => x.Categories).Where(p => p.WarehouseId == ParentId).ToListAsync();
+        var items = await _dbContext.Products.Include(x => x.Ingredients).Include(x => x.Categories).Where(p => p.WarehouseId.Equals(ParentId)).ToListAsync();
 
         return _mapper.Map<List<ProductResponseDto>>(items);
     }

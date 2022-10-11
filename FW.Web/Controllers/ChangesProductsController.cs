@@ -12,6 +12,21 @@ namespace FW.Web.Controllers
     public class ChangesProductsController : EntityApiController<ChangesProductVM, ChangesProductResponseVM>
     {
         public ChangesProductsController(IChangesProductsRpcClient client) : base(client) { }
+        [HttpGet("[action]/{ProductId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+       
+        public async Task<IActionResult> GetByParentId(Guid ProductId)
+        {
+            var client = (IChangesProductsRpcClient)Client;
+            var response = await client.GetByParentId(ProductId);
+
+            if (!response.Any())
+                return NoContent();
+            return Ok(response);
+        }
     }
    
 }

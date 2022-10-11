@@ -1,4 +1,5 @@
 ﻿using FW.BusinessLogic.Contracts.ChangesProducts;
+using FW.BusinessLogic.Contracts.Products;
 
 namespace FW.BusinessLogic.Services.Abstractions;
 
@@ -30,7 +31,12 @@ public interface IChangesProductsService
     /// <param name="id"> идентификатор </param>
     /// <returns> Id изменение продукта </returns>
     public Task<ChangesProductResponseDto> GetById(Guid id);
-
+    /// <summary>
+    /// Получить изменения по продукту 
+    /// </summary>
+    /// <param name="id"> идентификатор </param>
+    /// <returns> Id рецепта </returns>
+    public Task<IEnumerable<ChangesProductResponseDto>> GetByParentId(Guid ParentId);
     /// <summary>
     /// Создать изменение продукта
     /// </summary>
