@@ -6,5 +6,6 @@ namespace FW.Web.RpcClients.Interfaces
     public interface IDishesRpcClient : IBaseClient<DishVM, DishResponseVM>
     {
         public Task<IEnumerable<DishResponseVM>> GetByParentId(Guid ParentId);
+        public Task<ResponseStatusResult> Cook(Guid id, Guid warehauseId, int numPortions);
     }
 }

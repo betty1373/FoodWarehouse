@@ -80,7 +80,7 @@ namespace FW.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
                     DishesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<double>(type: "double precision", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
@@ -112,7 +112,7 @@ namespace FW.Migrations
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
                   //  Name = table.Column<string>(type: "text", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Quantity = table.Column<double>(type: "double precision", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
@@ -147,7 +147,7 @@ namespace FW.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Quantity = table.Column<double>(type: "double precision", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)

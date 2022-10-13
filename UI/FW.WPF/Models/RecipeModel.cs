@@ -30,8 +30,8 @@ public class RecipeModel : ViewModel
         get => _IngredientId;
         set => Set(ref _IngredientId, value);
     }
-    private double _Quantity;
-    public double Quantity
+    private int _Quantity;
+    public int Quantity
     {
         get => _Quantity;
         set => Set(ref _Quantity, value);

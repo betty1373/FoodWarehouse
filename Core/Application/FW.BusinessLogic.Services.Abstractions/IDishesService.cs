@@ -1,4 +1,5 @@
 ﻿using FW.BusinessLogic.Contracts.Dishes;
+using FW.BusinessLogic.Contracts;
 namespace FW.BusinessLogic.Services.Abstractions;
 
 public interface IDishesService
@@ -50,4 +51,5 @@ public interface IDishesService
     /// <returns>true: обновлен, false: не найден </returns>
     public Task<bool> Update(DishUpdateDto dto);
     public Task<IEnumerable<DishResponseDto>> GetByParentId(Guid ParentId);
+    public Task<ResponseStatusResult> Cook(Guid dishId, Guid warehauseId, int numPortions);
 }

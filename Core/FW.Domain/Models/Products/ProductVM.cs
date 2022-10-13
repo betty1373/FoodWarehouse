@@ -6,6 +6,6 @@ public class ProductVM
     public Guid IngredientId { get; set; }
     //public string Name { get; set; }
     public DateTime ExpirationDate { get; set; }
-    public double Quantity { get; set; }
+    public int Quantity { get; set; }
 }
 

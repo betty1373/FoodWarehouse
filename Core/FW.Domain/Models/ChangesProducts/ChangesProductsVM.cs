@@ -2,6 +2,6 @@
 public class ChangesProductVM
 {
     public Guid ProductId { get; set; }
-    public double Quantity { get; set; }
+    public int Quantity { get; set; }
 }
 

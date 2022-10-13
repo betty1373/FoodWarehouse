@@ -5,7 +5,7 @@ public class RabbitMqQueueNamesOptions
     public const string KeyValue = "RabbitMQ:QueueNames";
 
     public QueueNamesWithGetByParentId ChangesProducts { get; set; }
-    public QueueNamesWithGetByParentId Dishes { get; set; }
+    public QueueNamesDishes Dishes { get; set; }
     public QueueNames Ingredients { get; set; }
     public QueueNamesWithGetByParentId Products { get; set; }
     public QueueNamesWithGetByParentId Recipes { get; set; }
@@ -37,6 +37,17 @@ public class QueueNamesWithGetByParentId : QueueNames
         get
         {
             return new string[] { Get, GetByParentId, GetPage, GetAll, Count, Create, Update, Delete };
+        }
+    }
+}
+public class QueueNamesDishes : QueueNamesWithGetByParentId
+{
+    public string Cook { get; set; }
+    public override string[] AllNames
+    {
+        get
+        {
+            return new string[] { Get, GetPage, GetAll, Count, Create, Update, Delete, Cook };
         }
     }
 }

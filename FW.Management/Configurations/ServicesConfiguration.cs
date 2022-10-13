@@ -12,6 +12,7 @@ namespace FW.Management.Configurations
             
             services.AddScoped<IChangesProductsService, ChangesProductsService>();
             services.AddScoped<IDishesService, DishesService>();
+            services.AddScoped<ICookingDishService, CookingDishService>();
             services.AddScoped<IIngredientsService, IngredientsService>();
             services.AddScoped<IRecipesService, RecipesService>();
             services.AddScoped<IWarehousesService, WarehousesService>();

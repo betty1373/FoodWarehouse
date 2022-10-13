@@ -15,6 +15,6 @@ public class ProductModel
     public Guid IngredientId { get; init; }
     public string IngredientName { get; init; } = null!;
     public DateTime ExpirationDate { get; init; }
-    public double Quantity { get; init; }
+    public int Quantity { get; init; }
 }
 

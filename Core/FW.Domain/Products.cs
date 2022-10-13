@@ -11,7 +11,7 @@ public class Products : Base
     //[Required]
     //public string Name { get; set; }
     public DateTime ExpirationDate { get; set; }
-    public double Quantity { get; set; }
+    public int Quantity { get; set; }
 
     [ForeignKey("WarehouseId")]
     public Warehouses Warehouses { get; set; }

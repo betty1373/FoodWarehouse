@@ -54,8 +54,8 @@ namespace FW.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
                     b.Property<Guid>("UserId")
                      .HasColumnType("uuid");
 
@@ -132,8 +132,8 @@ namespace FW.Migrations
                     //    .IsRequired()
                     //    .HasColumnType("text");
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("WarehouseId")
                         .HasColumnType("uuid");
@@ -166,8 +166,8 @@ namespace FW.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
                     b.Property<Guid>("UserId")
                      .HasColumnType("uuid");
 

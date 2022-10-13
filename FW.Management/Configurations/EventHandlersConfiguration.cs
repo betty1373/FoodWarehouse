@@ -10,6 +10,7 @@ using FW.Management.EventHandlers.Ingredients;
 using FW.Management.EventHandlers.Recipes;
 using FW.Management.EventHandlers.Warehouses;
 using FW.BusinessLogic.Contracts;
+using FW.RabbitMQOptions;
 
 namespace FW.Management.Configurations
 {
@@ -34,6 +35,8 @@ namespace FW.Management.Configurations
             services.AddScoped<IIntegrationEventHandler<DishCreateDto>, DishCreateEventHandler>();
             services.AddScoped<IIntegrationEventHandler<DishUpdateDto>, DishUpdateEventHandler>();
             services.AddScoped<IIntegrationEventHandler<DishDeleteDto>, DishDeleteEventHandler>();
+            services.AddScoped<IIntegrationEventHandler<DishCookDto>, DishCookEventHandler>();
+          
 
             services.AddScoped<IIntegrationEventHandler<IngredientGetByIdDto>, IngredientGetByIdEventHandler>();
             services.AddScoped<IIntegrationEventHandler<IngredientsGetPageDto>, IngredientsGetPageEventHandler>();

@@ -4,6 +4,7 @@ using FW.BusinessLogic.Services.Abstractions;
 using FW.Domain;
 using FW.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using FW.BusinessLogic.Contracts;
 
 namespace FW.BusinessLogic.Services;
 
@@ -11,11 +12,12 @@ public class DishesService : IDishesService
 {
     private readonly ApplicationContext _dbContext;
     private readonly IMapper _mapper;
-
-    public DishesService(ApplicationContext dbContext, IMapper mapper)
+    private readonly ICookingDishService _cookingDishService;
+    public DishesService(ApplicationContext dbContext, IMapper mapper, ICookingDishService cookingDishService)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _cookingDishService = cookingDishService;
     }
     public async Task<IEnumerable<DishResponseDto>> GetAll()
     {
@@ -80,5 +82,9 @@ public class DishesService : IDishesService
         }
 
         return false;
+    }
+    public async Task<ResponseStatusResult> Cook(Guid dishId, Guid warehauseId, int numPortions)
+    {
+        return await _cookingDishService.Cook(dishId, warehauseId, numPortions);
     }
 }

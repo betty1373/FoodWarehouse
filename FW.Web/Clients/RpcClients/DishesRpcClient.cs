@@ -14,7 +14,7 @@ namespace FW.Web.RpcClients
     {
         private readonly IMapper _mapper;
         private readonly string _exchangeName;
-        private readonly QueueNamesWithGetByParentId _queueNames;
+        private readonly QueueNamesDishes _queueNames;
 
         public DishesRpcClient(IMapper mapper, IConnectionRabbitMQ connection, IConfiguration configuration) :
             base(connection, configuration)
@@ -119,6 +119,17 @@ namespace FW.Web.RpcClients
             var queryJsonDto = JsonSerializer.Serialize(queryDto);
 
             var responseJsonDto = await CallAsync(_exchangeName, _queueNames.Delete, queryJsonDto);
+            var responseDto = JsonSerializer.Deserialize<ResponseStatusResult>(responseJsonDto);
+
+            return responseDto;
+        }
+        public async Task<ResponseStatusResult> Cook(Guid id, Guid warehouseId, int numPortions)
+        {
+            var queryDto = new DishCookDto { Id = id, WarehouseId = warehouseId, NumPortions = numPortions };
+
+            var queryJsonDto = JsonSerializer.Serialize(queryDto);
+
+            var responseJsonDto = await CallAsync(_exchangeName, _queueNames.Cook, queryJsonDto);
             var responseDto = JsonSerializer.Deserialize<ResponseStatusResult>(responseJsonDto);
 
             return responseDto;

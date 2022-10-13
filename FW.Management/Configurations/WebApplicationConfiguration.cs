@@ -40,6 +40,7 @@ namespace FW.Management.Configurations
             eventBus.Subscribe<DishUpdateEventHandler, DishUpdateDto>(queueNames.Dishes.Update, exchangeNames.Dishes);
             eventBus.Subscribe<DishDeleteEventHandler, DishDeleteDto>(queueNames.Dishes.Delete, exchangeNames.Dishes);
             eventBus.Subscribe<DishesGetByParentIdEventHandler, DishesGetByParentIdDto>(queueNames.Dishes.GetByParentId, exchangeNames.Dishes);
+            eventBus.Subscribe<DishCookEventHandler, DishCookDto>(queueNames.Dishes.Cook, exchangeNames.Dishes);
 
             eventBus.Subscribe<IngredientGetByIdEventHandler, IngredientGetByIdDto>(queueNames.Ingredients.Get, exchangeNames.Ingredients);
             eventBus.Subscribe<IngredientsGetPageEventHandler, IngredientsGetPageDto>(queueNames.Ingredients.GetPage, exchangeNames.Ingredients);

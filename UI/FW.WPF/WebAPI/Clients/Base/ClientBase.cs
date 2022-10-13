@@ -28,13 +28,13 @@ public abstract class ClientBase<T,K> : IClientBase<T,K>
         this.Address = Address;
     }
 
-    //public async Task<int> Count(CancellationToken Cancel = default)
-    //{
-    //    var count = await Http
-    //       .GetFromJsonAsync<int>($"{Address}/count", Cancel)
-    //       .ConfigureAwait(false);
-    //    return count;
-    //}
+    public async Task<int> Count(CancellationToken Cancel = default)
+    {
+        var count = await Http
+           .GetFromJsonAsync<int>($"{Address}/count", Cancel)
+           .ConfigureAwait(false);
+        return count;
+    }
 
     public async Task<IEnumerable<T>> GetAllAsync(string? token,CancellationToken Cancel = default)
     {
