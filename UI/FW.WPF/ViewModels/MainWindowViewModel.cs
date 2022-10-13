@@ -570,37 +570,7 @@ public class MainWindowViewModel : ViewModel
     //    }
     //}
     //  #endregion
-    private ICommand _PrepareCommand;
-    public ICommand PrepareCommand
-    {
-        get
-        {
-            if (_PrepareCommand == null)
-                _PrepareCommand = new RelayCommand((param) => PrepareDish((Guid)param), null);
-
-            return _PrepareCommand;
-        }
-    }
-    public async void PrepareDish(Guid id)
-    {
-        if (MessageBox.Show("Confirm prepare of this dish?", "Dish", MessageBoxButton.YesNo)
-            == MessageBoxResult.Yes)
-        {
-            try
-            {
-                // var result = await _DishesClient.RemoveAsync(id, LoginModel.AccessToken);
-                MessageBox.Show("Record successfully prepared.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error occured while saving. " + ex.InnerException);
-            }
-            finally
-            {
-                // Dishes = Dishes?.Where(c => !c.Id.Equals(id)).ToArray();
-            }
-        }
-    }
+   
         public void ResetGridView()
     {
         if (GridView != null)

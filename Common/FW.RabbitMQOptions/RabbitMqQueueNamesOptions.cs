@@ -47,7 +47,7 @@ public class QueueNamesDishes : QueueNamesWithGetByParentId
     {
         get
         {
-            return new string[] { Get, GetPage, GetAll, Count, Create, Update, Delete, Cook };
+            return new string[] { Get, GetByParentId, GetPage, GetAll, Count, Create, Update, Delete, Cook };
         }
     }
 }

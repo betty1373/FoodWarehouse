@@ -116,7 +116,37 @@ public class DishViewModel : ViewModel
     /// <summary>Заголовок главного окна</summary>
     public string Title { get => _Title; set => Set(ref _Title, value); }
 
-   
+    private ICommand _PrepareCommand;
+    public ICommand PrepareCommand
+    {
+        get
+        {
+            if (_PrepareCommand == null)
+                _PrepareCommand = new RelayCommand((param) => PrepareDish((Guid)param), null);
+
+            return _PrepareCommand;
+        }
+    }
+    public async void PrepareDish(Guid id)
+    {
+        if (MessageBox.Show("Confirm prepare of this dish?", "Dish", MessageBoxButton.YesNo)
+            == MessageBoxResult.Yes)
+        {
+            try
+            {
+                var result = await _DishesClient.CookAsync(id, LoginModel?.WarehouseId??Guid.Empty,1, LoginModel.AccessToken);
+                MessageBox.Show("Record successfully prepared.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occured while saving. " + ex.InnerException);
+            }
+            finally
+            {
+                // Dishes = Dishes?.Where(c => !c.Id.Equals(id)).ToArray();
+            }
+        }
+    }
     private ICommand _saveCommand;
     private ICommand _resetCommand;
     private ICommand _editCommand;

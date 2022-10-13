@@ -186,7 +186,7 @@
                                     BorderThickness="1">
                                                     <StackPanel>
                                                         <Button Content="Edit" />
-                                                        <Button Command="{Binding DataContext.PrepareCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        <Button Command="{Binding DataContext.DishesModel.PrepareCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
                         CommandParameter="{Binding Id}" Content="Приготовить блюдо" />
                                                     </StackPanel>
                                                 </Border>
