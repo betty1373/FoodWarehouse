@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
-using FW.Domain;
+using FW.Models;
 namespace FW.WPF.WebAPI.Interfaces;
 
 public interface IClientBase<T,K> where T : class, IEntity

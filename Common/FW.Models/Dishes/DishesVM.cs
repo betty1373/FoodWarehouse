@@ -1,4 +1,4 @@
-﻿namespace FW.Domain.Models;
+﻿namespace FW.Models;
 public class DishVM
 {
     public string Name { get; set; }

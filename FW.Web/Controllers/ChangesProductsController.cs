@@ -2,7 +2,7 @@
 using FW.Web.Controllers.Base;
 using FW.Web.RequestClients.Interfaces;
 using FW.Web.RpcClients.Interfaces;
-using FW.Domain.Models;
+using FW.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FW.Web.Controllers

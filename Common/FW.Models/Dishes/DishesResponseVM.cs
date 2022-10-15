@@ -1,4 +1,5 @@
-﻿namespace FW.Domain.Models;
+﻿
+namespace FW.Models;
 public class DishResponseVM : IEntity
 {
     public Guid Id { get; set; }

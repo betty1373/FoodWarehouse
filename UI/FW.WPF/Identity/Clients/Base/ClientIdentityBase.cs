@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using FW.WPF.Identity.Interfaces;
-using FW.Domain;
+using FW.Models;
 using FW.WPF.ViewModels;
 using IdentityModel.Client;
 using FW.WPF.Domain.Exceptions;

@@ -1,5 +1,5 @@
 ﻿using FW.BusinessLogic.Contracts;
-using FW.Domain;
+using FW.Models;
 using FW.Web.Clients.Interfaces;
 using FW.Web.RpcClients.Interfaces;
 using IdentityModel;

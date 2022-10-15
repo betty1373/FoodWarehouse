@@ -1,5 +1,5 @@
 ﻿using FW.WPF.WebAPI.Clients.Base;
-using FW.Domain.Models;
+using FW.Models;
 using System.Net.Http;
 using FW.WPF.Identity.Clients.Base;
 using IdentityModel.Client;

@@ -1,5 +1,5 @@
 ﻿using FW.BusinessLogic.Contracts;
-using FW.Domain.Models;
+using FW.Models;
 using FW.Web.Clients.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

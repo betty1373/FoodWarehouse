@@ -2,7 +2,7 @@
 using FW.BusinessLogic.Contracts;
 using FW.BusinessLogic.Contracts.Category;
 using FW.Web.RequestClients.Interfaces;
-using FW.Domain.Models;
+using FW.Models;
 using MassTransit;
 
 namespace FW.Web.RequestClients

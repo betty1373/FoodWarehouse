@@ -10,6 +10,7 @@ COPY ["FW.Web/FW.Web.csproj", "FW.Web/"]
 RUN dotnet restore "FW.Web/FW.Web.csproj"
 COPY . .
 WORKDIR "/src/FW.Web"
+RUN dotnet dev-certs https --trust
 RUN dotnet build "FW.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish

@@ -1,4 +1,4 @@
-﻿namespace FW.Domain;
+﻿namespace FW.Models;
 
 public interface IEntity
 {

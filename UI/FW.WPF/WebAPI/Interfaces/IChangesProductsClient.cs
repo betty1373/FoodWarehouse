@@ -1,10 +1,9 @@
 ﻿using FW.WPF.WebAPI.Clients.Base;
-using FW.Domain.Models;
+using FW.Models;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
-using FW.Domain;
 
 namespace FW.WPF.WebAPI.Interfaces;
 

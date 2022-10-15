@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FW.Web.RequestClients.Interfaces;
-using FW.Domain.Models;
+using FW.Models;
 using FW.Web.Controllers.Base;
 
 namespace FW.Web.Controllers

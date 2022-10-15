@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.Products;
-using FW.Domain.Models;
+using FW.Models;
 
 namespace FW.Web.Configurations.Mappings
 {

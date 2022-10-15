@@ -69,7 +69,7 @@
     <Folder Include="Styles\Base\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\FW.Domain\FW.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\FW.Models\FW.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DropdownMenuControl">

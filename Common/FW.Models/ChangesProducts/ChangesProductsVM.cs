@@ -1,7 +1,6 @@
-﻿namespace FW.Domain.Models;
-public class ChangesProductResponseVM : IEntity
+﻿namespace FW.Models;
+public class ChangesProductVM
 {
-    public Guid Id { get; set; }   
     public Guid ProductId { get; set; }
     public int Quantity { get; set; }
     public DateTime CreatedOn { get; set; }

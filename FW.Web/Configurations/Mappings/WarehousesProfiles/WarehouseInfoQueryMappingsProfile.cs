@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.Warehouses;
-using FW.Domain.Models;
+using FW.Models;
 namespace FW.Web.Configurations.Mappings
 {
     public class WarehouseInfoQueryMappingsProfile : Profile

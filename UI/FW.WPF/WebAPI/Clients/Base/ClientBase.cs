@@ -8,7 +8,7 @@ using System.Linq;
 using System;
 using FW.WPF.WebAPI.Interfaces;
 using IdentityModel.Client;
-using FW.Domain;
+using FW.Models;
 using FW.WPF.WebAPI;
 
 namespace FW.WPF.WebAPI.Clients.Base;

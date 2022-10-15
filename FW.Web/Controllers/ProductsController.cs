@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FW.BusinessLogic.Contracts;
 using FW.Web.RequestClients.Interfaces;
-using FW.Domain.Models;
+using FW.Models;
 using FW.Web.Controllers.Base;
 using FW.Web.RpcClients.Interfaces;
 

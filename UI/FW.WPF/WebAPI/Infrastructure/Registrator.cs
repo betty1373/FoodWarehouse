@@ -8,7 +8,7 @@ using System.Net.Http;
 using FW.WPF.Identity.Interfaces;
 using FW.WPF.Identity.Clients;
 using FW.WPF.ViewModels;
-using FW.Domain.Models;
+using FW.Models;
 using FW.WPF.Models;
 namespace FW.WebAPI.Infrastructure;
 

@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\FW.EventBusRabbitMQ\FW.EventBus.csproj" />
     <ProjectReference Include="..\Common\FW.LoggerOptions\FW.LogOptions.csproj" />
+    <ProjectReference Include="..\Common\FW.Models\FW.Models.csproj" />
     <ProjectReference Include="..\Common\FW.RabbitMQOptions\FW.RabbitMQOptions.csproj" />
     <ProjectReference Include="..\Core\Application\FW.BusinessLogic.Contracts\FW.BusinessLogic.Contracts.csproj" />
     <ProjectReference Include="..\Core\Application\FW.BusinessLogic.Services\FW.BusinessLogic.Services.csproj" />
