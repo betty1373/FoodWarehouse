@@ -34,11 +34,10 @@ public class DishesClient : ClientBase<DishResponseVM, DishVM>,IDishesClient
         return items!;
     }
 
-    public async Task<bool> CookAsync(Guid Id, Guid WarehouseId, int NumPortions, string? token, CancellationToken Cancel = default) 
+    public async Task<bool> CookAsync(Guid Id,  int NumPortions, string? token, CancellationToken Cancel = default) 
     {
         Http.SetBearerToken(token);
-        var response = await Http.PutAsJsonAsync($"{Address}/Cook/{Id}:{WarehouseId}:{NumPortions}", new StringContent(""), Cancel).ConfigureAwait(false);
-        // PutAsync($"https://localhost:2001/api/Dishes/Cook/{dishes[0].Id}?numPortions={numPortions}"
+        var response = await Http.PutAsJsonAsync($"{Address}/Cook/{Id}:{NumPortions}", new StringContent(""), Cancel).ConfigureAwait(false);
         if (response.StatusCode == HttpStatusCode.NotFound)
             return false;
 

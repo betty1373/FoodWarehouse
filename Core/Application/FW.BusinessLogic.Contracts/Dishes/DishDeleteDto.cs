@@ -1,9 +1,8 @@
 ﻿using FW.EventBus.Interfaces;
 
-namespace FW.BusinessLogic.Contracts.Dishes
+namespace FW.BusinessLogic.Contracts.Dishes;
+
+public class DishDeleteDto : IIntegrationEvent
 {
-    public class DishDeleteDto : IIntegrationEvent
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

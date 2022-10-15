@@ -12,7 +12,6 @@ public class DishCreateMappingsProfile : Profile
             .ForMember(p => p.UserId, m => m.MapFrom(src => EF.Property<Guid?>(src, "UserId"))); ;
         CreateMap<DishCreateDto, Dishes>()
             .ForMember(p => p.Id, map => map.Ignore())
-            //.ForMember(p => p.ModifiedOn, map => map.Ignore())
             ;
     }
 }

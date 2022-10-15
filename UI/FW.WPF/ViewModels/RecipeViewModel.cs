@@ -31,7 +31,7 @@ public class RecipeViewModel : ViewModel
   
   
     private readonly IRecipesClient _RecipesClient;
-    public RecipeViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
+    public RecipeViewModel(LoginModel? loginModel)
     {
         LoginModel = loginModel;
         _RecipesClient = App.Services.GetRequiredService<IRecipesClient>();    
@@ -98,7 +98,7 @@ public class RecipeViewModel : ViewModel
     }
     public async Task GetRecipesAsync(Guid id)
     {
-        var items = await _RecipesClient.GetByParentIdAsync(id,LoginModel.AccessToken);
+        var items = await _RecipesClient.GetByParentIdAsync(id,LoginModel?.AccessToken);
         Recipes = items;
         SelectedRecipe = Recipes?.FirstOrDefault();
         OnPropertyChanged(nameof(SelectedRecipe));
@@ -205,7 +205,7 @@ public class RecipeViewModel : ViewModel
             };
             if (RecipeModel.Id.Equals(Guid.Empty))
             {
-                var result = await _RecipesClient.AddAsync(item, LoginModel.AccessToken);
+                var result = await _RecipesClient.AddAsync(item, LoginModel?.AccessToken);
 
                 Recipes = new List<RecipeResponseVM>(Recipes!) { new RecipeResponseVM
                  {
@@ -218,7 +218,7 @@ public class RecipeViewModel : ViewModel
             }
             else
             {
-                var result = await _RecipesClient.UpdateAsync(RecipeModel.Id, item, LoginModel.AccessToken);
+                var result = await _RecipesClient.UpdateAsync(RecipeModel.Id, item, LoginModel?.AccessToken);
                 Recipes = Recipes?.Where(c => !c.Id.Equals(RecipeModel.Id)).ToArray();
                 Recipes = new List<RecipeResponseVM>(Recipes!) { new RecipeResponseVM
                  {
@@ -239,7 +239,7 @@ public class RecipeViewModel : ViewModel
         {
             try
             {
-                var result = await _RecipesClient.RemoveAsync(id, LoginModel.AccessToken);
+                var result = await _RecipesClient.RemoveAsync(id, LoginModel?.AccessToken);
                 MessageBox.Show("Record successfully deleted.");
             }
             catch (Exception ex)

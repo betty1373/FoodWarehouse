@@ -1,13 +1,12 @@
 ﻿using FW.EventBus.Interfaces;
 
-namespace FW.BusinessLogic.Contracts.Dishes
+namespace FW.BusinessLogic.Contracts.Dishes;
+
+public class DishCookDto : IIntegrationEvent
 {
-    public class DishCookDto : IIntegrationEvent
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public Guid WarehouseId { get; set; }
+    public Guid UserId { get; set; }
 
-        public int NumPortions { get; set; }
-    }
+    public int NumPortions { get; set; }
 }

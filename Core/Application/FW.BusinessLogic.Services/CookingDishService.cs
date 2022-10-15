@@ -3,33 +3,45 @@ using FW.EntityFramework;
 using FW.Domain;
 using Microsoft.EntityFrameworkCore;
 using FW.BusinessLogic.Contracts;
+using FW.BusinessLogic.Contracts.ChangesProducts;
+using AutoMapper;
+
 
 namespace FW.BusinessLogic.Services
 {
     public class CookingDishService : ICookingDishService
     {
         private readonly ApplicationContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CookingDishService(ApplicationContext dbContext)
+        public CookingDishService(ApplicationContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // ToDo: сделать рефакторинг кода
-        public async Task<ResponseStatusResult> Cook(Guid dishId, Guid warehouseId, int numPortions)
+        public async Task<ResponseStatusResult> Cook(Guid dishId, Guid userId, int numPortions)
         {
             // заготовка результата приготовления
             var result = new ResponseStatusResult
             {
                 Id = dishId,
-                Status = Contracts.StatusResult.NotFound
+                Status = StatusResult.NotFound
             };
 
             // проверка существования блюда
-            var dish = await FirstOrDefaultAsync(dishId);
+            var dish = await FirstOrDefaultAsync(dishId,userId);
             if (dish == null)
             {
                 result.Title = "Dish not found";
+                return result;
+            }
+
+            var warehouse = await _dbContext.Warehouses.Where(p => EF.Property<Guid?>(p, "UserId").Equals(userId)).FirstOrDefaultAsync();
+            if (warehouse == null)
+            {
+                result.Title = "Warehouse for this user not found";
                 return result;
             }
 
@@ -46,7 +58,7 @@ namespace FW.BusinessLogic.Services
             // получение продуктов, которые соответствуют ингредиентам блюда и есть в наличии с действующим сроком годности 
             var dateNow = DateTime.UtcNow;
             var products = await _dbContext.Products
-                .Where(p => p.WarehouseId == warehouseId &&
+                .Where(p => p.WarehouseId == warehouse.Id &&
                        quantityIngredientsDish.Keys.Contains(p.IngredientId) &&
                        p.Quantity > 0 &&
                        p.ExpirationDate.Date >= dateNow.Date)
@@ -83,13 +95,13 @@ namespace FW.BusinessLogic.Services
                     if (product.Quantity >= quantityProduct)
                     {
                         product.Quantity -= quantityProduct;
-                        await ChangesProductCreate(product, quantityProduct);
+                        await ChangesProductCreate(product, quantityProduct,userId);
                         break;
                     }
                     else
                     {
                         quantityProduct -= product.Quantity;
-                        await ChangesProductCreate(product, product.Quantity);
+                        await ChangesProductCreate(product, product.Quantity, userId);
                         product.Quantity = 0;
                     }
                 }
@@ -98,19 +110,21 @@ namespace FW.BusinessLogic.Services
             await _dbContext.SaveChangesAsync();
 
             result.Status = StatusResult.Ok;
-            result.Title = $"Dish {dish.Name} cooked";
+            result.Title = $"Dish {dish.Name} was cooked";
             return result;
         }
 
         // добавление в журнал изменения продуктов
-        private async Task ChangesProductCreate(Products product, int quantity)
-        {
-            var changesProduct = new ChangesProducts
+        private async Task ChangesProductCreate(Products product, int quantity,Guid userId)
+        {          
+            var dto = new ChangesProductCreateDto
             {
                 ProductId = product.Id,
-                Quantity = -quantity
+                Quantity = -quantity,
+                UserId = userId
             };
-            await _dbContext.ChangesProducts.AddAsync(changesProduct);
+            var item = _mapper.Map<ChangesProducts>(dto);
+            await _dbContext.ChangesProducts.AddAsync(item);
         }
 
         // проверка все ли продукты по рецепту в необходимом количестве
@@ -127,7 +141,6 @@ namespace FW.BusinessLogic.Services
                 if (totalQuantityProduct >= totalQuantityIngredientDish)
                     result.Add(ingredientId, totalQuantityIngredientDish);
             }
-
             return result;
         }
 
@@ -147,10 +160,10 @@ namespace FW.BusinessLogic.Services
             return string.Join(", ", ingredients);
         }
 
-        private async Task<Dishes?> FirstOrDefaultAsync(Guid id)
+        private async Task<Dishes?> FirstOrDefaultAsync(Guid id,Guid userId)
         {
             return await _dbContext.Dishes
-                .Where(p => p.Id == id)
+                .Where(p => p.Id.Equals(id) && EF.Property<Guid?>(p, "UserId").Equals(userId))
                 .FirstOrDefaultAsync();
         }
     }

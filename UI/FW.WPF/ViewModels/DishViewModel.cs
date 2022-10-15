@@ -61,7 +61,7 @@ public class DishViewModel : ViewModel
     private LoginModel? LoginModel { get; } = null!;
     private readonly IDishesClient _DishesClient;
    
-    public DishViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
+    public DishViewModel(LoginModel? loginModel)
     {
         this.LoginModel = loginModel;
         _DishesClient = App.Services.GetRequiredService<IDishesClient>();
@@ -80,7 +80,7 @@ public class DishViewModel : ViewModel
     public MessageViewModel ErrorMessageViewModel { get; }
     private DishModel? _DishModel = new();
 
-    /// <summary>Данные пользователя</summary>
+  
     public DishModel? DishModel
     {
         get => _DishModel;
@@ -134,7 +134,7 @@ public class DishViewModel : ViewModel
         {
             try
             {
-                var result = await _DishesClient.CookAsync(id, LoginModel?.WarehouseId??Guid.Empty,1, LoginModel.AccessToken);
+                var result = await _DishesClient.CookAsync(id, 1, LoginModel.AccessToken);
                 MessageBox.Show("Record successfully prepared.");
             }
             catch (Exception ex)
@@ -143,7 +143,7 @@ public class DishViewModel : ViewModel
             }
             finally
             {
-                // Dishes = Dishes?.Where(c => !c.Id.Equals(id)).ToArray();
+               
             }
         }
     }
@@ -196,7 +196,7 @@ public class DishViewModel : ViewModel
     }
     public void Reset()
     {
-        DishModel.Name = string.Empty;
+        DishModel.Name = String.Empty;
         DishModel.Id = Guid.Empty;
         DishModel.Description = string.Empty;
         IsFormVisible = !IsFormVisible;
@@ -220,7 +220,7 @@ public class DishViewModel : ViewModel
             };
             if (DishModel.Id.Equals(Guid.Empty))
             {            
-                var result = await _DishesClient.AddAsync(item, LoginModel.AccessToken);                
+                var result = await _DishesClient.AddAsync(item, LoginModel?.AccessToken);                
                 Dishes = new List<DishResponseVM>(Dishes!) { new DishResponseVM
                  {
                        Id = result ?? System.Guid.Empty,
@@ -231,7 +231,7 @@ public class DishViewModel : ViewModel
             }
             else
             {
-                var result = await _DishesClient.UpdateAsync(DishModel.Id,item, LoginModel.AccessToken);
+                var result = await _DishesClient.UpdateAsync(DishModel.Id,item, LoginModel?.AccessToken);
                 Dishes = Dishes?.Where(c => !c.Id.Equals(DishModel.Id)).ToArray();
                 Dishes = new List<DishResponseVM>(Dishes!) { new DishResponseVM
                  {
@@ -251,7 +251,7 @@ public class DishViewModel : ViewModel
         {
             try
             {
-                var result = await _DishesClient.RemoveAsync(id, LoginModel.AccessToken);
+                var result = await _DishesClient.RemoveAsync(id, LoginModel?.AccessToken);
                 MessageBox.Show("Record successfully deleted.");
             }
             catch (Exception ex)

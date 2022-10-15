@@ -18,7 +18,6 @@ namespace FW.Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-     //   [HttpGet("warehause/{WarehauseId}")]
         public async Task<IActionResult> GetByParentId(Guid WarehouseId)
         {
             var client = (IProductsRequestClient)Client;

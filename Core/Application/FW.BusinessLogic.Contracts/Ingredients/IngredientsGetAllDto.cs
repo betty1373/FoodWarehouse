@@ -1,6 +1,5 @@
 ﻿using FW.EventBus.Interfaces;
 
-namespace FW.BusinessLogic.Contracts.Ingredients
-{
-    public class IngredientsGetAllDto : IIntegrationEvent{ }
-}
+namespace FW.BusinessLogic.Contracts.Ingredients;
+
+public class IngredientsGetAllDto : IIntegrationEvent{ }

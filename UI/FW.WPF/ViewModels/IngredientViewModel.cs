@@ -30,7 +30,7 @@ public class IngredientViewModel : ViewModel
     private LoginModel? LoginModel { get; } = null!;
     private readonly IClientBase<IngredientResponseVM, IngredientVM> _IngredientsClient;
     
-    public IngredientViewModel(LoginModel? loginModel)//IClientIdentity<LoginModel> clientIdentity)
+    public IngredientViewModel(LoginModel? loginModel)
     {
         LoginModel = loginModel;
         _IngredientsClient = App.Services.GetRequiredService<IClientBase<IngredientResponseVM, IngredientVM>>();
@@ -66,7 +66,7 @@ public class IngredientViewModel : ViewModel
 
     private void ExecuteRefreshCommand()
     {
-       GetIngredientsAsync(LoginModel.AccessToken).Await(Completed, HandleEror);
+       GetIngredientsAsync(LoginModel?.AccessToken).Await(Completed, HandleEror);
     }
 
     private void Completed()
@@ -160,7 +160,7 @@ public class IngredientViewModel : ViewModel
             };
             if (IngredientModel.Id.Equals(Guid.Empty))
             {
-                var result = await _IngredientsClient.AddAsync(item, LoginModel.AccessToken);
+                var result = await _IngredientsClient.AddAsync(item, LoginModel?.AccessToken);
                 Ingredients = new List<IngredientResponseVM>(Ingredients!) { new IngredientResponseVM
                  {
                        Id = result ?? System.Guid.Empty,
@@ -169,7 +169,7 @@ public class IngredientViewModel : ViewModel
             }
             else
             {
-                var result = await _IngredientsClient.UpdateAsync(IngredientModel.Id, item, LoginModel.AccessToken);
+                var result = await _IngredientsClient.UpdateAsync(IngredientModel.Id, item, LoginModel?.AccessToken);
                 Ingredients = Ingredients?.Where(c => !c.Id.Equals(IngredientModel.Id)).ToArray();
                 Ingredients = new List<IngredientResponseVM>(Ingredients!) { new IngredientResponseVM
                  {
@@ -187,7 +187,7 @@ public class IngredientViewModel : ViewModel
         {
             try
             {
-                var result = await _IngredientsClient.RemoveAsync(id, LoginModel.AccessToken);
+                var result = await _IngredientsClient.RemoveAsync(id, LoginModel?.AccessToken);
                 MessageBox.Show("Record successfully deleted.");
             }
             catch (Exception ex)

@@ -1,8 +1,7 @@
 ﻿
-namespace FW.BusinessLogic.Contracts.Ingredients
+namespace FW.BusinessLogic.Contracts.Ingredients;
+
+public class IngredientsResponseDto
 {
-    public class IngredientsResponseDto
-    {
-        public IEnumerable<IngredientResponseDto> Ingredients { get; set; }
-    }
+    public IEnumerable<IngredientResponseDto> Ingredients { get; set; }
 }

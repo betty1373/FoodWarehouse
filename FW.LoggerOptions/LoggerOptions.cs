@@ -3,5 +3,5 @@
 public class LoggerOptions
 {
     public const string KeyValue = "Logger";
-    public string Url { get; set; }
+    public string? Url { get; set; }
 }

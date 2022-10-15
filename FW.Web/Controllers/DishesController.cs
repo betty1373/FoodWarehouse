@@ -26,17 +26,17 @@ namespace FW.Web.Controllers
                 return NoContent();
             return Ok(response);
         }
-        [HttpPut("[action]/{id}:{warehauseId}:{numPortions}")]
+        [HttpPut("[action]/{id}:{numPortions}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Cook(Guid id,Guid warehauseId, int numPortions)
+        public async Task<IActionResult> Cook(Guid id, int numPortions)
         {
             if (id == Guid.Empty || numPortions == 0)
                 return BadRequest();
             var client = (IDishesRpcClient)Client;
-            var response = await client.Cook(id, warehauseId, numPortions);
+            var response = await client.Cook(id, UserId, numPortions);
 
             if (response.Status == StatusResult.NotFound)
                 return NotFound(response.Title);

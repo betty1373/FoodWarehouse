@@ -83,8 +83,8 @@ public class DishesService : IDishesService
 
         return false;
     }
-    public async Task<ResponseStatusResult> Cook(Guid dishId, Guid warehauseId, int numPortions)
+    public async Task<ResponseStatusResult> Cook(Guid dishId, Guid userId, int numPortions)
     {
-        return await _cookingDishService.Cook(dishId, warehauseId, numPortions);
+        return await _cookingDishService.Cook(dishId, userId, numPortions);
     }
 }

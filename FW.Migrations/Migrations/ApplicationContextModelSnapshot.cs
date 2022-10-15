@@ -45,9 +45,6 @@ namespace FW.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
@@ -128,10 +125,6 @@ namespace FW.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    //b.Property<string>("Name")
-                    //    .IsRequired()
-                    //    .HasColumnType("text");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -179,35 +172,6 @@ namespace FW.Migrations
 
                     b.ToTable("Recipes");
                 });
-
-            //modelBuilder.Entity("FoodWarehouse.Infrastructure.Data.Users", b =>
-            //    {
-            //        b.Property<Guid>("Id")
-            //            .ValueGeneratedOnAdd()
-            //            .HasColumnType("uuid");
-
-            //        b.Property<string>("Email")
-            //            .IsRequired()
-            //            .HasColumnType("text");
-
-            //        b.Property<DateTime>("ModifiedOn")
-            //            .HasColumnType("timestamp with time zone");
-
-            //        b.Property<string>("Name")
-            //            .IsRequired()
-            //            .HasColumnType("text");
-
-            //        b.Property<string>("Password")
-            //            .IsRequired()
-            //            .HasColumnType("text");
-            //       // b.Property<string>("Token")
-            //       //    .IsRequired()
-            //       //    .HasColumnType("text");
-
-            //        b.HasKey("Id");
-
-            //        b.ToTable("Users");
-            //    });
 
             modelBuilder.Entity("FoodWarehouse.Infrastructure.Data.Warehouses", b =>
                 {
@@ -293,16 +257,7 @@ namespace FW.Migrations
                     b.Navigation("Ingredients");
                 });
 
-            //modelBuilder.Entity("FoodWarehouse.Infrastructure.Data.Warehouse", b =>
-            //    {
-            //        b.HasOne("FoodWarehouse.Infrastructure.Data.Users", "Users")
-            //            .WithMany()
-            //            .HasForeignKey("UserId")
-            //            .OnDelete(DeleteBehavior.Cascade)
-            //            .IsRequired();
-
-            //        b.Navigation("Users");
-            //    });
+       
 #pragma warning restore 612, 618
         }
     }

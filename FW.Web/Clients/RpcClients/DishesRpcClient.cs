@@ -123,9 +123,9 @@ namespace FW.Web.RpcClients
 
             return responseDto;
         }
-        public async Task<ResponseStatusResult> Cook(Guid id, Guid warehouseId, int numPortions)
+        public async Task<ResponseStatusResult> Cook(Guid id, Guid userId, int numPortions)
         {
-            var queryDto = new DishCookDto { Id = id, WarehouseId = warehouseId, NumPortions = numPortions };
+            var queryDto = new DishCookDto { Id = id, UserId = userId, NumPortions = numPortions };
 
             var queryJsonDto = JsonSerializer.Serialize(queryDto);
 

@@ -45,8 +45,6 @@ namespace FW.Management.Configurations
                 x.AddConsumer<CategoriesGetAllConsumer>();
                 x.AddConsumer<CategoriesGetCountConsumer>();
             });
-
-          //  services.AddMassTransitHostedService();
         }
     }
 }

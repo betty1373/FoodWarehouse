@@ -11,7 +11,6 @@ public class ChangesProductCreateMappingsProfile : Profile
             .ForMember(p => p.UserId, m => m.MapFrom(src => EF.Property<Guid?>(src, "UserId")));
         CreateMap<ChangesProductCreateDto, ChangesProducts>()
             .ForMember(p => p.Id, map => map.Ignore())
-         //   .ForMember(p => p.ModifiedOn, map => map.Ignore())
             .ForMember(p => p.Products, map => map.Ignore());
     }
 }

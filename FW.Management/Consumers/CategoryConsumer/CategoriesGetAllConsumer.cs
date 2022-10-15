@@ -33,7 +33,6 @@ namespace FW.Management.Consumers.CategoryConsumer
     {
         public CategoriesGetAllConsumerDefenition()
         {
-            //EndpointName = MassTransitQueueName.Category.Create;    // имя очереди
             ConcurrentMessageLimit = 1;                            // ограничение количества сообщений, потребляемых одновременно
         }
 

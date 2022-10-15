@@ -28,7 +28,6 @@ namespace FW.Management.Consumers.CategoryConsumer
                 await msgContext.RespondAsync(new CategoryResponseDto
                 {
                     Name = null,
-                   // ModifiedOn = DateTime.MinValue
                 });
         }
     }

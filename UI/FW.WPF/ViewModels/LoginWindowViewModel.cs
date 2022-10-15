@@ -16,7 +16,7 @@ public class LoginWindowViewModel : ViewModel
     private readonly IClientIdentity<LoginModel> _ClientIdentity;
     public event EventHandler<EventArgs<ViewModel>>? Login;
     protected virtual void OnLoging(ViewModel model) => Login?.Invoke(this, model);
-    public LoginWindowViewModel()//IClientIdentity<LoginModel> clientIdentity)
+    public LoginWindowViewModel()
     {
         _ClientIdentity = App.Services.GetRequiredService<IClientIdentity<LoginModel>>();
         _WarehouseClient = App.Services.GetRequiredService<IWarehouseClient>();
@@ -68,10 +68,7 @@ public class LoginWindowViewModel : ViewModel
         try
         {
             var disco = await _ClientIdentity.GetDiscoveryDocumentAsync();
-         //   if (disco is not string { Length: > 0 }) throw new IdentityServerNotFoundException(_ClientIdentity.);
-
             var token = await _ClientIdentity.RequestPasswordTokenAsync(login, disco);
-            //if (token is not string { Length: > 0 }) return;
             login.AccessToken = token;
             if (login?.AccessToken is not string { Length: > 0 } accesstoken) return;
 

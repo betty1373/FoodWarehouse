@@ -110,7 +110,7 @@ namespace FW.Migrations
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uuid", nullable: false),
-                  //  Name = table.Column<string>(type: "text", nullable: false),
+                 
                     ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -146,7 +146,7 @@ namespace FW.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                  
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

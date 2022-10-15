@@ -19,8 +19,7 @@ public class RecipesService : IRecipesService
     }
     public async Task<IEnumerable<RecipeResponseDto>> GetAll()
     {
-       // var items = await _dbContext.Recipes.Include(x => x.Ingredients).ThenInclude(ing => ing.Name).ToListAsync();
-  //      var items = await _dbContext.Recipes.Include(x => x.Ingredients).ToListAsync();
+    
         var items = await _dbContext.Recipes.ToListAsync();
         return _mapper.Map<List<RecipeResponseDto>>(items);
     } 
@@ -31,7 +30,6 @@ public class RecipesService : IRecipesService
     }
     public async Task<IEnumerable<RecipeResponseDto>> GetPaged(int Skip, int Take)
     {
-       // var items = await _dbContext.Recipes.Include(x => x.Ingredients).Skip(Skip).Take(Take).ToListAsync();
         var items = await _dbContext.Recipes.Skip(Skip).Take(Take).ToListAsync();
         return _mapper.Map<List<RecipeResponseDto>>(items);
     }
@@ -44,7 +42,7 @@ public class RecipesService : IRecipesService
 
     public async Task<IEnumerable<RecipeResponseDto>> GetByParentId(Guid ParentId)
     {
-       // var items = await _dbContext.Recipes.Include(x => x.Ingredients).Where(p=>p.DishesId == ParentId).ToListAsync();
+     
         var items = await _dbContext.Recipes.Where(p => p.DishesId.Equals(ParentId)).ToListAsync();
         return _mapper.Map<List<RecipeResponseDto>>(items);
     }

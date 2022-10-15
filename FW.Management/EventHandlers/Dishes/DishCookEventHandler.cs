@@ -22,10 +22,10 @@ namespace FW.Management.EventHandlers.Dishes
             _logger.Information($"Received a message from exchange/queue: {msgContext.ExchangeName}/{msgContext.QueueName}");
 
             var dishId = msgContext.Message.Id;
-            var warehouseId = msgContext.Message.WarehouseId;
+            var userId = msgContext.Message.UserId;
             var numPortions = msgContext.Message.NumPortions;
 
-            var status = await _dishesService.Cook(dishId, warehouseId, numPortions);
+            var status = await _dishesService.Cook(dishId, userId, numPortions);
 
             await msgContext.RespondAsync(status);
 

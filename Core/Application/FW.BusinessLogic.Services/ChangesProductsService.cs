@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts.ChangesProducts;
-using FW.BusinessLogic.Contracts.Products;
 using FW.BusinessLogic.Services.Abstractions;
 using FW.Domain;
 using FW.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using FW.BusinessLogic.Contracts.ChangesProducts;
 
 namespace FW.BusinessLogic.Services;
 
@@ -21,6 +21,11 @@ public class ChangesProductsService : IChangesProductsService
     public async Task<IEnumerable<ChangesProductResponseDto>> GetAll()
     {
         var items = await _dbContext.ChangesProducts.ToListAsync();
+        var response = new List<ChangesProductResponseDto>();
+        foreach (var item in items) 
+        {
+            response.Add(_mapper.Map<ChangesProductResponseDto>(item));
+        }
         return _mapper.Map<List<ChangesProductResponseDto>>(items);
     }
     public async Task<int> Count()
@@ -30,7 +35,22 @@ public class ChangesProductsService : IChangesProductsService
     }
     public async Task<IEnumerable<ChangesProductResponseDto>> GetByParentId(Guid ParentId)
     {
-        var items = await _dbContext.ChangesProducts.Where(p => p.ProductId.Equals(ParentId)).ToListAsync();
+        var items = await _dbContext.ChangesProducts.Where(p => p.ProductId.Equals(ParentId))
+                        .Select(p => new ChangesProductResponseDto
+                        {
+                            Id = p.Id,
+                            ProductId = p.ProductId,                       
+                            Quantity = p.Quantity,
+                            ModifiedOn = EF.Property<DateTime>(p, "ModifiedOn")
+
+                        }).ToListAsync();
+           
+           // new ChangesProductResponseDto { }.ToListAsync();
+        var response = new List<ChangesProductResponseDto>();
+        foreach (var item in items)
+        {
+            response.Add(_mapper.Map<ChangesProductResponseDto>(item));
+        }
 
         return _mapper.Map<List<ChangesProductResponseDto>>(items);
     }

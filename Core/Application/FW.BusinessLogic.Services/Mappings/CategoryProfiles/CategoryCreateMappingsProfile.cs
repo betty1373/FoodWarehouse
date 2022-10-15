@@ -11,8 +11,6 @@ public class CategoryCreateMappingsProfile : Profile
         CreateMap<Categories, CategoryCreateDto>()
             .ForMember(p => p.UserId, m => m.MapFrom(src => EF.Property<Guid?>(src, "UserId"))); ;
         CreateMap<CategoryCreateDto, Categories>()
-            .ForMember(p => p.Id, map => map.Ignore())
-            //.ForMember(p => p.ModifiedOn, map => map.Ignore())
-            ;
+            .ForMember(p => p.Id, map => map.Ignore());
     }
 }

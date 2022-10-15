@@ -30,34 +30,7 @@ public class DishModel : ViewModel
         set => Set(ref _Description, value);
     }
 }
- //   public IEnumerable<RecipeModel>? Recipe { get; set; }
-    //private DishModel backupCopy;
-    
-    //private bool inEdit;
 
-    //public void BeginEdit()
-    //{
-    //    if (inEdit) return;
-    //    inEdit = true;
-    //    backupCopy = MemberwiseClone() as DishModel;
-    //}
-
-    //public void CancelEdit()
-    //{
-    //    if (!inEdit) return;
-    //    inEdit = false;
-    //    Name = backupCopy.Name;
-    //    Id = backupCopy.Id;
-    //    Description = backupCopy.Description;
-    //}
-
-    //public void EndEdit()
-    //{
-    //    if (!inEdit) return;
-    //    inEdit = false;
-    //    backupCopy = null;
-    //}
-//}
 public class DishValidationRule : ValidationRule
 {
     public override ValidationResult Validate(object value,

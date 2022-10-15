@@ -10,7 +10,7 @@ public class CategoryUpdateMappingsProfile : Profile
         CreateMap<Categories, CategoryUpdateDto>()
             .ForMember(p => p.UserId, m => m.MapFrom(src => EF.Property<Guid?>(src, "UserId")));
         CreateMap<CategoryUpdateDto, Categories>()
-          //  .ForMember(p => p.ModifiedOn, map => map.Ignore())
+          
             ;
     }
 }

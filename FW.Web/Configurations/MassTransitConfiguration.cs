@@ -47,7 +47,6 @@ namespace FW.Web.Configurations
                 x.AddRequestClient<CategoryDeleteDto>();
             });
 
-          //  services.AddMassTransitHostedService();
         }
     }
 }

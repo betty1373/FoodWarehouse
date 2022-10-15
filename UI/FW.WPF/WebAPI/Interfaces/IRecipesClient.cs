@@ -9,11 +9,4 @@ namespace FW.WPF.WebAPI.Interfaces;
 public interface IRecipesClient : IClientBase<RecipeResponseVM, RecipeVM>
 {
     Task<IEnumerable<RecipeResponseVM>> GetByParentIdAsync(Guid ParentId, string token, CancellationToken Cancel = default);
-
-    //Task<Product> CreateProductAsync(
-    //    string Name,
-    //    decimal Price,
-    //    string Description,
-    //    string CategoryName,
-    //    CancellationToken Cancel = default);
 }
