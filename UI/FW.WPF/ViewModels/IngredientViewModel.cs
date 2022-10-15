@@ -24,7 +24,7 @@ namespace FW.WPF.ViewModels;
 
 public class IngredientViewModel : ViewModel
 {
-    private bool _isFormVisible;
+    private bool _isFormVisible=false;
     public bool IsFormVisible { get => _isFormVisible; set => Set(ref _isFormVisible, value); }
 
     private LoginModel? LoginModel { get; } = null!;

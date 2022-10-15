@@ -47,6 +47,8 @@ namespace FW.Migrations
 
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedOn")
+                     .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");

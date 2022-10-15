@@ -26,8 +26,8 @@ namespace FW.Web.RpcClients
             var queueNames = configuration.GetSection(RabbitMqQueueNamesOptions.KeyValue).Get<RabbitMqQueueNamesOptions>();
             _queueNames = queueNames.Ingredients;
 
-            foreach (string qName in _queueNames.AllNames)
-                ConfigureRpcClient(_exchangeName, qName);
+            Parallel.ForEach(_queueNames.AllNames, qName =>
+                ConfigureRpcClient(_exchangeName, qName));
         }
 
         public async Task<IngredientResponseVM> Get(Guid id)

@@ -121,7 +121,8 @@ namespace FW.BusinessLogic.Services
             {
                 ProductId = product.Id,
                 Quantity = -quantity,
-                UserId = userId
+                UserId = userId,
+                CreatedOn = DateTime.UtcNow,
             };
             var item = _mapper.Map<ChangesProducts>(dto);
             await _dbContext.ChangesProducts.AddAsync(item);

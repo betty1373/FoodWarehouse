@@ -6,7 +6,7 @@ public class ChangesProducts : Base
 {
     public Guid ProductId { get; set; }
     public int Quantity { get; set; }
-
+    public DateTime CreatedOn { get; set; }
     [ForeignKey("ProductId")]
     public Products Products { get; set; }
 }

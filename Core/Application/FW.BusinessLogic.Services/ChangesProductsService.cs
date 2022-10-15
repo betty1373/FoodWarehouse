@@ -35,23 +35,8 @@ public class ChangesProductsService : IChangesProductsService
     }
     public async Task<IEnumerable<ChangesProductResponseDto>> GetByParentId(Guid ParentId)
     {
-        var items = await _dbContext.ChangesProducts.Where(p => p.ProductId.Equals(ParentId))
-                        .Select(p => new ChangesProductResponseDto
-                        {
-                            Id = p.Id,
-                            ProductId = p.ProductId,                       
-                            Quantity = p.Quantity,
-                            ModifiedOn = EF.Property<DateTime>(p, "ModifiedOn")
-
-                        }).ToListAsync();
-           
-           // new ChangesProductResponseDto { }.ToListAsync();
-        var response = new List<ChangesProductResponseDto>();
-        foreach (var item in items)
-        {
-            response.Add(_mapper.Map<ChangesProductResponseDto>(item));
-        }
-
+        var items = await _dbContext.ChangesProducts.Where(p => p.ProductId.Equals(ParentId)).ToListAsync();
+     
         return _mapper.Map<List<ChangesProductResponseDto>>(items);
     }
     public async Task<IEnumerable<ChangesProductResponseDto>> GetPaged(int Skip, int Take)

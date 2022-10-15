@@ -26,20 +26,16 @@ public abstract class ClientIdentityBase<T> : IClientIdentity<T> where T : class
         this.Address = Address;
     }
 
-    public async Task<string?> GetDiscoveryDocumentAsync(CancellationToken Cancel = default)
+    public async Task<string?> RequestPasswordTokenAsync(T model,  CancellationToken Cancel = default)
     {
-        var response = await Http.GetDiscoveryDocumentAsync(Address, Cancel).ConfigureAwait(false);
+        var disco = await Http.GetDiscoveryDocumentAsync(Address, Cancel).ConfigureAwait(false);
 
-        if (response.IsError) throw new IdentityServerNotFoundException(response.Exception.Message); 
-        return response.TokenEndpoint;
-    }
-
-    public async Task<string?> RequestPasswordTokenAsync(T model, string endpoint, CancellationToken Cancel = default)
-    {
+        if (disco.IsError) throw new IdentityServerNotFoundException(disco.Exception.Message);
+        
         var response = await Http.RequestPasswordTokenAsync(new PasswordTokenRequest
         {
             // Эндпоинт выдачи токена
-            Address = endpoint,
+            Address = disco.TokenEndpoint,
 
             // указываем параметры зарегестрированного клиента в микросервисе FW.Identity
             ClientId = "clientWpf",

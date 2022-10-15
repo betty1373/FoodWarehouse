@@ -12,6 +12,5 @@ namespace FW.WPF.Identity.Interfaces;
 
 public interface IClientIdentity<T> where T : class,IUserIdentity
 { 
-    Task<string?> GetDiscoveryDocumentAsync(CancellationToken Cancel = default);
-    Task<string?> RequestPasswordTokenAsync(T model, string endpoint, CancellationToken Cancel = default);
+    Task<string?> RequestPasswordTokenAsync(T model, CancellationToken Cancel = default);
 }

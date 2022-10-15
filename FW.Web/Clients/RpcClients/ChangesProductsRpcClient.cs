@@ -7,7 +7,7 @@ using FW.BusinessLogic.Contracts;
 using FW.Domain.Models;
 using FW.RabbitMQOptions;
 using FW.BusinessLogic.Contracts.Recipes;
-
+using System.Threading;
 namespace FW.Web.RpcClients
 {
     public class ChangesProductsRpcClient : RpcClientBase, IChangesProductsRpcClient
@@ -27,8 +27,8 @@ namespace FW.Web.RpcClients
             var queueNames = configuration.GetSection(RabbitMqQueueNamesOptions.KeyValue).Get<RabbitMqQueueNamesOptions>();
             _queueNames = queueNames.ChangesProducts;
 
-            foreach (string qName in _queueNames.AllNames)
-                ConfigureRpcClient(_exchangeName, qName);
+            Parallel.ForEach(_queueNames.AllNames, qName =>
+                ConfigureRpcClient(_exchangeName, qName));
         }
         public async Task<IEnumerable<ChangesProductResponseVM>> GetByParentId(Guid ParentId)
         {

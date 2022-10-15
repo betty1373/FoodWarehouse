@@ -78,10 +78,10 @@ public class MainWindowViewModel : ViewModel
                 break;
             case 1:
           
-                if (LoginModel?.WarehouseName is string && Products is null)
+                if (LoginModel?.WarehouseName is string && (Products is null || DishesModel.DishCooked))
                 {
                     OnLoadProductsCommandExecuted(LoginModel);
-                    Console.WriteLine("Egege");
+                    DishesModel.DishCooked = false;
                 }
                 SelectedProduct = Products?.FirstOrDefault();
                  break;

@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FW.Identity", "FW.Identity\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{AA81A392-EF87-4D0B-A9B1-0145218EA75C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FW.LogOptions", "FW.LoggerOptions\FW.LogOptions.csproj", "{4BEB5356-67AB-4C51-8284-7AA2BEB680C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FW.LogOptions", "Common\FW.LoggerOptions\FW.LogOptions.csproj", "{4BEB5356-67AB-4C51-8284-7AA2BEB680C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -48,6 +48,7 @@ public class LoginWindowViewModel : ViewModel
     public string ErrorMessage
     {
         set => ErrorMessageViewModel.Message = value;
+        get => ErrorMessageViewModel.Message;
     }
     #region Command LoginCommand - Вход в систему
 
@@ -67,8 +68,7 @@ public class LoginWindowViewModel : ViewModel
 
         try
         {
-            var disco = await _ClientIdentity.GetDiscoveryDocumentAsync();
-            var token = await _ClientIdentity.RequestPasswordTokenAsync(login, disco);
+            var token = await _ClientIdentity.RequestPasswordTokenAsync(login);
             login.AccessToken = token;
             if (login?.AccessToken is not string { Length: > 0 } accesstoken) return;
 
@@ -76,8 +76,7 @@ public class LoginWindowViewModel : ViewModel
             if (warehouse?.Id is not Guid id) return; 
             login.WarehouseId = warehouse.Id;
             login.WarehouseName = warehouse.Name;
-            login.WarehouseAddress = warehouse.Address;
-            
+            login.WarehouseAddress = warehouse.Address;            
         }
         catch (IdentityServerNotFoundException ex)
         {

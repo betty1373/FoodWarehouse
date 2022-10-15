@@ -23,8 +23,10 @@ namespace FW.WPF.ViewModels;
 
 public class DishViewModel : ViewModel
 {
-    private bool _isFormVisible;
+    private bool _isFormVisible=false;
     public bool IsFormVisible { get => _isFormVisible; set => Set(ref _isFormVisible, value); }
+    private bool _dishCooked = false;
+    public bool DishCooked { get => _dishCooked; set => Set(ref _dishCooked, value); }
 
     #region SelectedDish : DishViewModel? - Выбранное блюдо
     /// <summary>Выбранное блюдо</summary>
@@ -134,12 +136,14 @@ public class DishViewModel : ViewModel
         {
             try
             {
-                var result = await _DishesClient.CookAsync(id, 1, LoginModel.AccessToken);
+                var result = await _DishesClient.CookAsync(id, 1, LoginModel?.AccessToken);
                 MessageBox.Show("Record successfully prepared.");
+                DishCooked = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error occured while saving. " + ex.InnerException);
+                MessageBox.Show("Error occured while preparing. " + ex.InnerException);
+                DishCooked = false;
             }
             finally
             {

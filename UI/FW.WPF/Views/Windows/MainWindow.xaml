@@ -43,20 +43,6 @@
                             <TextBlock Text="Add Dish" VerticalAlignment="Center" Margin="5"/>
                         </DockPanel>
                     </Button>
-                    <Button MinWidth="110" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedDish.Id}">
-                        <DockPanel>
-                            <fa:ImageAwesome Height="18" Icon="Solid_Folder"/>
-                            <TextBlock Text="Edit Dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Command="{Binding DeleteCommand}" MinWidth="110"
-                        CommandParameter="{Binding SelectedDish.Id}">
-                        <DockPanel>
-                            <fa:ImageAwesome Height="18" Icon="Regular_File"/>
-                            <fa:ImageAwesome Height="8" Icon="Solid_Times" Foreground="Red"/>
-                            <TextBlock Text="Delete Dish" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        </DockPanel>
-                    </Button>
                 </StackPanel>                          
                 <Separator/>
                 <StackPanel Orientation="Horizontal" DataContext="{Binding DishesModel}">
@@ -64,22 +50,6 @@
                         <DockPanel>
                             <fa:ImageAwesome Height="18" Icon="Regular_File"/>
                             <TextBlock Text="Add Recipe" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        </DockPanel>
-                    </Button>
-                    <Button MinWidth="110" Command="{Binding RecipesModel.EditCommand}" CommandParameter="{Binding RecipesModel.SelectedRecipe.Id,Mode=OneWay}">
-                        <DockPanel>
-                            <fa:ImageAwesome Height="18" Icon="Solid_Folder"/>
-                            <TextBlock Text="Edit Recipe" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Command="{Binding RecipesModel.DeleteCommand}"
-                        CommandParameter="{Binding RecipesModel.SelectedRecipe.Id,Mode=OneWay}">
-                        <DockPanel>
-                            <Grid>
-                                <fa:ImageAwesome Height="18" Icon="Regular_File"/>
-                                <fa:ImageAwesome Height="8" Icon="Solid_Times" Foreground="Red"/>
-                            </Grid>
-                            <TextBlock Text="Delete Recipe" VerticalAlignment="Center" Margin="5,0,0,0"/>
                         </DockPanel>
                     </Button>
                 </StackPanel>
@@ -120,15 +90,9 @@
                                 </Style>
                             </DataGrid.Resources>
                             <DataGrid.RowHeaderTemplate>
-                                <DataTemplate>                                   
+                                <DataTemplate>
                                 </DataTemplate>
                             </DataGrid.RowHeaderTemplate>
-                            <!--<i:Interaction.Triggers>
-                                <i:EventTrigger EventName="RowEditEnding">
-                                    <i:InvokeCommandAction Command="{Binding DishesModel.EditCommand,RelativeSource={RelativeSource AncestorType=Window}}"
-                                           CommandParameter="{Binding SelectedDish}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>-->
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
@@ -185,44 +149,19 @@
                                     BorderBrush="LightGray"
                                     BorderThickness="1">
                                                     <StackPanel>
-                                                        <Button Content="Edit" />
+                                                        <Button Content="Edit" Command="{Binding DataContext.DishesModel.EditCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                 CommandParameter="{Binding Id}"/>
+                                                        <Button Content="Delete" Command="{Binding DataContext.DishesModel.DeleteCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                 CommandParameter="{Binding Id}"/>
                                                         <Button Command="{Binding DataContext.DishesModel.PrepareCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
                         CommandParameter="{Binding Id}" Content="Приготовить блюдо" />
                                                     </StackPanel>
                                                 </Border>
                                             </custom:DropdownMenu>
-                                        </DataTemplate>                                        
-                                    </DataGridTemplateColumn.CellTemplate>                                   
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <!--<DataGridTextColumn Header="Description"
-          EditingElementStyle="{StaticResource errorStyle}"
-          Binding="{Binding Description, ValidatesOnExceptions=True}"/>-->
                             </DataGrid.Columns>
-                            <!--<DataGrid.RowDetailsTemplate>
-                                <DataTemplate>
-                                    <DockPanel Background="GhostWhite">
-                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Description}" TextWrapping="Wrap" Height="Auto" Margin="10" />
-                                    </DockPanel>
-                                </DataTemplate>
-                            </DataGrid.RowDetailsTemplate>-->
-                            <!--<DataGrid.RowValidationRules>
-                                <local:DishValidationRule ValidationStep="UpdatedValue"/>
-                            </DataGrid.RowValidationRules>
-                            <DataGrid.RowValidationErrorTemplate>
-                                <ControlTemplate>
-                                    <Grid Margin="0,-2,0,-2"
-            ToolTip="{Binding RelativeSource={RelativeSource
-            FindAncestor, AncestorType={x:Type DataGridRow}},
-            Path=(Validation.Errors)[0].ErrorContent}">
-                                        <Ellipse StrokeThickness="0" Fill="Red" 
-              Width="{TemplateBinding FontSize}" 
-              Height="{TemplateBinding FontSize}" />
-                                        <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
-              FontWeight="Bold" Foreground="White" 
-              HorizontalAlignment="Center"  />
-                                    </Grid>
-                                </ControlTemplate>
-                            </DataGrid.RowValidationErrorTemplate>-->
                         </DataGrid>
                     </GroupBox>
                     <GroupBox DataContext="{Binding DishesModel}" Grid.Row="2" Header="DishForm">
@@ -249,21 +188,6 @@
                             <TextBlock Text="{Binding ErrorMessage}" HorizontalAlignment="Center" Margin="20 0 0 0" Grid.Row="3" Height="30" Grid.ColumnSpan="2"/>
                         </Grid>
                     </GroupBox>
-                    <!--<ListBox ItemsSource="{Binding Dishes}" Name="dishes"
-                         DisplayMemberPath="Name"
-                         SelectedItem="{Binding SelectedDish,Mode=TwoWay}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding DataContext.LoadRecipeCommand,RelativeSource={RelativeSource AncestorType=Window}}"
-                                           CommandParameter="{Binding SelectedDish}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <ListBox.InputBindings>
-                                <MouseBinding MouseAction="LeftDoubleClick" 
-                                        Command="{Binding AddToDishesCommand}"
-                                        CommandParameter="{Binding SelectedDish}"/>
-                            </ListBox.InputBindings>
-                        </ListBox>-->
                     <GroupBox Header="Description" Grid.Column="1" DataContext="{Binding DishesModel}" FontWeight="Bold">
                         <DockPanel DockPanel.Dock="Top">
                             <TextBox Text ="{Binding SelectedDish.Description, Mode=OneWay, FallbackValue=Description}" TextWrapping="Wrap"
@@ -278,40 +202,72 @@
                                     <DataGridComboBoxColumn Header="Ingredient" DisplayMemberPath="Name" SelectedValuePath="Id" 
                                       SelectedValueBinding="{Binding IngredientId}" ItemsSource="{Binding Source={StaticResource Ingredients}}"/>
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>                          
-                            <!--<Grid Grid.Column="1" DataContext="{Binding SelectedProduct}" Margin="10">
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DataContext.SelectedProduct, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Name}"
-                                   HorizontalAlignment="Center"
-                                   FontWeight="Bold"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Цена:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Категория:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding DataContext.SelectedCategory.Name, RelativeSource={RelativeSource AncestorType=Window}}" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Описание:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Description}" Margin="5,0,0,0"/>
-                            </Grid>-->                        
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <custom:DropdownMenu>
+                                                <custom:DropdownMenu.Resources>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="BorderThickness" Value="0" />
+                                                        <Setter Property="Padding" Value="20 10" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border
+                                                        Padding="{TemplateBinding Padding}"
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Trigger.EnterActions>
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard>
+                                                                            <ColorAnimation
+                                                                Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                                To="LightGray"
+                                                                Duration="0:0:0.1" />
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </Trigger.EnterActions>
+                                                                <Trigger.ExitActions>
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard>
+                                                                            <ColorAnimation
+                                                                Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                                To="Transparent"
+                                                                Duration="0:0:0.1" />
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </Trigger.ExitActions>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </custom:DropdownMenu.Resources>
+                                                <Border
+                                    Background="White"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1">
+                                                    <StackPanel>
+                                                        <Button Content="Edit" Command="{Binding DataContext.DishesModel.RecipesModel.EditCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                 CommandParameter="{Binding Id}"/>
+                                                        <Button Content="Delete" Command="{Binding DataContext.DishesModel.RecipesModel.DeleteCommand,  RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                 CommandParameter="{Binding Id}"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </custom:DropdownMenu>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                            </DataGrid>                       
+                           
                     </GroupBox>
                     <GroupBox DataContext="{Binding DishesModel.RecipesModel}" Grid.Row="2" Grid.Column="1" Header="RecipeForm">
                         <Grid x:Name="FormRecipe" Visibility="{Binding IsFormVisible,Converter={StaticResource BoolToVisibilityConverter}}" >
@@ -330,7 +286,8 @@
                             <Label Content="Ingredient:" Grid.Row="1"/>
                             <Label Content="Id:" Grid.Row="0"/>
                             <TextBox Text="{Binding Path=RecipeModel.Quantity}" Height="20"  Width="Auto" MinWidth="150" Grid.Row="2" Grid.Column="1"/>
-                            <ComboBox DisplayMemberPath="Name" SelectedValue="{Binding RecipeModel.IngredientId,Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource Ingredients}}" 
+                            <ComboBox DisplayMemberPath="Name" SelectedValue="{Binding RecipeModel.IngredientId,Mode=TwoWay}" 
+                                      ItemsSource="{Binding Source={StaticResource Ingredients}}" 
                                   SelectedValuePath="Id" Height="20"  Width="Auto" Grid.Row="1" Grid.Column="1"/>
                             <TextBlock Text="{Binding RecipeModel.Id}" Height="20"  Width="Auto" Grid.Row="0" MinWidth="150" Grid.Column="1"/>
                             <Button Height="50" Width="100" Content="Save" HorizontalAlignment="Center"       
@@ -419,7 +376,7 @@
                             <GridView x:Name="gridView1">
                                 <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
                                 <GridViewColumn Header="Кол-во" DisplayMemberBinding="{Binding Quantity}" />
-                                <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Mo}" />
+                                <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding CreatedOn}" />
                                 <GridView.ColumnHeaderContainerStyle>
                                     <Style TargetType="GridViewColumnHeader">
                                         <Setter Property="Visibility" Value="Visible" />
@@ -427,123 +384,9 @@
                                 </GridView.ColumnHeaderContainerStyle>
                             </GridView>
                         </ListView.View>
-                        <!--<ListView.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Margin" Value="0,0,0,5"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander IsExpanded="False" BorderBrush="Black" BorderThickness="0,0,0,1" Background="DarkGray">
-                                                        <Expander.Header>
-                                                            <TextBlock Foreground="White">
-                                                            <Run>Категория: </Run>
-                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
-                                                        </TextBlock>
-                                                        </Expander.Header>
-                                                        <Expander.Content>
-                                                            <Border Background="White" Margin="2" CornerRadius="3">
-                                                                <ItemsPresenter />
-                                                            </Border>
-                                                        </Expander.Content>
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <DockPanel Background="LightGray" LastChildFill="True" >
-                                            <TextBlock Text="{Binding Path=Name}" Foreground="Black" Margin="10,0,0,0" />
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
-                            </GroupStyle>
-                        </ListView.GroupStyle>-->
                     </ListView>
                 </Grid>
-                <!--<Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    --><!--<GroupBox Header="Категории" Grid.Column="0">
-                        <ListBox ItemsSource="{Binding Categories}"
-                         DisplayMemberPath="Name"
-                         SelectedItem="{Binding SelectedCategory}"/>
-                    </GroupBox>--><!--
-                    <GroupBox Header="Продукты" >
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="31"/>
-                                <ColumnDefinition Width="799"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <ListBox ItemsSource="{Binding Products}" 
-                         SelectedItem="{Binding SelectedProduct}"
-                         VerticalContentAlignment="Stretch" 
-                         HorizontalContentAlignment="Left" Grid.ColumnSpan="3">
-                                --><!--<ListBox.InputBindings>
-                                    <MouseBinding MouseAction="LeftDoubleClick" 
-                                      Command="{Binding AddToCartCommand}"
-                                      CommandParameter="{Binding SelectedProduct}"/>
-                                </ListBox.InputBindings>--><!--
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="vm:ProductViewModel">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock  Text="{Binding Quantity}" HorizontalAlignment="Right" Margin="2" FontWeight="Bold"/>                                         
-                                            <TextBlock Text="{Binding Id}" Margin="2"/>
-                                            <TextBlock Text="{Binding IngredientName}" Margin="2"/>
-                                            <TextBlock Text="{Binding CategoryName}" Margin="2"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            --><!--<Grid Grid.Column="2" DataContext="{Binding SelectedProduct}" Margin="10,10,10,10">
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DataContext.SelectedProduct, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Name}"
-                                   HorizontalAlignment="Center"
-                                   FontWeight="Bold"/>                               
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Цена:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Price, StringFormat=c2, ConverterCulture=ru-RU}" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Категория:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding DataContext.SelectedCategory.Name, RelativeSource={RelativeSource AncestorType=Window}}" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Описание:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Description}" Margin="5,0,0,0"/>
-                            </Grid>
-                            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="796,0,0,0"/>--><!--
-                        </Grid>
-                    </GroupBox>
-                    <GridSplitter Grid.Column="1" HorizontalAlignment="Left"/>
-                </Grid>-->
+           
             </TabItem>
         </TabControl>
     </DockPanel>
