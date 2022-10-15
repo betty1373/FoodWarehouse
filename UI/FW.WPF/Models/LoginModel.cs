@@ -29,6 +29,5 @@ public class LoginModel:ViewModel,IUserIdentity
     {
         return $"User: {UserName} Склад: {WarehouseName}, {WarehouseAddress}";
     }
-
     #endregion
 }
