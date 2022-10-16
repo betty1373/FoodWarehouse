@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using FW.BusinessLogic.Contracts.Category;
-using FW.BusinessLogic.Contracts;
+using FW.ResponseStatus;
 using FW.BusinessLogic.Services.Abstractions;
 
 namespace FW.Management.Consumers.CategoryConsumer

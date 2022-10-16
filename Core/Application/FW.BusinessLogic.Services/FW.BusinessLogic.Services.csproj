@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FW.ResponseStatus\FW.ResponseStatus.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\FW.EntityFramework\FW.EntityFramework.csproj" />
     <ProjectReference Include="..\..\FW.Domain\FW.Domain.csproj" />
     <ProjectReference Include="..\FW.BusinessLogic.Contracts\FW.BusinessLogic.Contracts.csproj" />

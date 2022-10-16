@@ -46,7 +46,7 @@ public abstract class ClientIdentityBase<T> : IClientIdentity<T> where T : class
             UserName = model.UserName,
             Password = model.Password
         }, Cancel).ConfigureAwait(false);
-        if (response.IsError) throw new UserNotFoundException(response.Exception.Message); ;
+        if (response.IsError) throw new UserNotFoundException(response.ErrorDescription);
         return response.AccessToken;
     }
 }

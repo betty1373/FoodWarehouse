@@ -1,4 +1,4 @@
-﻿using FW.BusinessLogic.Contracts;
+﻿using FW.ResponseStatus;
 
 namespace FW.Web.Clients.Interfaces
 {

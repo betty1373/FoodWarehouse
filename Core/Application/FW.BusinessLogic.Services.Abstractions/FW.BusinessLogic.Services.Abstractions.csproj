@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FW.ResponseStatus\FW.ResponseStatus.csproj" />
     <ProjectReference Include="..\FW.BusinessLogic.Contracts\FW.BusinessLogic.Contracts.csproj" />
   </ItemGroup>
 

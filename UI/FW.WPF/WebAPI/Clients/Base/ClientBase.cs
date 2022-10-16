@@ -10,7 +10,7 @@ using FW.WPF.WebAPI.Interfaces;
 using IdentityModel.Client;
 using FW.Models;
 using FW.WPF.WebAPI;
-
+using FW.ResponseStatus;
 namespace FW.WPF.WebAPI.Clients.Base;
 
 public abstract class ClientBase<T,K> : IClientBase<T,K>

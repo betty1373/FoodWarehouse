@@ -1,4 +1,4 @@
-﻿using FW.BusinessLogic.Contracts;
+﻿using FW.ResponseStatus;    
 using FW.Web.Controllers.Base;
 using FW.Web.RpcClients.Interfaces;
 using FW.Models;

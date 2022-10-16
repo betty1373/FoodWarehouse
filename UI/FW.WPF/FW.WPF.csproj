@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\FW.Models\FW.Models.csproj" />
+    <ProjectReference Include="..\..\Common\FW.ResponseStatus\FW.ResponseStatus.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DropdownMenuControl">

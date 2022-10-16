@@ -1,4 +1,4 @@
-﻿namespace FW.BusinessLogic.Contracts;
+﻿namespace FW.ResponseStatus;
 
 public class ResponseStatusResult
 {

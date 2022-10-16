@@ -1,8 +1,7 @@
 ﻿using MassTransit;
 using FW.BusinessLogic.Contracts.Products;
 using FW.BusinessLogic.Services.Abstractions;
-using FW.BusinessLogic.Contracts;
-
+using FW.ResponseStatus;
 /// <summary>
 /// Консьюмер для создания Продукта
 /// </summary>

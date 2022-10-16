@@ -4,9 +4,8 @@ using FW.EventBus.Interfaces;
 using FW.RabbitMQOptions;
 using System.Text.Json;
 using FW.Web.RpcClients.Interfaces;
-using FW.BusinessLogic.Contracts;
+using FW.ResponseStatus;
 using FW.Models;
-using FW.BusinessLogic.Contracts.Warehouses;
 
 namespace FW.Web.RpcClients
 {

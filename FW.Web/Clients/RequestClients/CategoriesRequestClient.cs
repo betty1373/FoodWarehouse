@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using FW.BusinessLogic.Contracts;
+using FW.ResponseStatus;
 using FW.BusinessLogic.Contracts.Category;
 using FW.Web.RequestClients.Interfaces;
 using FW.Models;
 using MassTransit;
+using FW.BusinessLogic.Contracts;
+
 
 namespace FW.Web.RequestClients
 {

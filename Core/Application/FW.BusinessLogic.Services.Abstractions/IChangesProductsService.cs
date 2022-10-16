@@ -1,5 +1,5 @@
 ﻿using FW.BusinessLogic.Contracts.ChangesProducts;
-using FW.BusinessLogic.Contracts.Products;
+using FW.ResponseStatus;
 
 namespace FW.BusinessLogic.Services.Abstractions;
 

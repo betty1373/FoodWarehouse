@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Contracts;
-using FW.BusinessLogic.Contracts.Category;
+using FW.ResponseStatus;
 using FW.BusinessLogic.Contracts.Products;
 using FW.Web.RequestClients.Interfaces;
 using FW.Models;

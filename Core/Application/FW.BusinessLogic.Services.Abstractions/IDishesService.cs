@@ -1,5 +1,5 @@
 ﻿using FW.BusinessLogic.Contracts.Dishes;
-using FW.BusinessLogic.Contracts;
+using FW.ResponseStatus;
 namespace FW.BusinessLogic.Services.Abstractions;
 
 public interface IDishesService

@@ -1,6 +1,5 @@
 ﻿using FW.EventBus;
 using FW.EventBus.Interfaces;
-using FW.BusinessLogic.Contracts;
 using FW.BusinessLogic.Services.Abstractions;
 using FW.BusinessLogic.Contracts.Dishes;
 
