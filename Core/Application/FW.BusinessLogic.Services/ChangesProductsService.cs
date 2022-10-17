@@ -4,7 +4,6 @@ using FW.BusinessLogic.Services.Abstractions;
 using FW.Domain;
 using FW.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using FW.BusinessLogic.Contracts.ChangesProducts;
 
 namespace FW.BusinessLogic.Services;
 

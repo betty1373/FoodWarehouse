@@ -168,7 +168,7 @@ static async Task GetListProducts(HttpClient apiClient)
     if (listProducts.IsSuccessStatusCode)
     {
         var products = await listProducts.Content.ReadFromJsonAsync<List<ProductResponseVM>>();
-        var sortedProducts = products.OrderBy(x => x.IngredientName);
+        var sortedProducts = products?.OrderBy(x => x.IngredientName);
 
         int i = 0;
         foreach (var pr in sortedProducts)
