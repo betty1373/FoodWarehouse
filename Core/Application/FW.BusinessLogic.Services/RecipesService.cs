@@ -52,7 +52,7 @@ public class RecipesService : IRecipesService
         var item = _mapper.Map<Recipes>(dto);
      
         await _dbContext.Recipes.AddAsync(item );
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
         return item.Id;
     }
 
@@ -78,7 +78,7 @@ public class RecipesService : IRecipesService
         {
        
             _dbContext.Entry(entity).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
 
             return true;
         }

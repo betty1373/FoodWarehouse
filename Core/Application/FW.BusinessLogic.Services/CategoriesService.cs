@@ -45,7 +45,7 @@ public class CategoriesService : ICategoriesService
         var item = _mapper.Map<Categories>(dto);
       
         await _dbContext.Categories.AddAsync(item);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
         return item.Id;
     }
 
@@ -71,7 +71,7 @@ public class CategoriesService : ICategoriesService
         {
          
             _dbContext.Entry(entity).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
 
             return true;
         }

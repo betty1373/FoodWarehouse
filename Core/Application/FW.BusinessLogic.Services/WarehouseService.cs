@@ -44,7 +44,7 @@ public class WarehousesService : IWarehousesService
         var item = _mapper.Map<Warehouses>(dto);
       
         await _dbContext.Warehouses.AddAsync(item);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
         return item.Id;
     }
 
@@ -70,7 +70,7 @@ public class WarehousesService : IWarehousesService
         {
         
             _dbContext.Entry(entity).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
 
             return true;
         }

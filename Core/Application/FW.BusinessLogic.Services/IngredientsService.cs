@@ -44,7 +44,7 @@ public class IngredientsService : IIngredientsService
         var item = _mapper.Map<Ingredients>(dto);
      
         await _dbContext.Ingredients.AddAsync(item);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
         return item.Id;
     }
 
@@ -70,7 +70,7 @@ public class IngredientsService : IIngredientsService
         {
         
             _dbContext.Entry(entity).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
 
             return true;
         }

@@ -11,6 +11,8 @@ using System.Threading;
 using System;
 using System.Net.Http.Json;
 using FW.WPF.WebAPI.Interfaces;
+using FW.WPF.Domain.Exceptions;
+using FW.ResponseStatus;
 
 namespace FW.WPF.WebAPI.Clients;
 
@@ -24,7 +26,7 @@ public class DishesClient : ClientBase<DishResponseVM, DishVM>,IDishesClient
 
         if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<DishResponseVM>();
         if (response.StatusCode == HttpStatusCode.NotFound) return Enumerable.Empty<DishResponseVM>();
-
+       
         var items = await response
                .EnsureSuccessStatusCode()
                .Content
@@ -38,8 +40,15 @@ public class DishesClient : ClientBase<DishResponseVM, DishVM>,IDishesClient
     {
         Http.SetBearerToken(token);
         var response = await Http.PutAsJsonAsync($"{Address}/Cook/{Id}:{NumPortions}", new StringContent(""), Cancel).ConfigureAwait(false);
-        if (response.StatusCode == HttpStatusCode.NotFound)
-            return false;
+        
+        if (response.StatusCode == HttpStatusCode.Accepted)
+        {            
+            var result = await response
+                .EnsureSuccessStatusCode()
+                .Content
+                .ReadFromJsonAsync<ResponseStatusResult>(cancellationToken: Cancel);
+            throw new DishCookingException(result.Title);
+        }
 
         return response.EnsureSuccessStatusCode().StatusCode == HttpStatusCode.OK;
     }

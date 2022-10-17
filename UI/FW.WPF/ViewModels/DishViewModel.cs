@@ -135,9 +135,12 @@ public class DishViewModel : ViewModel
         {
             try
             {
-                var result = await _DishesClient.CookAsync(id, 1, LoginModel?.AccessToken);
-                MessageBox.Show("Record successfully prepared.");
-                DishCooked = true;
+                DishCooked = await _DishesClient.CookAsync(id, 1, LoginModel?.AccessToken);
+            }
+            catch (DishCookingException ex)
+            {
+                MessageBox.Show("Error occured while preparing. " + ex.DishError);
+                DishCooked = false;
             }
             catch (Exception ex)
             {
@@ -146,7 +149,7 @@ public class DishViewModel : ViewModel
             }
             finally
             {
-               
+                if (DishCooked) MessageBox.Show("Dish was successfully prepared.");
             }
         }
     }

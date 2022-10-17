@@ -51,7 +51,7 @@ public class DishesService : IDishesService
         var item = _mapper.Map<Dishes>(dto);
  
         await _dbContext.Dishes.AddAsync(item);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
         return item.Id;
     }
 
@@ -76,7 +76,7 @@ public class DishesService : IDishesService
         if (entity != null)
         {
             _dbContext.Entry(entity).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
 
             return true;
         }

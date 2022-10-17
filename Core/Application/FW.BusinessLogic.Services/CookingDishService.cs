@@ -107,7 +107,7 @@ namespace FW.BusinessLogic.Services
                 }
             }
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(userId);
 
             result.Status = StatusResult.Ok;
             result.Title = $"Dish {dish.Name} was cooked";

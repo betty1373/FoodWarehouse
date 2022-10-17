@@ -28,9 +28,11 @@ namespace FW.Web.Controllers
         }
         [HttpPut("[action]/{id}:{numPortions}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Cook(Guid id, int numPortions)
         {
             if (id == Guid.Empty || numPortions == 0)
@@ -38,8 +40,10 @@ namespace FW.Web.Controllers
             var client = (IDishesRpcClient)Client;
             var response = await client.Cook(id, UserId, numPortions);
 
+            if (response.Status == StatusResult.Error)
+                return Accepted(response);
             if (response.Status == StatusResult.NotFound)
-                return NotFound(response.Title);
+                return NotFound();
 
             return Ok(response);
         }

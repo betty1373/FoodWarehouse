@@ -50,7 +50,7 @@ public  class ProductsService : IProductsService
         var item = _mapper.Map<Products>(dto);
      
         await _dbContext.Products.AddAsync(item);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
         return item.Id;
     }
 
@@ -76,7 +76,7 @@ public  class ProductsService : IProductsService
         {
           
             _dbContext.Entry(entity).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesWithUserIdAsync(dto.UserId);
 
             return true;
         }

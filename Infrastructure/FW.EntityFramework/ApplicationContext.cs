@@ -45,7 +45,29 @@ namespace FW.EntityFramework
                     modelBuilder.Entity(entityType.ClrType).HasQueryFilter(Expression.Lambda(body, parameter));
                 });
         }
-
+        public Task<int> SaveChangesWithUserIdAsync(Guid UserId,CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entityEntry in ChangeTracker.Entries())
+            {
+                switch (entityEntry.State)
+                {
+                    case EntityState.Added:
+                        entityEntry.Property("ModifiedOn").CurrentValue = DateTime.UtcNow;
+                        entityEntry.Property("UserId").CurrentValue = UserId;
+                        break;
+                    case EntityState.Modified:
+                        entityEntry.Property("ModifiedOn").CurrentValue = DateTime.UtcNow;
+                        entityEntry.Property("UserId").CurrentValue = UserId;
+                        break;
+                    case EntityState.Deleted:
+                        entityEntry.Property("ModifiedOn").CurrentValue = DateTime.UtcNow;
+                        entityEntry.State = EntityState.Modified;
+                        entityEntry.Property("IsActive").CurrentValue = false;
+                        break;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
+        }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entityEntry in ChangeTracker.Entries())
