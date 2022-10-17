@@ -88,6 +88,7 @@ namespace FW.Web.RpcClients
         public async Task<ResponseStatusResult> Create(WarehouseVM warehouse, Guid userId)
         {
             var queryDto = _mapper.Map<WarehouseCreateDto>(warehouse);
+            queryDto.UserId = userId;
             var queryJsonDto = JsonSerializer.Serialize(queryDto);
 
             var responseJsonDto = await CallAsync(_exchangeName, _queueNames.Create, queryJsonDto);
@@ -98,6 +99,7 @@ namespace FW.Web.RpcClients
         public async Task<ResponseStatusResult> Update(Guid id, WarehouseVM warehouse, Guid userId)
         {
             var queryDto = _mapper.Map<WarehouseUpdateDto>(warehouse);
+            queryDto.UserId = userId;
             queryDto.Id = id;
             var queryJsonDto = JsonSerializer.Serialize(queryDto);
 

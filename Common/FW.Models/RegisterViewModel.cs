@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ConsoleClient.ViewModels;
+namespace FW.Models;
 
 public class RegisterViewModel
 {
