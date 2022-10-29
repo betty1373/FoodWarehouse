@@ -19,20 +19,30 @@ services:
         - "5432:5432"
 
  fwidentity:
+     #build: FW.Identity/
+     #ports:
+     #- "10000:80"
+     #- "10001:443"
+     #environment:
+     # ASPNETCORE_URLS: "https://+;http://+"
+     # ASPNETCORE_HTTPS_PORT: "10001"
+     # ASPNETCORE_ENVIRONMENT: Development
+     #volumes:
+     # - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
+     # - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/ 
     image: ${DOCKER_REGISTRY-}fwidentity
+    build:
+      dockerfile: FW.Identity/Dockerfile
+    ports:
+        - "10000:80"
+        - "10001:443"
     environment:
-    - ASPNETCORE_URLS=https://+;http://+;
-    - ASPNETCORE_HTTPS_PORT=10001;
-    - ASPNETCORE_ENVIRONMENT = Development
+     ASPNETCORE_URLS: "https://+;http://+"
+     ASPNETCORE_HTTPS_PORT: "10001"
+     ASPNETCORE_ENVIRONMENT: Development
     volumes:
       - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
       - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/ 
-    ports:
-        - "10000:80"
-        - "10001:4431"
-    build:
-      context: .
-      dockerfile: FW.Identity/Dockerfile
 
  #consoleclient:
  #   image: ${DOCKER_REGISTRY-}consoleclient
@@ -43,7 +53,8 @@ services:
  #      - fwidentity
  #   ports:
  #       - "5227:80"
-
+ #   volumes:
+ #     - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/ 
  #fw.management:
  #   image: ${DOCKER_REGISTRY-}fwmanagement
  #   build:
@@ -58,6 +69,8 @@ services:
  #   build:
  #     context: .
  #     dockerfile: FW.Web/Dockerfile
+ #   depends_on:
+ #      - fwidentity
  #   environment:
  #   - SleepStart=4
  #   - UrlSeq=http://db_seq:5341

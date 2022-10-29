@@ -22,7 +22,7 @@ namespace FW.Web.Configurations
                     {
                         Password = new OpenApiOAuthFlow
                         {
-                            TokenUrl = new Uri("https://localhost:10001/connect/token"),
+                            TokenUrl = new Uri("https://fwidentity:10001/connect/token"),
                             Scopes = new Dictionary<string, string> { }
                         }
                     }

@@ -2,8 +2,6 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 10000
-EXPOSE 10001
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -19,4 +17,4 @@ RUN dotnet publish "FW.Identity.csproj" -c Release -o /app/publish /p:UseAppHost
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "FWIdentityAPI"]
+ENTRYPOINT ["dotnet", "FW.Identity.dll"]

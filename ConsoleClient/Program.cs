@@ -2,6 +2,7 @@
 using FW.ResponseStatus;
 using IdentityModel.Client;
 using System.Net.Http.Json;
+Thread.Sleep(TimeSpan.FromSeconds(5));
 
 var identityClient = new HttpClient();
 

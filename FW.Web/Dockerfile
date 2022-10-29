@@ -6,11 +6,9 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["FW.Web/FW.Web.csproj", "FW.Web/"]
 RUN dotnet restore "FW.Web/FW.Web.csproj"
 COPY . .
 WORKDIR "/src/FW.Web"
-RUN dotnet dev-certs https
 RUN dotnet build "FW.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
