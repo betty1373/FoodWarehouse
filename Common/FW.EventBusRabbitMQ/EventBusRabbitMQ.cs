@@ -110,24 +110,24 @@ public class EventBusRabbitMQ : IEventBus
     }
     #endregion
 
-    #region Dispose pattern
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_disposed)
-            return;
+    //#region Dispose pattern
+    //public void Dispose()
+    //{
+    //    Dispose(true);
+    //    GC.SuppressFinalize(this);
+    //}
+    //protected virtual void Dispose(bool disposing)
+    //{
+    //    if (_disposed)
+    //        return;
 
-        if (disposing)
-        {
-            _channel?.Dispose();
-            _connection?.Dispose();
-        }
+    //    if (disposing)
+    //    {
+    //        _channel?.Dispose();
+    //        _connection?.Dispose();
+    //    }
 
-        _disposed = true;
-    }
-    #endregion
+    //    _disposed = true;
+    //}
+    //#endregion
 }

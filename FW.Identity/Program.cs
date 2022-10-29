@@ -2,15 +2,28 @@ using FW.Identity;
 using FW.Identity.Data;
 using FW.Identity.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetValue<string>("DbConnectionString");
+var CertPath = builder.Configuration.GetValue<string>("CertPath");
+var CertPassword = builder.Configuration.GetValue<string>("CertPassword");
 
+//builder.WebHost.ConfigureKestrel(opt =>
+//{
+//    var host = Dns.GetHostEntry("fwidentity");
+//    opt.Listen(host.AddressList[0], 10001, 
+//        listenOpt =>
+//    {
+//        listenOpt.UseHttps(CertPath,CertPassword);
+//    });
+//    opt.Listen(host.AddressList[0], 10000);
+//});
 builder.Services.AddDbContext<ApplicationContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-})
+    {
+        options.UseNpgsql(connectionString);
+    })
    .AddIdentity<ApplicationUser, ApplicationRole>(options =>
    {
        options.Password.RequiredLength = 6;
@@ -31,7 +44,7 @@ builder.Services.AddIdentityServer(options =>
     options.Events.RaiseFailureEvents = true;
     options.Events.RaiseSuccessEvents = true;
     options.EmitStaticAudienceClaim = true;
-    //options.IssuerUri = "https://fwidentity:10001";
+    options.IssuerUri = "https://fwidentity:10001";
 })
     .AddInMemoryApiScopes(Configuration.ApiScopes)
     .AddInMemoryApiResources(Configuration.ApiResources)
@@ -56,7 +69,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();

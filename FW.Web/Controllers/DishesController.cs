@@ -39,7 +39,7 @@ namespace FW.Web.Controllers
             var client = (IDishesRpcClient)Client;
             var response = await client.Cook(id, UserId, numPortions);
 
-            if (response.Status == StatusResult.Accepted)
+            if (response.Status == StatusResult.Error)
                 return Accepted(response);
             if (response.Status == StatusResult.NotFound)
                 return NotFound();

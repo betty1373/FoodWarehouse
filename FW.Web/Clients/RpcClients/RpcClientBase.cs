@@ -10,38 +10,38 @@ namespace FW.Web.RpcClients
 {
     public class RpcClientBase : IRpcClient
     {
-        private IModel _channel;
-        private readonly string _responseQueueNameEnding = "Response";
-        private ConcurrentDictionary<string, TaskCompletionSource<string>> _pendingMessages;
+        private IModel channel;
+        private readonly string responseQueueNameEnding = "Response";
+        private ConcurrentDictionary<string, TaskCompletionSource<string>> pendingMessages;
         private bool _disposed;
 
-        public RpcClientBase(IConnectionRabbitMQ connection, IConfiguration configuration)
+        public RpcClientBase(IConnectionRabbitMQ Connection)
         {
-            var _connection = connection.Get();
-            _channel = _connection.CreateModel();
+            var connection = Connection.Get();
+            channel = connection.CreateModel();
 
-            _pendingMessages = new ConcurrentDictionary<string, TaskCompletionSource<string>>();
+            pendingMessages = new ConcurrentDictionary<string, TaskCompletionSource<string>>();
         }
 
         private protected void ConfigureRpcClient(string exchangeName, string queueName)
         {
             ExchangeDeclare(exchangeName);
             QueueDeclare(queueName);
-            var responseQueueName = queueName + _responseQueueNameEnding;
+            var responseQueueName = queueName + responseQueueNameEnding;
             QueueDeclare(responseQueueName);
             QueueBind(exchangeName, responseQueueName);
 
-            var consumer = new AsyncEventingBasicConsumer(_channel);
+            var consumer = new AsyncEventingBasicConsumer(channel);
             consumer.Received += MessageReceived_Handler;
 
-            _channel.BasicConsume(responseQueueName, autoAck: false, consumer);
+            channel.BasicConsume(responseQueueName, autoAck: false, consumer);
         }
 
         public async Task<string> CallAsync(string exchangeName, string queueName, string message)
         {
             var tcs = new TaskCompletionSource<string>();
             var correlationId = Guid.NewGuid().ToString();
-            _pendingMessages[correlationId] = tcs;
+            pendingMessages[correlationId] = tcs;
 
             Publish(exchangeName, queueName, message, correlationId);
 
@@ -50,12 +50,12 @@ namespace FW.Web.RpcClients
 
         private void Publish(string exchangeName, string queueName, string message, string correlationId)
         {
-            var properties = _channel.CreateBasicProperties();
+            var properties = channel.CreateBasicProperties();
             properties.CorrelationId = correlationId;
-            properties.ReplyTo = queueName + _responseQueueNameEnding;
+            properties.ReplyTo = queueName + responseQueueNameEnding;
 
             var messageBody = Encoding.UTF8.GetBytes(message);
-            _channel.BasicPublish(exchangeName, queueName, properties, messageBody);
+            channel.BasicPublish(exchangeName, queueName, properties, messageBody);
         }
 
         private async Task MessageReceived_Handler(object obj, BasicDeliverEventArgs args)
@@ -63,11 +63,11 @@ namespace FW.Web.RpcClients
             var correlationId = args.BasicProperties.CorrelationId;
             var response = Encoding.UTF8.GetString(args.Body.ToArray());
 
-            _pendingMessages.TryRemove(correlationId, out var tcs);
+           pendingMessages.TryRemove(correlationId, out var tcs);
             if (tcs != null)
                 tcs.SetResult(response);
 
-            _channel.BasicAck(args.DeliveryTag, false);
+            channel.BasicAck(args.DeliveryTag, false);
             await Task.CompletedTask;
         }
 
@@ -75,32 +75,32 @@ namespace FW.Web.RpcClients
         private void ExchangeDeclare(string exchangeName)
         {
             if (exchangeName.Length != 0)
-                _channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, false);
+                channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, false);
         }
         private void QueueDeclare(string queueName)
         {
-            _channel.QueueDeclare(queueName, true, false, autoDelete: false);
+           channel.QueueDeclare(queueName, true, false, autoDelete: false);
         }
         private void QueueBind(string exchangeName, string queueName)
         {
             if (exchangeName.Length != 0)
-                _channel.QueueBind(queueName, exchangeName, queueName);
+                channel.QueueBind(queueName, exchangeName, queueName);
         }
         #endregion
 
-        #region Dispose pattern
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed && disposing)
-                this._channel?.Dispose();
+        //#region Dispose pattern
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (!_disposed && disposing)
+        //        this._channel?.Dispose();
 
-            this._disposed = true;
-        }
-        #endregion
+        //    this._disposed = true;
+        //}
+        //#endregion
     }
 }

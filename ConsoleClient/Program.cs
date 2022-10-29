@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 var identityClient = new HttpClient();
 
 // Получаем документ обнаружения
-var disco = await identityClient.GetDiscoveryDocumentAsync("https://localhost:10001");
+var disco = await identityClient.GetDiscoveryDocumentAsync("https://fwidentity:10001");
 if (disco.IsError)
 {
     // Note: Если вы получаете сообщение об ошибке при подключении, возможно, вы используете https, а сертификат разработки localhostне является доверенным.

@@ -21,7 +21,7 @@
     <ProjectReference Include="..\Common\FW.RabbitMQOptions\FW.RabbitMQOptions.csproj" />
     <ProjectReference Include="..\Common\FW.ResponseStatus\FW.ResponseStatus.csproj" />
     <ProjectReference Include="..\Core\Application\FW.BusinessLogic.Services\FW.BusinessLogic.Services.csproj" />
-    <ProjectReference Include="..\FW.Migrations\FW.Migrations.csproj" />
+    <ProjectReference Include="..\Infrastructure\FW.Migrations\FW.Migrations.csproj" />
   </ItemGroup>
 
 </Project>

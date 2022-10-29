@@ -1,6 +1,6 @@
 ﻿namespace FW.EventBus.Interfaces;
 
-public interface IEventBus : IDisposable
+public interface IEventBus //: IDisposable
 {
     void Subscribe<TH, TE>(string queueName = "", string exchangeName = "")
         where TH : IIntegrationEventHandler<TE>

@@ -7,6 +7,8 @@ namespace FW.Identity
 {
     public static class Configuration
     {
+        public static string CertPath { get; set; }
+        public static string CertPassword { get; set; }
         public static IEnumerable<IdentityResource> IdentityResources => new List<IdentityResource>
         {
             new IdentityResources.OpenId(),

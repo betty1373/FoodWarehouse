@@ -16,7 +16,7 @@ namespace FW.Web.RpcClients
         private readonly QueueNames _queueNames;
 
         public IngredientsRpcClient(IMapper mapper, IConnectionRabbitMQ connection, IConfiguration configuration) :
-            base(connection, configuration)
+            base(connection)
         {
             _mapper = mapper;
 

@@ -12,6 +12,7 @@ WORKDIR "/src/FW.Management"
 RUN dotnet build "FW.Management.csproj" -c Release -o /app/build
 
 FROM build AS publish
+#RUN dotnet dev-certs https --trust
 RUN dotnet publish "FW.Management.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final

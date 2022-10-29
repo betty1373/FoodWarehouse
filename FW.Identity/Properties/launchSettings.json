@@ -3,13 +3,14 @@
     "FW.Identity": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "fwidentity",
+      "publishAllPorts": true,
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:10001;http://localhost:10000",
+      "applicationUrl": "https://fwidentity:10001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    }
-    ,
+    },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,

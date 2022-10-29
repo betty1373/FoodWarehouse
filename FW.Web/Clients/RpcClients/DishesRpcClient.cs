@@ -17,7 +17,7 @@ namespace FW.Web.RpcClients
         private readonly QueueNamesDishes _queueNames;
 
         public DishesRpcClient(IMapper mapper, IConnectionRabbitMQ connection, IConfiguration configuration) :
-            base(connection, configuration)
+            base(connection)
         {
             _mapper = mapper;
 
